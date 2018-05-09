@@ -102,13 +102,226 @@
   动画的速度曲线。默认是 "ease"
   动画何时开始。默认是 0
   动画被播放的次数。默认是 1, infinite 规定动画应该无限次播放
-  动画是否在下一周期逆向地播放。默认是 "normal", alternate 动画应该轮流反向播放。*/
+  动画是否在下一周期逆向地播放。默认是 "normal", alternate 动画应该轮流反向播放。
+  animation-fill-mode 设定动画完成后的状态，默认是none 设为forwards 就可以在动画完成后定格在动画最后一帧*/
   animation: myfirst 5s linear 1s infinite normal;
   -webkit-animation: myfirst 5s linear 1s infinite normal;
 }
 .ball-box i{
   position: absolute;
+  right: -.97rem;
+  top: 14%;
+  display: block;
+  width: .97rem;
+  height: .97rem;
+  background: url(../images/ball_01.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: .97rem;
+  color:#fff;
+  font-size:.34rem;
+  font-weight: 700;
 }
+@keyframes ball1
+{
+  0% {right: 0;top: 14%;}
+  10% {right: 10%; top: 15%;}
+  20% {right: 20%; top: 17%;}
+  30% {right: 30%; top: 21%;}
+  40% {right: 40%; top: 29%;}
+  50% {right: 43%; top: 34%;}
+  60% {right: 43%; top: 40%;}
+  70% {right: 43%; top: 46%;}
+  80% {right: 43%; top: 41%;}
+  85% {right: 43%; top: 45%;}
+  90% {right: 43%; top: 43%;}
+  100% {right: 43%; top: 46%; transform: rotate(360deg);}
+}
+@-webkit-keyframes ball1
+{
+  0% {right: 0;top: 14%;}
+  10% {right: 10%; top: 15%;}
+  20% {right: 20%; top: 17%;}
+  30% {right: 30%; top: 21%;}
+  40% {right: 40%; top: 29%;}
+  50% {right: 43%; top: 34%;}
+  60% {right: 43%; top: 40%;}
+  70% {right: 43%; top: 46%;}
+  80% {right: 43%; top: 41%;}
+  85% {right: 43%; top: 45%;}
+  90% {right: 43%; top: 43%;}
+  100% {right: 50%; top: 46%; transform: rotate(720deg);}
+}
+
+@keyframes ball2
+{
+  0% {right: 0;top: 14%;}
+  10% {right: 10%; top: 15%;}
+  20% {right: 20%; top: 17%;}
+  30% {right: 30%; top: 21%;}
+  40% {right: 40%; top: 29%;}
+  50% {right: 57%; top: 34%;}
+  60% {right: 57%; top: 40%;}
+  70% {right: 57%; top: 45%;}
+  80% {right: 57%; top: 41%;}
+  85% {right: 57%; top: 44%;}
+  90% {right: 57%; top: 43%;}
+  100% {right: 57%; top: 45%; transform: rotate(720deg);}
+}
+@-webkit-keyframes ball2
+{
+  0% {right: 0;top: 14%;}
+  10% {right: 10%; top: 15%;}
+  20% {right: 20%; top: 17%;}
+  30% {right: 30%; top: 21%;}
+  40% {right: 40%; top: 29%;}
+  50% {right: 57%; top: 34%;}
+  60% {right: 57%; top: 40%;}
+  70% {right: 57%; top: 45%;}
+  80% {right: 57%; top: 41%;}
+  85% {right: 57%; top: 44%;}
+  90% {right: 57%; top: 43%;}
+  100% {right: 57%; top: 45%; transform: rotate(720deg);}
+}
+
+@keyframes ball3
+{
+  0% {right: 0;top: 14%;}
+  10% {right: 10%; top: 15%;}
+  20% {right: 20%; top: 17%;}
+  30% {right: 30%; top: 21%;}
+  40% {right: 40%; top: 29%;}
+  50% {right: 30%; top: 34%;}
+  60% {right: 30%; top: 40%;}
+  70% {right: 30%; top: 45%;}
+  80% {right: 30%; top: 41%;}
+  85% {right: 30%; top: 44%;}
+  90% {right: 30%; top: 43%;}
+  100% {right: 30%; top: 45%; transform: rotate(760deg);}
+}
+@-webkit-keyframes ball3
+{
+  0% {right: 0;top: 14%;}
+  10% {right: 10%; top: 15%;}
+  20% {right: 20%; top: 17%;}
+  30% {right: 30%; top: 21%;}
+  40% {right: 40%; top: 29%;}
+  50% {right: 30%; top: 34%;}
+  60% {right: 30%; top: 40%;}
+  70% {right: 30%; top: 45%;}
+  80% {right: 30%; top: 41%;}
+  85% {right: 30%; top: 44%;}
+  90% {right: 30%; top: 43%;}
+  100% {right: 30%; top: 45%; transform: rotate(760deg);}
+}
+
+
+@keyframes ball4
+{
+  0% {right: 0;top: 14%;}
+  10% {right: 10%; top: 15%;}
+  20% {right: 20%; top: 17%;}
+  30% {right: 30%; top: 21%;}
+  40% {right: 40%; top: 29%;}
+  50% {right: 49%; top: 34%;}
+  60% {right: 49%; top: 40%;}
+  70% {right: 49%; top: 45%;}
+  80% {right: 49%; top: 38%;}
+  85% {right: 49%; top: 43%;}
+  90% {right: 49%; top: 40%;}
+  100% {right: 49%; top: 39%; transform: rotate(700deg);}
+}
+@-webkit-keyframes ball4
+{
+  0% {right: 0;top: 14%;}
+  10% {right: 10%; top: 15%;}
+  20% {right: 20%; top: 17%;}
+  30% {right: 30%; top: 21%;}
+  40% {right: 40%; top: 29%;}
+  50% {right: 49%; top: 34%;}
+  60% {right: 49%; top: 40%;}
+  70% {right: 49%; top: 45%;}
+  80% {right: 49%; top: 38%;}
+  85% {right: 49%; top: 43%;}
+  90% {right: 49%; top: 40%;}
+  100% {right: 49%; top: 39%; transform: rotate(700deg);}
+}
+
+@keyframes ball5
+{
+  0% {right: 0;top: 14%;}
+  10% {right: 10%; top: 15%;}
+  20% {right: 20%; top: 17%;}
+  30% {right: 30%; top: 21%;}
+  40% {right: 40%; top: 29%;}
+  50% {right: 43%; top: 34%;}
+  60% {right: 43%; top: 40%;}
+  70% {right: 43%; top: 46%;}
+  80% {right: 43%; top: 41%;}
+  85% {right: 43%; top: 45%;}
+  90% {right: 43%; top: 43%;}
+  100% {right: 43%; top: 46%; transform: rotate(360deg);}
+}
+@-webkit-keyframes ball5
+{
+  0% {right: 0;top: 14%;}
+  10% {right: 10%; top: 15%;}
+  20% {right: 20%; top: 17%;}
+  30% {right: 30%; top: 21%;}
+  40% {right: 40%; top: 29%;}
+  50% {right: 43%; top: 34%;}
+  60% {right: 43%; top: 40%;}
+  70% {right: 43%; top: 46%;}
+  80% {right: 43%; top: 41%;}
+  85% {right: 43%; top: 45%;}
+  90% {right: 43%; top: 43%;}
+  100% {right: 43%; top: 46%; transform: rotate(360deg);}
+}
+
+.ball-box .ball-1.dropdown{
+  animation: ball1 2s linear 0s 1 normal forwards;
+  -webkit-animation: ball1 2s linear 0s 1 normal forwards;
+}
+.ball-box .ball-2.dropdown{
+  animation: ball2 2s linear .2s 1 normal forwards;
+  -webkit-animation: ball2 2s linear .2s 1 normal forwards;
+}
+.ball-box .ball-3.dropdown{
+  animation: ball3 2s linear .4s 1 normal forwards;
+  -webkit-animation: ball3 2s linear .4s 1 normal forwards;
+}
+.ball-box .ball-4.dropdown{
+  animation: ball4 2s linear .6s 1 normal forwards;
+  -webkit-animation: ball4 2s linear .6s 1 normal forwards;
+}
+.ball-box .ball-5.dropdown{
+  animation: ball5 2s linear .8s 1 normal forwards;
+  -webkit-animation: ball5 2s linear .8s 1 normal forwards;
+}
+
+
+.ball-box .ball-1.dropdown{
+  animation: ball1 2s linear 0s infinite normal forwards;
+  -webkit-animation: ball1 2s linear 0s infinite normal forwards;
+}
+.ball-box .ball-2.dropdown{
+  animation: ball2 2s linear .2s infinite normal forwards;
+  -webkit-animation: ball2 2s linear .2s infinite normal forwards;
+}
+.ball-box .ball-3.dropdown{
+  animation: ball3 2s linear .4s infinite normal forwards;
+  -webkit-animation: ball3 2s linear .4s infinite normal forwards;
+}
+.ball-box .ball-4.dropdown{
+  animation: ball4 2s linear .6s infinite normal forwards;
+  -webkit-animation: ball4 2s linear .6s infinite normal forwards;
+}
+.ball-box .ball-5.dropdown{
+  animation: ball5 2s linear .8s infinite normal forwards;
+  -webkit-animation: ball5 2s linear .8s infinite normal forwards;
+}
+
+
 footer{
   position: fixed;
   left: 0;
@@ -133,4 +346,45 @@ footer{
 }
 #scroll-end>li{
   /*color: #f60;*/
+}
+
+/*弹出层*/
+.mask,.popup{
+  position: fixed;
+  top:0;
+  left: 0;
+}
+.mask{
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease-in-out;
+}
+.mask.show{
+  background: #000;
+  opacity: .5;
+  pointer-events: auto;
+  z-index: 9999;
+  filter: blur(5px)
+}
+.popup{
+  bottom: 0;
+  width: 100%;
+  z-index: 10000;
+  pointer-events: none;
+  transform: translate(-100%);
+  transition: transform .2s ease-in-out;
+}
+.popup.show{
+  pointer-events: auto;
+  transform: translate(0);
+}
+.popup .content{
+  width: 90%;
+  margin: 1rem auto 0;
+  background: #fff;
+}
+.popup .content h1{
+  margin:0;
 }
