@@ -2,15 +2,15 @@
   position: absolute;
   right: 0;
   top:0;
+  padding: 0 0 .02rem .04rem;
   background: #75c4c9;
-  background: #f60;
-  font-size: 0.3rem;
+  font-size: 0.27rem;
   border-bottom-left-radius: .1rem;
 }
 .top-right a{
   display: inline-block;
-  margin: 0.15rem 0.12rem;
-  padding: 0.05rem 0;
+  margin: 0 .19rem .16rem .19rem;
+  padding: .21rem 0 .05rem 0;
   color: #fff;
   border-bottom: 1px solid #ffed7d;
 }
@@ -18,30 +18,93 @@
   position: absolute;
   right:0.3rem;
   top:100%;
-  padding: 0.2rem 0.12rem;
-  background: #3796C6;
+  padding: .08rem;
+  background: #feed7e;
+  color:#fff;
   text-align: center;
-  border:4px solid #fff;
+  border-radius: .1rem;
   transition: top .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 .suger-box.active{
-  top:29%;
+  top:27%;
+  /*top:47%;*/
 }
-.suger-box h1{
-  font-size:0.65rem;
-}
-.suger-box h1 small{
-  font-size:0.4rem;
+.suger-box .content{
+  padding: 0.2rem 0.12rem;
+  background: #3796C6;
+  border-radius: .1rem;
 }
 .suger-box h1,
 .suger-box h6{
   margin:0;
 }
+.suger-box h1{
+  font-size:0.46rem;
+}
+.suger-box h6{
+  font-size:0.25rem;
+}
+.suger-box h1 small{
+  font-size:0.35rem;
+}
+.suger-box .btn{  
+  position: relative;
+}
 .suger-box a{
+  position: relative;
   display: block;
-  padding: 0.2rem;
+  padding: .18rem .24rem;
   background:#ECE161;
+  background-image: linear-gradient(145deg, #fefccc 30%, #ede262 90%);
   color: #E77E0A;
+  font-size: .29rem;
+  font-weight: 600;
+  border-radius: .06rem;
+  text-shadow: .02rem 0 0 #fff;
+}
+
+@keyframes myfirst
+{
+  0% {background: #e7a900;}
+  3% {background: transparent;}
+  6% {background: #e7a900;}
+  9% {background: transparent;}
+  12% {background: #e7a900;}
+  15% {background: transparent;}
+  18% {background: #e7a900;}
+  100% {background: #e7a900;}
+}
+@-webkit-keyframes myfirst /* Safari 和 Chrome */
+{
+  0% {background: #e7a900;}
+  3% {background: transparent;}
+  6% {background: #e7a900;}
+  9% {background: transparent;}
+  12% {background: #e7a900;}
+  15% {background: transparent;}
+  18% {background: #e7a900;}
+  100% {background: #e7a900;}
+}
+
+.suger-box .btn:before{
+  position: absolute;
+  display: block;
+  content: '';
+  right:-0.05rem;
+  top:0;
+  width:calc(100% + 0.05rem);
+  height: calc(100% + 0.05rem);
+  background: #e7a900;
+  border-radius: .08rem;
+  /*animation: name duration timing-function delay iteration-count direction;*/
+  /*@keyframes 动画的名称
+  动画完成一个周期所花费的秒或毫秒
+  动画的速度曲线。默认是 "ease"
+  动画何时开始。默认是 0
+  动画被播放的次数。默认是 1, infinite 规定动画应该无限次播放
+  动画是否在下一周期逆向地播放。默认是 "normal", alternate 动画应该轮流反向播放。*/
+  animation: myfirst 5s linear 1s infinite normal;
+  -webkit-animation: myfirst 5s linear 1s infinite normal;
 }
 .ball-box i{
   position: absolute;
