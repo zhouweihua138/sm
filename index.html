@@ -145,6 +145,14 @@
           e.stopPropagation();  // 停止事件的传播,阻止事件冒泡到父元素,阻止任何父事件处理程序被执行
         })
 
+        // function init () {
+        //   var winHeight = window.innerHeight;
+        //   var top = 160/1334*winHeight; // 计算糖果管道顶部的距离
+        //   $('.ball-box').css({'top': top/100 + 'rem'})
+        //   console.log(top);
+        // }
+        // init();
+
         // 点击收集按钮
         $('.suger-box a').on('click', function(){
           http({
