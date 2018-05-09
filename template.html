@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="APP name">
+    <meta name="screen-orientation" content="landscape">
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <meta name="layoutmode" content="fitscreen">
+    <meta name="nightmode" content="disable">
+    <meta name="imagemode" content="force">
+    <meta name="x5-orientation" content="landscape">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="default">
+    <title>糖果机</title>
+    <script type="text/javascript" src="./js/ydui.flexible.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <style type="text/css">
+      body{
+        background: #c0e3dd;
+        font-size: 0.14rem;
+      }
+      #app{
+        position: relative;
+        max-width: 640px;
+        margin:0 auto;
+        background: #FFF;
+      }
+      .top-right{
+        position: absolute;
+        right: 0;
+        top:0;
+        background: #75c4c9;
+        font-size: 0.3rem;
+        border-bottom-left-radius: .1rem;
+      }
+      .top-right a{
+        display: inline-block;
+        margin: 0.15rem 0.2rem;
+        padding: 0.05rem 0;
+        color: #fff;
+        border-bottom: 1px solid #ffed7d;
+      }
+      footer{
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: .68rem;
+        line-height: .68rem;
+        background: #cceceb;
+        color: #5aa0a8;
+        font-size: .24rem;
+      }
+      #scroll-box{
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      #scroll-begin,#scroll-end,
+      #scroll-begin>li,#scroll-end>li{
+        display: inline;
+      }
+      #scroll-begin>li,#scroll-end>li{
+        padding: 0 .1rem;
+      }
+      #scroll-end>li{
+        color: #f60;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="top-right">
+        <a id="linkToGuide" href="javascript:void(0)">使用教程</a>
+        <a id="linkToHistory" href="javascript:void(0)">历史记录</a>
+      </div>
+      <footer id="scroll-box">
+        <ul id="scroll-begin">
+          <li>1-1恭喜 吴XX 成功提取价值 XXX元 糖果</li>
+          <li>1-2恭喜 吴XX 成功提取价值 XXX元 糖果</li>
+        </ul>
+        <ul id="scroll-end"></ul>
+      </footer>
+    </div>
+
+    <script type="text/javascript">
+      !(function () {
+        //文字横向滚动
+        function ScrollImgLeft () {
+          var speed=50
+            ,int = null
+            ,scroll_begin = document.getElementById("scroll-begin")
+            ,scroll_end = document.getElementById("scroll-end")
+            ,scroll_box = document.getElementById("scroll-box");
+          scroll_end.innerHTML = scroll_begin.innerHTML;
+          function Marquee () {
+            if(scroll_end.offsetWidth - scroll_box.scrollLeft <= 0) {
+              scroll_box.scrollLeft -= scroll_begin.offsetWidth;
+            }
+            else {
+              scroll_box.scrollLeft++;
+            }
+          }
+          int = setInterval(Marquee,speed);
+          scroll_box.onmouseover = function () {
+            clearInterval(int);
+          }
+          scroll_box.onmouseout = function () {
+            int = setInterval(Marquee,speed); 　　　　
+          }
+        }
+        ScrollImgLeft();
+      })()
+
+      // function clickPrompt () {
+      //   var result = prompt('js://demo?arg1=111&arg2=222');
+      //   alert('demo ' + result)
+      // }
+
+      // document.getElementById('linkToGuide').addEventListener('click', function(e){
+      //   clickPrompt()
+      // })
+    </script>
+  </body>
+</html>

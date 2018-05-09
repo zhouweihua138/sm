@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="APP name">
+    <meta name="screen-orientation" content="landscape">
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <meta name="layoutmode" content="fitscreen">
+    <meta name="nightmode" content="disable">
+    <meta name="imagemode" content="force">
+    <meta name="x5-orientation" content="landscape">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="default">
+    <title>QQ一键退朝</title>
+    <script type="text/javascript" src="./js/ydui.flexible.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <style type="text/css">
+      body{
+        background: #f5f5f5;
+        font-size: 0.14rem;
+      }
+      #app{
+        position: relative;
+        max-width: 640px;
+        margin:0 auto;
+        background: #FFF;
+      }
+      #canvas{
+        width: 100%;
+        height: 4rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <script type="text/javascript">
+      /**
+       * [Point Class]
+       * @param {[type]} x [x坐标]
+       * @param {[type]} y [y坐标]
+       */
+      var Point = function (x, y) {
+        this.x = x;
+        this.y = y;
+      }
+
+      /**
+       * [几何图形工具]
+       */
+      var GeometryUtil = {
+        /**
+         * [获得两点之间的距离]
+         * 根号 (x1 -x2)的平方 + (y1 - y2)的平方
+         * @param  {[object]} p1 [含x,y坐标属性的点]
+         * @param  {[object]} p2 [含x,y坐标属性的点]
+         * @return {[float]}    [两点间的距离]
+         */
+        getDistanceBetween2Points: function (p1, p2) {
+          // sqrt()返回一个数的平方根  
+          // pow()计算一个数的任意次根,返回 x 的 y 次幂的值, x底数必须是数字, y幂数必须是数字
+          return Math.sqrt(Math.pow(p1.y - p2.y, 2) + Math.pow(p1.x - p2.x, 2));
+        },
+
+
+        /**
+         * [获得两点连线的中点]
+         * @param  {[type]} p1 [point1]
+         * @param  {[type]} p2 [point2]
+         * @return {[type]}    [point中点]
+         */
+        getMiddlePoint: function (p1, p2) {
+          return new Point((p1.x + p2.x) / 2,(p1.y + p2.y) / 2);
+        },
+
+
+        /**
+         * [根据百分比获取两点之间的某个点坐标]
+         * @param  {[Point]} p1      [point1]
+         * @param  {[Point]} p2      [point2]
+         * @param  {[float]} percent [百分比]
+         * @return {[Point]}         [坐标点]
+         */
+        getPointByPercent (p1, p2, percent) {
+          return new Point(this.evaluateValue(percent, p1.x, p2.x), this.evaluateValue(percent, p1.y, p2.y));
+        },
+
+
+        /**
+         * [根据分度值，计算从start到end中，fraction位置的值。fraction范围为0 -> 1]
+         * @param  {[float]} fraction [分数]
+         * @param  {[float]} start    [起始值]
+         * @param  {[float]} end      [结束值]
+         * @return {[float]}          [计算两个数字某个百分比点的值]
+         */
+        evaluateValue: function (fraction, start, end) {
+          return start + (end-start) * fraction;
+        },
+
+
+        /**
+         * 获取通过指定圆心，斜率为lineK的直线与圆的交点
+         * @param  {[Point]} pM     [圆的中心点]
+         * @param  {[float]} radius [圆的半径]
+         * @param  {[float]} lineK  [穿过圆心的直线的斜率]
+         * @return {[Point]}        [直线与圆的交点]
+         */
+        getIntersectionPoints: function (pM, radius, lineK) {
+          var points = [];
+          var radian;  // 弧度  将角度乘以 0.017453293 （2PI/360）即可转换为弧度
+          var xOffset = 0;
+          var yOffset = 0;
+          if (lineK) {
+            // Math.atan(x) 参数x 的反正切值。返回的值是 -PI/2 到 PI/2 之间的弧度值。
+            // Math.cos(x)  参数x 的余弦值。返回的是 -1.0 到 1.0 之间的数。
+            // Math.sin(x)  参数x 的正弦值。返回的是 -1.0 到 1.0 之间的数。
+            radian = Math.atan(lineK);
+            xOffset = Math.cos(radian) * radius;
+            yOffset = Math.sin(radian) * radius;
+          } else {
+            xOffset = radius;
+            yOffset = 0;
+          }
+          return points;
+        }
+      }
+
+
+      !(function () {
+        var devicePixelRatio = window.devicePixelRatio || 1;
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+          ctx.mozBackingStorePixelRatio ||
+          ctx.msBackingStorePixelRatio ||
+          ctx.oBackingStorePixelRatio ||
+          ctx.backingStorePixelRatio || 1;
+        var ratio = devicePixelRatio / backingStoreRatio;
+        var oldWidth = parseInt(window.getComputedStyle(canvas).width);
+        var oldHeight = parseInt(window.getComputedStyle(canvas).height);
+        canvas.width = oldWidth * ratio;
+        canvas.height = oldHeight * ratio;
+        canvas.style.width = oldWidth + 'px';
+        canvas.style.height = oldHeight + 'px';
+
+        // var canvasWidth = canvas.getBoundingClientRect().width;
+        var canvasHeight = canvas.getBoundingClientRect().height;
+        // console.log(canvasWidth, canvasHeight);
+        ctx.fillStyle="#00ACEC";
+        ctx.fillRect(0, 0, oldWidth * ratio, canvasHeight * ratio);  // 画矩形
+        ctx.fillStyle='#F64C32';
+        ctx.beginPath();
+
+        var O1 = {
+          x: 120,  // 圆1的x坐标
+          y: 90,  // 圆1的y坐标
+          r: 20  // 圆1的半径
+        };
+        var O2 = {
+          x: 240,  // 圆2的x坐标
+          y: 90,  // 圆2的y坐标
+          r: 15  // 圆2的半径
+        };
+        // context.arc(x,y,r,sAngle,eAngle,counterclockwise);
+        // 中心，半径，起始角，结束角，是否逆时针绘图
+        ctx.arc(O1.x * ratio, O1.y * ratio, O1.r * ratio, 0, Math.PI*2, true);
+        ctx.arc(O2.x * ratio, O2.y * ratio, O2.r * ratio, 0, Math.PI*2, true);
+
+        // 第一步：计算外切点
+        // 根据两圆心连接成的直线计算斜率
+        // 公式： k = dy/dx
+        // dy = O1.y - O2.y
+        // dx = O1.x - O2.x
+        var k = (O1.y - O2.y) / (O1.x - O2.x);
+
+        // 第二步：计算控制点，其实就是O1与O2的中心点，x = (O1.x+O2.x)/2    y = (O1.y+O2.y)/2
+        var controlPront = new Point((O1.x + O2.x) / 2, (O1.y + O2.y) / 2);
+        
+        ctx.closePath();
+        ctx.fill();
+
+        // var txt='Home';
+        // var fontSize = 20 * ratio;
+        // ctx.font = fontSize + 'px Verdana';
+        // ctx.fillStyle='#FFFFFF';
+        // ctx.fillText(txt, 0, fontSize);
+
+        // ctx.fillText(ctx.measureText(txt).width, 0, 60);
+        canvas.addEventListener('touchstart', function (e) {
+          console.log(e);
+        });
+      })()
+    </script>
+  </body>
+</html>

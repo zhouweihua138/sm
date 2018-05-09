@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="APP name">
+    <meta name="screen-orientation" content="landscape">
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <meta name="layoutmode" content="fitscreen">
+    <meta name="nightmode" content="disable">
+    <meta name="imagemode" content="force">
+    <meta name="x5-orientation" content="landscape">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="default">
+    <title>糖果机</title>
+    <script type="text/javascript" src="./js/ydui.flexible.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <link rel="stylesheet" type="text/css" href="./css/suger.css">
+    <style type="text/css">
+      html,body,#app{
+        height: 100%;
+      }
+      body{
+        background: #FFF;
+        font-size: 0.14rem;
+      }
+      #app{
+        position: relative;
+        max-width: 640px;
+        margin:0 auto;
+        background: #c0e3dd url('images/bg.png') no-repeat;
+        background-position: 50% 0;
+        background-size: contain;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="top-right">
+        <a id="linkToGuide" href="javascript:void(0)">使用教程</a>
+        <a id="linkToHistory" href="javascript:void(0)">历史记录</a>
+      </div>
+
+      <div class="suger-box">
+        <h6>待收集糖果</h6>
+        <h1>5<small>个</small></h1>
+        <a href="javascript:void(0);">收集</a>
+      </div>
+
+      <div class="ball-box">
+        <i class="ball-1">15</i>
+        <i class="ball-2">15</i>
+        <i class="ball-3">15</i>
+        <i class="ball-4">15</i>
+      </div>
+
+      <footer id="scroll-box">
+        <ul id="scroll-begin">
+          <li>1-1恭喜 吴XX 成功提取价值 XXX元 糖果</li>
+          <li>1-2恭喜 吴XX 成功提取价值 XXX元 糖果</li>
+        </ul>
+        <ul id="scroll-end"></ul>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        setTimeout(function(){
+          $('.suger-box').addClass('active');
+        },50);
+
+        // TODO: 数值和颜色是否有对照关系？
+        var balls = [
+          {
+            value: 15,
+            color: 'red'
+          },
+          {
+            value: 6,
+            color: 'green'
+          },
+          {
+            value: 30,
+            color: 'blue'
+          },
+          {
+            value: 7,
+            color: 'orange'
+          }
+        ]
+      })
+
+      !(function () {
+        //文字横向滚动
+        function ScrollImgLeft () {
+          var speed=50
+            ,int = null
+            ,scroll_begin = document.getElementById("scroll-begin")
+            ,scroll_end = document.getElementById("scroll-end")
+            ,scroll_box = document.getElementById("scroll-box");
+          scroll_end.innerHTML = scroll_begin.innerHTML;
+          function Marquee () {
+            if(scroll_end.offsetWidth - scroll_box.scrollLeft <= 0) {
+              scroll_box.scrollLeft -= scroll_begin.offsetWidth;
+            }
+            else {
+              scroll_box.scrollLeft++;
+            }
+          }
+          int = setInterval(Marquee,speed);
+          scroll_box.onmouseover = function () {
+            clearInterval(int);
+          }
+          scroll_box.onmouseout = function () {
+            int = setInterval(Marquee,speed); 　　　　
+          }
+        }
+        ScrollImgLeft();
+      })()
+
+      // function clickPrompt () {
+      //   var result = prompt('js://demo?arg1=111&arg2=222');
+      //   alert('demo ' + result)
+      // }
+
+      // document.getElementById('linkToGuide').addEventListener('click', function(e){
+      //   clickPrompt()
+      // })
+    </script>
+  </body>
+</html>

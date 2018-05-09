@@ -1,0 +1,72 @@
+.top-right{
+  position: absolute;
+  right: 0;
+  top:0;
+  background: #75c4c9;
+  font-size: 0.3rem;
+  border-bottom-left-radius: .1rem;
+}
+.top-right a{
+  display: inline-block;
+  margin: 0.15rem 0.12rem;
+  padding: 0.05rem 0;
+  color: #fff;
+  border-bottom: 1px solid #ffed7d;
+}
+.suger-box{
+  position: absolute;
+  right:0.3rem;
+  top:100%;
+  padding: 0.2rem 0.12rem;
+  background: #3796C6;
+  text-align: center;
+  border:4px solid #fff;
+  transition: top .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+.suger-box.active{
+  top:29%;
+}
+.suger-box h1{
+  font-size:0.65rem;
+}
+.suger-box h1 small{
+  font-size:0.4rem;
+}
+.suger-box h1,
+.suger-box h6{
+  margin:0;
+}
+.suger-box a{
+  display: block;
+  padding: 0.2rem;
+  background:#ECE161;
+  color: #E77E0A;
+}
+.ball-box i{
+  position: absolute;
+}
+footer{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: .68rem;
+  line-height: .68rem;
+  background: #cceceb;
+  color: #5aa0a8;
+  font-size: .24rem;
+}
+#scroll-box{
+  overflow: hidden;
+  white-space: nowrap;
+}
+#scroll-begin,#scroll-end,
+#scroll-begin>li,#scroll-end>li{
+  display: inline;
+}
+#scroll-begin>li,#scroll-end>li{
+  padding: 0 .1rem;
+}
+#scroll-end>li{
+  /*color: #f60;*/
+}

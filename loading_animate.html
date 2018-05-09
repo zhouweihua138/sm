@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="APP name">
+    <meta name="screen-orientation" content="landscape">
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <meta name="layoutmode" content="fitscreen">
+    <meta name="nightmode" content="disable">
+    <meta name="imagemode" content="force">
+    <meta name="x5-orientation" content="landscape">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="default">
+    <title>带有阻尼效果（橡皮筋效果）跳动的Loading动画</title>
+    <script type="text/javascript" src="./js/ydui.flexible.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <style type="text/css">
+      body{
+        background: #f2f2f2;
+        font-size: 0.14rem;
+      }
+      #app{
+        position: relative;
+        max-width: 640px;
+        margin:0 auto;
+        background: #FFF;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <script type="text/javascript">
+      !(function () {
+        var mContext,
+          mPath,
+          mTextColor,//画出文字的具体颜色
+          mTextPaint,//文字画笔
+          MIN_HEIGHT = 200,//最小的高度
+          PAINT_TEXTSIZE = 40,
+          PAINT_TEXT_BASEIINE = PAINT_TEXTSIZE,//BASELINE的高度
+          mResText,//画出来的文字
+          mTextWidth,//文字的宽度
+          mDefaultText,
+          DEFAULT_RECF_SPACE = 6,//默认的画弧形的时候的间距,值越大速度越快，不能超过最大值
+          MAX_RECF_SPACE = 36,//最大的画弧形的时候的间距
+          MIN_RECF_SPACE = -12,//最大的画弧形的时候的间距
+          mRecfSpace = 0,//矩形RECF间距
+          STATUS_DOWN_CURVE = 0,//向下弯曲的状态
+          STATUS_UP_CURVE = 1,//向上恢复的状态
+          STATUS_FLAT_CURVE = 2,//平的状态
+          mCurveStatus = STATUS_FLAT_CURVE,
+          MAX_SPRING_COUNT = 18,//来回弹动的时间
+          mSringCount = MAX_SPRING_COUNT;//当前弹动的次数
+
+        function initPaint () {
+          mDefaultText = "新鲜到家每一天";
+          mResText = mDefaultText;
+          mTextPaint = new Paint();
+          mTextPaint.setColor(Color.parseColor("#666666"));
+          mTextPaint.setTextSize(PAINT_TEXTSIZE);
+          mTextPaint.setStyle(Paint.Style.STROKE);
+          mTextPaint.setTextAlign(Paint.Align.LEFT);
+          mTextWidth = (int) mTextPaint.measureText(mResText);
+        }
+
+        // onMeasure是用来测量 自定义View
+        function onMeasure () {
+          baseLineSpace = 20;
+          // setMeasuredDimension这个方法，这个方法决定了当前View的大小
+          setMeasuredDimension(mTextWidth, PAINT_TEXTSIZE+baseLineSpace);
+        }
+
+        function setTextColor (color) {
+          mTextColor = color;
+          mTextPaint.setColor(color);
+        }
+
+        function startAnim () {
+          mSringCount = 0;
+          mCurveStatus = STATUS_DOWN_CURVE;
+          invalidate();
+        }
+
+        function setText(res) {
+          mResText = mContext.getString(res);
+        }
+
+        function onDraw(canvas) {
+          // super.onDraw(canvas);
+          drawLinePathAndText(canvas);
+        }
+
+        /**
+         * 画出直线的文字
+         */
+        function drawLinePathAndText (canvas) {
+          if (mPath == null) {
+            mPath = new Path();
+            drawLinePath();
+          } else {
+            drawArcPath();
+            mRecfSpae = getRecfSpace();
+            if (mRecfSpae >= MAX_RECF_SPACE) {
+              mCurveStatus = STATUS_UP_CURVE;
+            } else if (mRecfSpae <= MIN_RECF_SPACE) {
+              mCurveStatus = STATUS_DOWN_CURVE;
+            }
+          }
+
+          if (mSpringCount < MAX_SPRING_COUNT) {
+            mSpringCount++;
+            invalidate();
+          } else {
+            reset(canvas);
+          }
+
+          canvas.drawTextOnPath(mResText, mPath, 0, 0, mTextPaint);
+        }
+
+        function reset(canvas){
+          mRecfSpace = 0;
+          drawArcPath();
+          mCurveStatus = STATUS_FLAT_CURVE;
+        }
+
+        /**
+         * 当矩形间距这块如果到了最大弯曲值就
+         * 每次递减，反之则递增，平行状态不变
+         *
+         * @return
+         */
+        function getRecfSpace() {
+          if (mCurveStatus == STATUS_DOWN_CURVE) {
+            return mRecfSpace + DEFAULT_RECF_SPACE;
+          } else if (mCurveStatus == STATUS_UP_CURVE) {
+            return mRecfSpace - DEFAULT_RECF_SPACE;
+          } else {
+            return 0;
+          }
+        }
+
+        /**
+         * 初始化直线路径
+         */
+        function drawLinePath() {
+            mPath.moveTo(0, PAINT_TEXT_BASEIINE); //设定起始点
+            mPath.lineTo(mTextWidth, PAINT_TEXT_BASEIINE);//第一条直线的终点，也是第二条直线的起点
+            mPath.close();
+        }
+
+        /**
+         * 画出弧线路径
+         */
+        void drawArcPath() {
+          mPath.reset();
+          // RectF rectF = new RectF(0, PAINT_TEXT_BASEIINE, mTextWidth, PAINT_TEXT_BASEIINE + mRecfSpace);
+          // mPath.addOval(rectF, Path.Direction.CCW);
+          mPath.moveTo(0, PAINT_TEXT_BASEIINE); //设定起始点
+          // mPath.lineTo(mTextWidth/5,PAINT_TEXT_BASEIINE);
+          mPath.quadTo(0,PAINT_TEXT_BASEIINE,5,PAINT_TEXT_BASEIINE);
+          mPath.quadTo(mTextWidth/2,PAINT_TEXT_BASEIINE + mRecfSpace,mTextWidth-5,PAINT_TEXT_BASEIINE);
+          mPath.quadTo(mTextWidth*5/6,PAINT_TEXT_BASEIINE,mTextWidth,PAINT_TEXT_BASEIINE);
+          mPath.close();
+        }
+
+
+        // FruitView
+        var mResDrawable = ['p1', 'p3', 'p5', 'p7'],
+          mIndex, // 当前图片的下标
+          mSkip = true,
+          MAX_HEIGHT = 100,
+          DURATION = 600;
+
+        function changeIcon() {
+          mImageView.clearAnimation();
+          if (mSkip) {
+            mIndex = 2;
+            mSkip = false;
+          } else {
+            mIndex = (mIndex == mResDrawable.length - 1) ? 0 : mIndex + 1;
+          }
+          mImageView.setImageResource(mResDrawable[mIndex]);
+        }
+
+        function onMeasure(widthMeasureSpec, heightMeasureSpec) {
+          // super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+          setMeasuredDimension(widthMeasureSpec, (MAX_HEIGHT + mImageView.getMeasuredHeight()+curveHeadLoadingView.getMeasuredHeight()));
+          loadAnim();
+        }
+
+        function loadAnim() {
+          translateAnimation = new TranslateAnimation(0, 0, 0, MAX_HEIGHT);
+          translateAnimation.setDuration(DURATION);
+          translateAnimation.setFillAfter(true);
+          backAnimation = new TranslateAnimation(0, 0, MAX_HEIGHT, 0);
+          backAnimation.setDuration(DURATION);
+          backAnimation.setFillAfter(true);
+          rotateAnimation = new RotateAnimation(0, 360,
+            Animation.RELATIVE_TO_SELF, 0.5f, //0.5 = 1/2的自己父控件的长度
+            Animation.RELATIVE_TO_SELF, 0.5f);//0.5 = 1/2的自己的长度
+          rotateAnimation.setRepeatCount(0);
+          rotateAnimation.setDuration(DURATION);
+
+          // rotateAnimation.setAnimationListener(animationListener);
+
+          animationSet = new AnimationSet(true);
+          animationSet.addAnimation(rotateAnimation);
+          animationSet.addAnimation(translateAnimation);
+
+          animationSet2 = new AnimationSet(true);
+          animationSet2.addAnimation(rotateAnimation);
+          animationSet2.addAnimation(backAnimation);
+
+          translateAnimation.setAnimationListener(animationListener);
+          backAnimation.setAnimationListener(animationListener);
+          mImageView.setAnimation(animationSet);
+          animationSet2.setInterpolator(mContext, android.R.anim.decelerate_interpolator);
+          animationSet.setInterpolator(mContext, android.R.anim.accelerate_interpolator);
+          animationSet.start();
+        }
+
+        function onAnimationEnd(animation) {
+          if (animation == translateAnimation) {
+            // if (mViewAnimEndListener == null)
+            // throw new NullPointerException("please use setonViewAnimEndListener method before use fruitView");
+            // else mViewAnimEndListener.onDropDown();
+            curveHeadLoadingView.startAnim();
+            changeIcon();
+            mImageView.setAnimation(animationSet2);
+            animationSet2.start();
+          } else {
+            mImageView.setAnimation(animationSet);
+            animationSet.start();
+          }
+        }
+
+        // DampingViewPager
+        var mRect = new Rect(),//用来记录初始位置
+          pagerCount = 3,
+          currentItem = 0,
+          handleDefault = true,
+          preX = 0,
+          firstX = 0,
+          RATIO = 0.8, //摩擦系数
+          limit = 0;   //这是你设置当手指滑动超过多少时viewPager才开始滑动，默认是0
+
+        function onInterceptTouchEvent(arg0) {
+          if (arg0.getAction() == MotionEvent.ACTION_DOWN) {
+            preX = arg0.getX();//记录起点
+            firstX = arg0.getX();
+          }
+          return super.onInterceptTouchEvent(arg0);
+        }
+
+        function onTouchEvent(arg0) {
+          switch (arg0.getAction()) {
+            case MotionEvent.ACTION_UP:
+              onTouchActionUp();
+              break;
+            case MotionEvent.ACTION_MOVE:
+              //当时滑到第一项或者是最后一项的时候。
+              if ((currentItem == 0 || currentItem == pagerCount - 1)) {
+                float nowX = arg0.getX();
+                float offset = nowX - preX;
+                RATIO = (float) (0.8f-((Math.abs(nowX-firstX))*0.001));
+                RATIO = RATIO < 0 ? 0:RATIO;
+                preX = nowX;
+                if (currentItem == 0) {
+                  if (offset > limit) {//手指滑动的距离大于设定值
+                    whetherConditionIsRight(offset);
+                  } else if (!handleDefault) {//往回滑动的时候
+                    if (getLeft() + (int) (offset * RATIO) >= mRect.left) {
+                      layout(getLeft() + (int) (offset*RATIO), getTop(), getRight() + (int) (offset*RATIO), getBottom());
+                    }
+                  }
+                } else {
+                  if (offset < -limit) {
+                    whetherConditionIsRight(offset);
+                  } else if (!handleDefault) {
+                    if (getRight() + (int) (offset * RATIO) <= mRect.right) {
+                      layout(getLeft() + (int) (offset*RATIO), getTop(), getRight() + (int) (offset*RATIO), getBottom());
+                    }
+                  }
+                }
+              } else {
+                handleDefault = true;
+              }
+
+              if (!handleDefault) {
+                return true;
+              }
+              break;
+
+            default:
+              break;
+          }
+          return super.onTouchEvent(arg0);
+        }
+
+        function whetherConditionIsRight(offset) {
+          if (mRect.isEmpty()) {
+            mRect.set(getLeft(), getTop(), getRight(), getBottom());
+          }
+          handleDefault = false;
+          layout(getLeft() + (int) (offset * RATIO), getTop(), getRight() + (int) (offset * RATIO), getBottom());
+        }
+
+        function onTouchActionUp() {
+          RATIO = 0.8;
+          if (!mRect.isEmpty()) {
+            recoveryPosition();
+          }
+        }
+
+        function recoveryPosition() {
+          TranslateAnimation ta = null;
+          ta = new TranslateAnimation(getLeft(), mRect.left, 0, 0);
+          int recoveryTime = (int) Math.abs(getLeft()*1.4)+50;
+          ta.setDuration(recoveryTime);
+          startAnimation(ta);
+          layout(mRect.left, mRect.top, mRect.right, mRect.bottom);
+          mRect.setEmpty();
+          handleDefault = true;
+        }
+
+      })()
+    </script>
+  </body>
+</html>
