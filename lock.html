@@ -16,7 +16,7 @@
     <meta name="x5-orientation" content="landscape">
     <meta name="x5-fullscreen" content="true">
     <meta name="x5-page-mode" content="default">
-    <title>QQ一键退朝</title>
+    <title>锁屏手势</title>
     <script type="text/javascript" src="./js/ydui.flexible.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/normalize.css">
     <link rel="stylesheet" type="text/css" href="./css/common.css">
@@ -159,125 +159,39 @@
         // var canvasWidth = canvas.getBoundingClientRect().width;
         var canvasHeight = canvas.getBoundingClientRect().height;
         // console.log(canvasWidth, canvasHeight);
-        ctx.fillStyle="#00ACEC";
+        ctx.fillStyle="#FFFFFF";
         ctx.fillRect(0, 0, oldWidth * ratio, canvasHeight * ratio);  // 画矩形
         ctx.fillStyle='#F64C32';
+        ctx.strokeStyle='#00ACEC'
+        ctx.lineWidth = 2;
 
+        var pointX = [20 + (oldWidth - 40) / 3];
 
-        /*
-        ctx.beginPath();
+        //圆心
+        var mCenterPoints = [new Point(50, 200), new Point(150, 200), new Point(250, 200),
+          new Point(50, 350), new Point(150, 350), new Point(250, 350),
+          new Point(50, 450), new Point(150, 450), new Point(250, 450)];
 
-        var O1 = {
-          x: 120,  // 圆1的x坐标
-          y: 90,  // 圆1的y坐标
-          r: 20  // 圆1的半径
-        };
-        var O2 = {
-          x: 240,  // 圆2的x坐标
-          y: 90,  // 圆2的y坐标
-          r: 15  // 圆2的半径
-        };
-        // context.arc(x,y,r,sAngle,eAngle,counterclockwise);
-        // 中心，半径，起始角，结束角，是否逆时针绘图
-        ctx.arc(O1.x * ratio, O1.y * ratio, O1.r * ratio, 0, Math.PI*2, true);
-        ctx.arc(O2.x * ratio, O2.y * ratio, O2.r * ratio, 0, Math.PI*2, true);
-
-        // 第一步：计算外切点
-        // 根据两圆心连接成的直线计算斜率
-        // 公式： k = dy/dx
-        // dy = O1.y - O2.y
-        // dx = O1.x - O2.x
-        var k = (O1.y - O2.y) / (O1.x - O2.x);
-
-        // 第二步：计算控制点，其实就是O1与O2的中心点，x = (O1.x+O2.x)/2    y = (O1.y+O2.y)/2
-        var controlPront = new Point((O1.x + O2.x) / 2, (O1.y + O2.y) / 2);
-        
-        ctx.closePath();
-        ctx.fill();
-
-        // 贝塞尔曲线
-        ctx.beginPath();
-        ctx.moveTo(20, 20);  // 开始点：moveTo(20,20)
-        ctx.quadraticCurveTo(20, 100, 200, 20);  // 控制点x,y, 结束点x,y
-        ctx.lineTo(200, 100);  // 画直线
-        ctx.quadraticCurveTo(60, 100, 200, 20);
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fill();
-
-        // var txt='Home';
-        // var fontSize = 20 * ratio;
-        // ctx.font = fontSize + 'px Verdana';
-        // ctx.fillStyle='#FFFFFF';
-        // ctx.fillText(txt, 0, fontSize);
-
-        // ctx.fillText(ctx.measureText(txt).width, 0, 60);
-        */
-
-        //拖拽圆的圆心
-        var mDragCenterPoint = new Point(250, 450);
-
-        // 固定圆的圆心
-        var mFixCenterPoint = new Point(250, 250);
-
-        // 控制点
-        var mCenterPoint = new Point(250, 400);
-
-        // 固定圆的切点
-        var mFixTangentPoints = [new Point(235, 250), new Point(265, 250)];
-
-        // 拖拽圆的切点
-        var mDragTangentPoint = [new Point(230, 450), new Point(270, 450)];
-
-        // 拖拽圆半径
-        var mDragRadius = 20;
-
-        // 固定圆半径
-        var mFixRadius = 15;
-
-        // var statusBarHeight = 0;
+        // 圆半径
+        var mRadius = 25;
 
         function onDraw (ctx) {
           ctx.save();
-          // ctx.translate(0, -statusBarHeight);
-          ctx.beginPath();
-          ctx.arc(mFixCenterPoint.x, mFixCenterPoint.y, mFixRadius, 0, Math.PI*2, true);
-          ctx.fill();
-
-          var dy = mDragCenterPoint.y - mFixCenterPoint.y;
-          var dx = mDragCenterPoint.x - mFixCenterPoint.x;
-
-          mCenterPoint = new Point((mDragCenterPoint.x + mFixCenterPoint.x) / 2, (mDragCenterPoint.y + mFixCenterPoint.y) / 2);
-          if (dx != 0) {
-            var k1 = dy / dx;
-            var k2 = -1 / k1;
-            mDragTangentPoint = GeometryUtil.getIntersectionPoints(mDragCenterPoint, mDragRadius, k2);
-            mFixTangentPoints = GeometryUtil.getIntersectionPoints(mFixCenterPoint, mFixRadius, k2);
-          } else {
-            mDragTangentPoint = GeometryUtil.getIntersectionPoints(mDragCenterPoint, mDragRadius, 0);
-            mFixTangentPoints = GeometryUtil.getIntersectionPoints(mFixCenterPoint, mFixRadius, 0);
+          for (var i=0; i<mCenterPoints.length; i++) {
+            ctx.beginPath();
+            ctx.arc(mCenterPoints[i].x * ratio, mCenterPoints[i].y * ratio, mRadius * ratio, 0, Math.PI*2, true);
+            ctx.closePath();
+            ctx.stroke();
           }
 
-          // ctx.closePath();
-          // ctx.beginPath();
-          ctx.moveTo(mFixTangentPoints[0].x, mFixTangentPoints[0].y);
-          ctx.quadraticCurveTo(mCenterPoint.x, mCenterPoint.y, mDragTangentPoint[0].x, mDragTangentPoint[0].y);
-          ctx.lineTo(mDragTangentPoint[1].x, mDragTangentPoint[1].y);
-          ctx.quadraticCurveTo(mCenterPoint.x, mCenterPoint.y, mFixTangentPoints[1].x, mFixTangentPoints[1].y);
-          ctx.closePath();
-          ctx.fill();
-
-          ctx.arc(mDragCenterPoint.x, mDragCenterPoint.y, mDragRadius, 0, Math.PI*2, true);
-          ctx.fill();
           ctx.restore();
-          
         }
         onDraw(ctx);
 
         function updateDraCenterPoint (x, y) {
           mDragCenterPoint = new Point(x * ratio, y * ratio);
           ctx.clearRect(0, 0, oldWidth * ratio, canvasHeight * ratio)
-          ctx.fillStyle="#00ACEC";
+          ctx.fillStyle="#FFFFFF";
           ctx.fillRect(0, 0, oldWidth * ratio, canvasHeight * ratio);  // 画矩形
           ctx.fillStyle='#F64C32';
           onDraw(ctx);
@@ -295,11 +209,11 @@
           updateDraCenterPoint(x, y);
         });
 
-        // canvas.addEventListener('touchend', function (e) {
-        //   var x = e.changedTouches[0].clientX;
-        //   var y = e.changedTouches[0].clientY;
-        //   updateDraCenterPoint(x, y);
-        // });
+        canvas.addEventListener('touchend', function (e) {
+          var x = e.changedTouches[0].clientX;
+          var y = e.changedTouches[0].clientY;
+          updateDraCenterPoint(x, y);
+        });
       })()
     </script>
   </body>
