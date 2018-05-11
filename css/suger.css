@@ -1,3 +1,71 @@
+.box-end,
+.box-front{
+  position: absolute;
+  top: 3.05rem;
+  left: 1.15rem;
+  width: 5.21rem;
+}
+.pip-end{
+  position: absolute;
+  right: .37rem;
+  top: 1.7rem;
+  width: 3.2rem;
+}
+.pip-front{
+  position: absolute;
+  right: 0;
+  top: 1.54rem;
+  width: 3.69rem;
+}
+.hole{
+  position: absolute;
+  left: 2.14rem;
+  top: 6.43rem;
+  width: 3.23rem;
+  height: .66rem;
+}
+.hole-exit{
+  position: absolute;
+  left: 3.10rem;
+  top: 7.51rem;
+  width: 1.31rem;
+  height: 1.20rem;
+}
+@keyframes linght
+{
+  0% {background-position: 0 0;}
+  50% {background-position: 100% 0;}
+}
+@-webkit-keyframes linght
+{
+  0% {background-position: 0 0;}
+  50% {background-position: 100% 0;}
+}
+@keyframes collect
+{
+  0%, 10%, 20%, 30%, 40% {background-position: 0 0;}
+  5%, 15%, 25%, 35% {background-position: 100% 0;}
+  100% {background-position: 0 0;}
+}
+@-webkit-keyframes collect
+{
+  0%, 10%, 20%, 30%, 40% {background-position: 0 0;}
+  5%, 15%, 25%, 35% {background-position: 100% 0;}
+  100% {background-position: 0 0;}
+}
+.linght{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3.84rem;
+  height: 4.25rem;
+  background: url(../images/linght.png) no-repeat;
+  background-position: 0 0;
+  background-size: cover;
+  animation: linght .2s steps(1) infinite normal;
+  -webkit-animation: linght .2s steps(1) infinite normal;
+}
+
 .top-right{
   position: absolute;
   right: 0;
@@ -14,88 +82,64 @@
   color: #fff;
   border-bottom: 1px solid #ffed7d;
 }
-.suger-box{
+.collect-box,
+.collect-box .quantity,
+.collect-box a,
+.collect-box span{
   position: absolute;
-  right:0.3rem;
-  top:100%;
-  padding: .08rem;
-  background: #feed7e;
+}
+.collect-box{
+  right:0;
+  top:5.89rem;
+  width:2.05rem;
+  height: 2.93rem;
+  background: url(../images/btn_collect.png) no-repeat;
+  background-size: cover;
   color:#fff;
   text-align: center;
-  border-radius: .1rem;
-  transition: top .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  /*transition: top .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);*/
+  transition: top .5s linear;
+  animation: collect 2.5s steps(1) infinite normal;
+  -webkit-animation: collect 2.5s steps(1) infinite normal;
 }
-.suger-box.active{
-  top:27%;
-  /*top:47%;*/
+.collect-box.active{
+  top:3.63rem;
 }
-.suger-box .content{
-  padding: 0.2rem 0.12rem;
-  background: #3796C6;
-  border-radius: .1rem;
+.collect-box .quantity{
+  right: 1.14rem;
+  top: .65rem;
+  margin: 0;
+  font-size:0.6rem;
 }
-.suger-box h1,
-.suger-box h6{
-  margin:0;
-}
-.suger-box h1{
-  font-size:0.46rem;
-}
-.suger-box h6{
-  font-size:0.25rem;
-}
-.suger-box h1 small{
-  font-size:0.35rem;
-}
-.suger-box .btn{  
-  position: relative;
-}
-.suger-box a{
-  position: relative;
+.collect-box a{
+  left: .3rem;
+  top: 1.36rem;
   display: block;
-  padding: .18rem .24rem;
-  background:#ECE161;
-  background-image: linear-gradient(145deg, #fefccc 30%, #ede262 90%);
-  color: #E77E0A;
-  font-size: .29rem;
-  font-weight: 600;
-  border-radius: .06rem;
-  text-shadow: .02rem 0 0 #fff;
+  width: 1.2rem;
+  height: .7rem;
+  text-indent: -999em;
+}
+.collect-box span{
+  left: .25rem;
+  /*bottom: .2rem;*/
+  bottom: .12rem;
+  color: #95c5dc;
+  font-weight: bold;
+  font-size: .24rem;
 }
 
-@keyframes myfirst
+/*@keyframes myfirst
 {
   0% {background: #e7a900;}
-  3% {background: transparent;}
-  6% {background: #e7a900;}
-  9% {background: transparent;}
-  12% {background: #e7a900;}
-  15% {background: transparent;}
-  18% {background: #e7a900;}
   100% {background: #e7a900;}
 }
-@-webkit-keyframes myfirst /* Safari 和 Chrome */
+@-webkit-keyframes myfirst
 {
   0% {background: #e7a900;}
-  3% {background: transparent;}
-  6% {background: #e7a900;}
-  9% {background: transparent;}
-  12% {background: #e7a900;}
-  15% {background: transparent;}
-  18% {background: #e7a900;}
   100% {background: #e7a900;}
-}
+}*/
 
-.suger-box .btn:before{
-  position: absolute;
-  display: block;
-  content: '';
-  right:-0.05rem;
-  top:0;
-  width:calc(100% + 0.05rem);
-  height: calc(100% + 0.05rem);
-  background: #e7a900;
-  border-radius: .08rem;
+/*.collect-box .btn:before{*/
   /*animation: name duration timing-function delay iteration-count direction;*/
   /*@keyframes 动画的名称
   动画完成一个周期所花费的秒或毫秒
@@ -104,9 +148,10 @@
   动画被播放的次数。默认是 1, infinite 规定动画应该无限次播放
   动画是否在下一周期逆向地播放。默认是 "normal", alternate 动画应该轮流反向播放。
   animation-fill-mode 设定动画完成后的状态，默认是none 设为forwards 就可以在动画完成后定格在动画最后一帧*/
-  animation: myfirst 5s linear 1s infinite normal;
+/*  animation: myfirst 5s linear 1s infinite normal;
   -webkit-animation: myfirst 5s linear 1s infinite normal;
-}
+}*/
+
 .ball-box{
   position: absolute;
   top: 1.6rem;
@@ -121,7 +166,7 @@
   display: block;
   width: .97rem;
   height: .97rem;
-  background: url(../images/ball_01.png) no-repeat;
+  background: url(../images/ball_red.png) no-repeat;
   background-size: contain;
   text-align: center;
   line-height: .97rem;
@@ -306,39 +351,35 @@
   -webkit-animation: ball5 2s linear .8s 1 normal forwards;
 }
 
-
-/*.ball-box .ball-1.dropdown{
-  animation: ball1 2s linear 0s infinite normal forwards;
-  -webkit-animation: ball1 2s linear 0s infinite normal forwards;
+.money{
+  position: absolute;
+  top: 9rem;
+  right: 3.07rem;
+  margin: 0;
+  color:#fff;
+  font-size: .7rem;
+  line-height: 1;
 }
-.ball-box .ball-2.dropdown{
-  animation: ball2 2s linear .2s infinite normal forwards;
-  -webkit-animation: ball2 2s linear .2s infinite normal forwards;
-}
-.ball-box .ball-3.dropdown{
-  animation: ball3 2s linear .4s infinite normal forwards;
-  -webkit-animation: ball3 2s linear .4s infinite normal forwards;
-}
-.ball-box .ball-4.dropdown{
-  animation: ball4 2s linear .6s infinite normal forwards;
-  -webkit-animation: ball4 2s linear .6s infinite normal forwards;
-}
-.ball-box .ball-5.dropdown{
-  animation: ball5 2s linear .8s infinite normal forwards;
-  -webkit-animation: ball5 2s linear .8s infinite normal forwards;
-}*/
-
 
 footer{
   position: fixed;
   left: 0;
   bottom: 0;
+  /*bottom: calc(0rem + constant(safe-area-inset-bottom));
+  bottom: calc(0rem + .34rem);*/
   right: 0;
   height: .68rem;
   line-height: .68rem;
   background: #cceceb;
   color: #5aa0a8;
   font-size: .24rem;
+}
+/*只有设置了viewport-fit=cover才能使用constant函数*/
+@supports(bottom:constant(safe-area-inset-bottom)) {
+  footer{
+    bottom: calc(0rem + constant(safe-area-inset-bottom)); /*为iphoneX底下圆弧的高度 34px*/
+    bottom: calc(0rem + .34rem);
+  }
 }
 #scroll-box{
   overflow: hidden;

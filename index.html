@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,viewport-fit=cover">
     <meta name="format-detection" content="telephone=no, email=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -29,14 +29,26 @@
         background: #FFF;
         font-size: 0.24rem;
         font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+        /*padding-top: .88rem;*/
+        /*padding-bottom: .34rem;*/
+        box-sizing: border-box;
+      }
+      /*只有设置了viewport-fit=cover才能使用constant函数*/
+      @supports(bottom:constant(safe-area-inset-bottom)) {
+        body{
+          padding-top: constant(safe-area-inset-top);       /*为导航栏+状态栏的高度 88px*/
+          padding-left: constant(safe-area-inset-left);     /*如果未竖屏时为0*/
+          padding-right: constant(safe-area-inset-right);   /*如果未竖屏时为0*/
+          padding-bottom: constant(safe-area-inset-bottom); /*为底下圆弧的高度 34px*/
+        }
       }
       #app{
         position: relative;
         max-width: 640px;
         max-width: 8.18rem;
         margin:0 auto;
-        background: #c0e3dd url('images/bg2.png') no-repeat;
-        background-position: 50% 0;
+        background: #c0e3dd url('images/bg.png') no-repeat;
+        background-position: center 0;
         background-size: cover;
         overflow: hidden;
       }
@@ -44,20 +56,24 @@
   </head>
   <body>
     <div id="app">
+      <div class="linght"></div>
+      <img src="./images/box_end.png" class="box-end" />
+      <img src="./images/pip_end.png" class="pip-end" />
+      <img src="./images/hole.png" class="hole" />
+      <img src="./images/box_front.png" class="box-front" />
+      <img src="./images/hole_exit.png" class="hole-exit" />
+      <img src="./images/pip_front.png" class="pip-front" />
       <div class="top-right">
         <a id="linkToGuide" href="javascript:void(0)">使用教程</a>
         <a id="linkToHistory" href="javascript:void(0)">历史记录</a>
       </div>
 
-      <div class="suger-box">
-        <div class="content">
-          <h6>待收集糖果</h6>
-          <h1>5<small>个</small></h1>
-          <div class="btn">
-            <a href="javascript:void(0);">收 集</a>
-          </div>
-        </div>
+      <div class="collect-box">
+        <h1 class="quantity">5</h1>
+        <a href="javascript:void(0);">收集</a>
+        <span>05.28-06.29</span>
       </div>
+      <h1 class="money">3954</h1>
 
       <div class="ball-box">
         <i class="ball-1">15</i>
@@ -115,7 +131,7 @@
 
         // 收集按钮弹出
         setTimeout(function(){
-          $('.suger-box').addClass('active');
+          $('.collect-box').addClass('active');
         },300);
 
         // 弹出使用教程
@@ -151,7 +167,7 @@
         init();
 
         // 点击收集按钮
-        $('.suger-box a').on('click', function(){
+        $('.collect-box a').on('click', function(){
           http({
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
             data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
