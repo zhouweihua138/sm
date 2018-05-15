@@ -92,31 +92,91 @@
     </div>
 
     <div class="mask"></div>
-    <div class="popup">
-      <div class="content">
-
+    <div class="popup popup1">
+      <div class="container">
+        <a class="btn-close" href="javascript:void(0);"></a>
+        <div class="content">
+          <div class="guide-content">
+            <h1>科学使用免息糖果</h1>
+            <img src="./images/popup_guide.png">
+            <h2>【消费1万元，返1千元免息额度】</h2>
+            <h2>比例高达10%</h2>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div id="guide-content" style="display: none;">
-      <h1>使用教程</h1>
-      <p>一些文字一些文字一些文字一些文字一些文字一些文字一些文字</p>
-      <p>一些文字一些文字一些文字一些文字一些文字一些文字一些文字</p>
-      <p>一些文字一些文字一些文字一些文字一些文字一些文字一些文字</p>
-      <p>一些文字一些文字一些文字一些文字一些文字一些文字一些文字</p>
-      <p>一些文字一些文字一些文字一些文字一些文字一些文字一些文字</p>
-      <p>一些文字一些文字一些文字一些文字一些文字一些文字一些文字</p>        
+    <div class="popup popup2">
+      <div class="container">
+        <a class="btn-close" href="javascript:void(0);"></a>
+        <div class="content">
+          <div class="history-content">
+            <div class="tab-nav">
+              <a class="active" href="javascript:void(0);">糖果获得记录</a>
+              <a href="javascript:void(0);">额度提取记录</a>
+            </div>
+            <div class="tab-content">
+              <div class="tab active">
+                <ul>
+                  <li><span>日期</span><span>糖果额度</span></li>
+                  <li><span>2018.3.8</span><span>100元</span></li>
+                  <li><span>2018.3.8</span><span>100元</span></li>
+                  <li><span>2018.3.8</span><span>100元</span></li>
+                  <li><span>2018.3.8</span><span>100元</span></li>
+                  <li><span>2018.3.8</span><span>100元</span></li>
+                  <li><span>2018.3.8</span><span>100元</span></li>
+                  <li><span>2018.3.8</span><span>100元</span></li>
+                  <li><span>2018.3.8</span><span>100元</span></li>
+                  <li><span>2018.3.8</span><span>100元</span></li>
+                  <li><span>2018.3.8</span><span>100元</span></li>
+                </ul>
+              </div>
+              <div class="tab">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div id="history-content" style="display: none;">
-      <h1>历史记录</h1>
-      <p>一些文字一些文字一些文字一些文字一些文字一些文字一些文字</p>
-      <p>一些文字一些文字一些文字一些文字一些文字一些文字一些文字</p>
-      <p>一些文字一些文字一些文字一些文字一些文字一些文字一些文字</p>
-      <p>一些文字一些文字一些文字一些文字一些文字一些文字一些文字</p>
-      <p>一些文字一些文字一些文字一些文字一些文字一些文字一些文字</p>
-      <p>一些文字一些文字一些文字一些文字一些文字一些文字一些文字</p>        
-    </div>
+    <!-- <div id="guide-content" style="display: none;">
+      <div class="guide-content">
+        <h1>科学使用免息糖果</h1>
+        <img src="./images/popup_guide.png">
+        <h2>【消费1万元，返1千元免息额度】</h2>
+        <h2>比例高达10%</h2>
+      </div>
+    </div> -->
+
+    <!-- <div id="history-content" style="display: none;">
+      <div class="history-content">
+        <div class="tab-nav">
+          <a class="active" href="javascript:void(0);">糖果获得记录</a>
+          <a href="javascript:void(0);">额度提取记录</a>
+        </div>
+        <div class="tab-content">
+          <div class="tab active">
+            <ul>
+              <li><span>日期</span><span>糖果额度</span></li>
+              <li><span>2018.3.8</span><span>100元</span></li>
+              <li><span>2018.3.8</span><span>100元</span></li>
+              <li><span>2018.3.8</span><span>100元</span></li>
+              <li><span>2018.3.8</span><span>100元</span></li>
+              <li><span>2018.3.8</span><span>100元</span></li>
+              <li><span>2018.3.8</span><span>100元</span></li>
+              <li><span>2018.3.8</span><span>100元</span></li>
+              <li><span>2018.3.8</span><span>100元</span></li>
+              <li><span>2018.3.8</span><span>100元</span></li>
+              <li><span>2018.3.8</span><span>100元</span></li>
+            </ul>
+          </div>
+          <div class="tab">
+            
+          </div>
+        </div>
+      </div>
+    </div> -->
 
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript">
@@ -135,18 +195,18 @@
 
         // 弹出使用教程
         $('#linkToGuide').on('click', function(){
-          $('.popup .content').html($('#guide-content').html());
-          $('.mask,.popup').addClass('show');
+          // $('.popup .content').html($('#guide-content').html());
+          $('.mask,.popup1').addClass('show');
         })
 
         // 弹出历史记录
         $('#linkToHistory').on('click', function(){
-          $('.popup .content').html($('#history-content').html());
-          $('.mask,.popup').addClass('show');
+          // $('.popup .content').html($('#history-content').html());
+          $('.mask,.popup2').addClass('show');
         })
 
         // 关闭弹窗
-        $('.mask,.popup').on('click', function(e){
+        $('.mask,.popup,.btn-close').on('click', function(e){
           $('.mask,.popup').removeClass('show');
           // 点击穿透的解决办法
           $('#app').css('pointer-events', 'none');
@@ -155,8 +215,8 @@
           }, 400);
         })
 
-        // 点击弹窗内容不关闭弹窗
-        $('.popup .content').on('click', function(e){
+        // 点击弹窗不关闭弹窗
+        $('.popup .container').on('click', function(e){
           e.stopPropagation();  // 停止事件的传播,阻止事件冒泡到父元素,阻止任何父事件处理程序被执行
         })
 
