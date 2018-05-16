@@ -60,13 +60,14 @@
       <img src="./images/box_end.png" class="box-end" />
       <img src="./images/pip_end.png" class="pip-end" />
       <img src="./images/hole.png" class="hole" />
-      <div class="ball-box">
+      <!-- <div class="ball-box">
         <i class="ball-1">15</i>
         <i class="ball-2">30</i>
         <i class="ball-3">7</i>
         <i class="ball-4">5</i>
         <i class="ball-5">50</i>
-      </div>
+      </div> -->
+      <div id="canvas"></div>
       <img src="./images/box_front.png" class="box-front" />
       <img src="./images/hole_exit.png" class="hole-exit" />
       <img src="./images/pip_front.png" class="pip-front" />
@@ -81,6 +82,7 @@
         <span>05.28-06.29</span>
       </div>
       <h1 class="money">3954</h1>
+      <a class="btn-extract-balance" href="javascript:void(0);"></a>
 
       <footer id="scroll-box">
         <ul id="scroll-begin">
@@ -97,7 +99,7 @@
         <a class="btn-close" href="javascript:void(0);"></a>
         <div class="content">
           <div class="guide-content">
-            <h1>科学使用免息糖果</h1>
+            <h1 class="title">科学使用免息糖果</h1>
             <img src="./images/popup_guide.png">
             <h2>【消费1万元，返1千元免息额度】</h2>
             <h2>比例高达10%</h2>
@@ -132,7 +134,19 @@
                 </ul>
               </div>
               <div class="tab">
-                
+                <ul>
+                  <li><span>日期</span><span>糖果额度</span></li>
+                  <li><span>2018.3.8</span><span>500元</span></li>
+                  <li><span>2018.3.8</span><span>500元</span></li>
+                  <li><span>2018.3.8</span><span>500元</span></li>
+                  <li><span>2018.3.8</span><span>500元</span></li>
+                  <li><span>2018.3.8</span><span>500元</span></li>
+                  <li><span>2018.3.8</span><span>500元</span></li>
+                  <li><span>2018.3.8</span><span>600元</span></li>
+                  <li><span>2018.3.8</span><span>800元</span></li>
+                  <li><span>2018.3.8</span><span>800元</span></li>
+                  <li><span>2018.3.8</span><span>800元</span></li>
+                </ul>
               </div>
             </div>
           </div>
@@ -140,45 +154,43 @@
       </div>
     </div>
 
-    <!-- <div id="guide-content" style="display: none;">
-      <div class="guide-content">
-        <h1>科学使用免息糖果</h1>
-        <img src="./images/popup_guide.png">
-        <h2>【消费1万元，返1千元免息额度】</h2>
-        <h2>比例高达10%</h2>
-      </div>
-    </div> -->
+    <div class="popup popup3">
+      <div class="container">
+        <a class="btn-close" href="javascript:void(0);"></a>
+        <div class="content">
+          <div class="guide-content content1 active">
+            <h1 class="title">您已成功使用免息分期额度</h1>
+            <div class="box">
+              <h1>300元</h1>
+              <h2>为您减免手续费 12.6元</h2>
+              <h2>将在七个工作日内以刷卡金形式返还</h2>
+            </div>
+            <a class="btn btn-install-record" href="http://www.gzcb.com.cn">分期记录</a>
+          </div>
 
-    <!-- <div id="history-content" style="display: none;">
-      <div class="history-content">
-        <div class="tab-nav">
-          <a class="active" href="javascript:void(0);">糖果获得记录</a>
-          <a href="javascript:void(0);">额度提取记录</a>
-        </div>
-        <div class="tab-content">
-          <div class="tab active">
-            <ul>
-              <li><span>日期</span><span>糖果额度</span></li>
-              <li><span>2018.3.8</span><span>100元</span></li>
-              <li><span>2018.3.8</span><span>100元</span></li>
-              <li><span>2018.3.8</span><span>100元</span></li>
-              <li><span>2018.3.8</span><span>100元</span></li>
-              <li><span>2018.3.8</span><span>100元</span></li>
-              <li><span>2018.3.8</span><span>100元</span></li>
-              <li><span>2018.3.8</span><span>100元</span></li>
-              <li><span>2018.3.8</span><span>100元</span></li>
-              <li><span>2018.3.8</span><span>100元</span></li>
-              <li><span>2018.3.8</span><span>100元</span></li>
-            </ul>
-          </div>
-          <div class="tab">
-            
+          <div class="guide-content content2">
+            <h1 class="title">您已成功提取免息分期额度</h1>
+            <div class="box">
+              <h1>300元</h1>
+              <h2>6期或以下、3000元或以上分期可使用</h2>
+              <h2>有效期至2018.6.15</h2>
+            </div>
+            <a class="btn btn-install-record" href="http://www.baidu.com">去分期</a>
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/protoclass.js"></script>
+    <script src='js/box2d.js'></script>
+    <!--<script src='js/Main.js'></script>-->
+    <script type="text/javascript">
+      new_element=document.createElement("script");
+      new_element.setAttribute("type","text/javascript");
+      new_element.setAttribute("src","js/Main.js");
+      document.body.appendChild(new_element);
+    </script>
     <script type="text/javascript">
       // Zepto和FastClick的解决方案
       // Zepto(function($){
@@ -188,10 +200,35 @@
       $(function(){
         var ajaxStatus = true;//启用ajax请求
 
-        // 收集按钮弹出
-        setTimeout(function(){
-          $('.collect-box').addClass('active');
-        },300);
+        function init () {
+          http({
+            url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
+            data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
+            success: function (data) {
+              data = {
+                status: 200,
+                sugers: [10, 20, 30, 40, 50],  // 待收集糖果
+                isFreeLimitUsed: false,  // 是否已成功使用免息分期额度
+              }
+              if(data.status == 200) {
+                initBalls(10);
+                // 待收集糖果＞0，收集面板升起，按钮跳动
+                if (data.sugers.length > 0) {
+                  // 收集按钮弹出
+                  setTimeout(function(){
+                    $('.collect-box').addClass('active');
+                  },300);
+                }
+                if (data.isFreeLimitUsed) {
+                  $('.popup3 .guide-content').removeClass('active');
+                  $('.popup3 .content1').addClass('active');
+                  $('.mask,.popup3').addClass('show');
+                }
+              }
+            }
+          })
+        }
+        init();
 
         // 弹出使用教程
         $('#linkToGuide').on('click', function(){
@@ -220,10 +257,16 @@
           e.stopPropagation();  // 停止事件的传播,阻止事件冒泡到父元素,阻止任何父事件处理程序被执行
         })
 
-        function init () {
-          
-        }
-        init();
+        // 切换记录tab
+        $('.tab-nav a').on('click', function (e) {
+          if ($(this).hasClass('active')) {
+            return;
+          }
+          $('.tab-nav a').removeClass('active');
+          $(this).addClass('active');
+          var index = $(this).index();
+          $('.tab-content .tab').removeClass('active').eq(index).addClass('active');
+        })
 
         // 点击收集按钮
         $('.collect-box a').on('click', function(){
@@ -231,12 +274,44 @@
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
             data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
             success: function (data) {
-              if(data.data.list.length > 0) {
-                $('.ball-1,.ball-2,.ball-3,.ball-4,.ball-5').addClass('dropdown');
+              data = {
+                status: 200,
+                sugers: [10, 20, 30, 40, 50],  // 待收集糖果
+                isFreeLimitUsed: false,  // 是否已成功使用免息分期额度
+              }
+              if(data.status == 200) {
+                collectBalls(5);
               }
             }
           })
         })
+
+        // 点击提取按钮
+        $('.btn-extract-balance').on('click', function(){
+          http({
+            url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
+            data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
+            success: function (data) {
+              data = {
+                status: 200,
+                sugers: [10, 20, 30, 40, 50],  // 待收集糖果
+                isFreeLimitUsed: false,  // 是否已成功使用免息分期额度
+              }
+              if(data.status == 200) {
+                $('.hole').addClass('show');
+                setTimeout(function () {
+                  $('.hole').removeClass('show');
+                  $('.popup3 .guide-content').removeClass('active');
+                  $('.popup3 .content2').addClass('active');
+                  $('.mask,.popup3').addClass('show');
+                }, 800);
+                removeBottomWall();
+              }
+            }
+          })
+        })
+
+
 
         function http (options) {
           var url = options.url;//请求地址

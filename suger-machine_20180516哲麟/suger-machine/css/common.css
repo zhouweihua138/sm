@@ -61,7 +61,7 @@ em, i {
 }
 /* 移动端点击a链接出现蓝色背景问题解决 */
 a:link,a:active,a:visited,a:hover {
-    /*background: none;*/
+    background: none;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     -webkit-tap-highlight-color: transparent;
 }
