@@ -68,6 +68,7 @@
         <i class="ball-5">50</i>
       </div> -->
       <div id="canvas"></div>
+      <canvas id="canvas_ddddddd" width="375" height="355" style="position: relative; pointer-events: none;"></canvas>
       <img src="./images/box_front.png" class="box-front" />
       <img src="./images/hole_exit.png" class="hole-exit" />
       <img src="./images/pip_front.png" class="pip-front" />
@@ -158,7 +159,7 @@
       <div class="container">
         <a class="btn-close" href="javascript:void(0);"></a>
         <div class="content">
-          <div class="guide-content content1 active">
+          <div class="guide-content content1">
             <h1 class="title">您已成功使用免息分期额度</h1>
             <div class="box">
               <h1>300元</h1>
@@ -176,6 +177,43 @@
               <h2>有效期至2018.6.15</h2>
             </div>
             <a class="btn btn-install-record" href="http://www.baidu.com">去分期</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup popup4">
+      <div class="container">
+        <a class="btn-close" href="javascript:void(0);"></a>
+        <div class="content">
+          <div class="guide-content content1 active">
+            <h1 class="title">抱歉，您不能参与本活动</h1>
+            <div class="box">
+              <h2>本活动仅面向从未在APP或微信</h2>
+              <h2>办理过分期的客户</h2>
+            </div>
+          </div>
+
+          <div class="guide-content content2">
+            <h1 class="title">抱歉，活动已过期</h1>
+            <div class="box">
+              <h2>活动时间：3.5 - 3.25</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="popup popup5">
+      <div class="container">
+        <a class="btn-close" href="javascript:void(0);"></a>
+        <div class="content">
+          <div class="guide-content content1 active">
+            <h1 class="title">欢迎来到免息糖果机</h1>
+            <div class="box">
+              <h2>见面礼先送您5个糖果</h2>
+            </div>
+            <a class="btn" id="linkToGuide2" href="javascript:void(0);">有什么用？</a>
           </div>
         </div>
       </div>
@@ -200,16 +238,22 @@
       $(function(){
         var ajaxStatus = true;//启用ajax请求
 
+        var mockData = {
+          status: 200,
+          sugers: [10, 20, 30, 40, 50],  // 待收集糖果
+          bFirstVisit: true,        // 是否首次进入页面
+          bCanJoin: false,        // 是否能参与本活动
+          bExpire: false,         // 是否活动已过期
+          bFreeLimitTaked: false,  // 是否已成功提取免息分期额度
+          bFreeLimitUsed: false,  // 是否已成功使用免息分期额度
+        }
+
         function init () {
           http({
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
             data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
             success: function (data) {
-              data = {
-                status: 200,
-                sugers: [10, 20, 30, 40, 50],  // 待收集糖果
-                isFreeLimitUsed: false,  // 是否已成功使用免息分期额度
-              }
+              data = mockData;
               if(data.status == 200) {
                 initBalls(10);
                 // 待收集糖果＞0，收集面板升起，按钮跳动
@@ -219,10 +263,30 @@
                     $('.collect-box').addClass('active');
                   },300);
                 }
-                if (data.isFreeLimitUsed) {
+                if (data.bFirstVisit) {
+                  $('.popup5 .guide-content').removeClass('active');
+                  $('.popup5 .content1').addClass('active');
+                  $('.mask,.popup5').addClass('show');
+                }
+                if (data.bFreeLimitUsed) {
                   $('.popup3 .guide-content').removeClass('active');
                   $('.popup3 .content1').addClass('active');
                   $('.mask,.popup3').addClass('show');
+                }
+                if (data.bFreeLimitTaked) {
+                  $('.popup3 .guide-content').removeClass('active');
+                  $('.popup3 .content2').addClass('active');
+                  $('.mask,.popup3').addClass('show');
+                }
+                if (data.bCanJoin) {
+                  $('.popup4 .guide-content').removeClass('active');
+                  $('.popup4 .content1').addClass('active');
+                  $('.mask,.popup4').addClass('show');
+                }
+                if (data.bExpire) {
+                  $('.popup4 .guide-content').removeClass('active');
+                  $('.popup4 .content2').addClass('active');
+                  $('.mask,.popup4').addClass('show');
                 }
               }
             }
@@ -230,15 +294,19 @@
         }
         init();
 
+        // 点击有什么用？ 弹出使用教程
+        $('#linkToGuide2').on('click', function(){
+          $('.popup5').removeClass('show');
+          $('.mask,.popup1').addClass('show');
+        })
+
         // 弹出使用教程
         $('#linkToGuide').on('click', function(){
-          // $('.popup .content').html($('#guide-content').html());
           $('.mask,.popup1').addClass('show');
         })
 
         // 弹出历史记录
         $('#linkToHistory').on('click', function(){
-          // $('.popup .content').html($('#history-content').html());
           $('.mask,.popup2').addClass('show');
         })
 
@@ -272,13 +340,10 @@
         $('.collect-box a').on('click', function(){
           http({
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
+            url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
             data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
             success: function (data) {
-              data = {
-                status: 200,
-                sugers: [10, 20, 30, 40, 50],  // 待收集糖果
-                isFreeLimitUsed: false,  // 是否已成功使用免息分期额度
-              }
+              data = mockData;
               if(data.status == 200) {
                 collectBalls(5);
               }
@@ -292,11 +357,7 @@
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
             data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
             success: function (data) {
-              data = {
-                status: 200,
-                sugers: [10, 20, 30, 40, 50],  // 待收集糖果
-                isFreeLimitUsed: false,  // 是否已成功使用免息分期额度
-              }
+              data = mockData;
               if(data.status == 200) {
                 $('.hole').addClass('show');
                 setTimeout(function () {
@@ -304,7 +365,7 @@
                   $('.popup3 .guide-content').removeClass('active');
                   $('.popup3 .content2').addClass('active');
                   $('.mask,.popup3').addClass('show');
-                }, 800);
+                }, 3800);
                 removeBottomWall();
               }
             }
@@ -435,25 +496,6 @@
         ScrollImgLeft();
       })()
 
-      var LeftRoller = function(rid, speed, rollSpan) {
-        this.rid = rid;
-        this.speed = speed;
-        this.rollSpan = rollSpan;
-        this.proll = $('#roll-' + rid);
-        this.prollOrig = $('#roll-orig-' + rid);
-        this.prollCopy = $('#roll-copy-' + rid);
-        this.prollCopy[0].innerHTML = this.prollOrig[0].innerHTML;
-        var o = this;
-        this.pevent = setInterval(function() {o.roll.call(o)}, this.speed);
-        //this.pevent = setInterval(function() {o.roll.call(o)}, 200);
-      }
-      LeftRoller.prototype.roll = function() {
-        if (this.prollCopy[0].offsetWidth<=this.proll[0].scrollLeft) {
-          this.proll[0].scrollLeft = this.rollSpan + 1;
-        } else {
-          this.proll[0].scrollLeft += this.rollSpan;
-        }
-      }
     </script>
   </body>
 </html>

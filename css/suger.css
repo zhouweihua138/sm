@@ -449,10 +449,10 @@ footer{
   height: 8.76rem;
   margin: .93rem auto 0 .96rem;
   padding: 1.64rem .28rem .30rem 0;
-  background: url(../images/popup_bg.png) no-repeat;
+  background: url(../images/popup_bg_.png) no-repeat;
   background-position: 0 0;
   /*background-size: cover;*/
-  background-size: 300%;
+  background-size: 400%;
   text-align: center;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -534,42 +534,53 @@ footer{
   border-right: .02rem solid #b8e1f0;
 }
 
-.popup3 .container,
-.popup4 .container{
+.popup3 .container{
   height: 6.86rem;
-  background-position: 50% 0;
+  background-position: 33.33333% 0;
 }
 
-.popup5 .container,
-.popup6 .container{
-  background-position: 100% 0;
+.popup4 .container{
+  background-position: 66.66666% 0;
 }
-.popup3 .guide-content{
+.popup5 .container{
+  background-position: 99.99999% 0;
+}
+.popup3 .guide-content,
+.popup4 .guide-content{
   display: none;
 }
-.popup3 .guide-content.active{
+.popup3 .guide-content.active,
+.popup4 .guide-content.active{
   display: block;
 }
 
-.popup3 .content .title{
+.popup3 .content .title,
+.popup4 .content .title{
   font-size: .3rem;
 }
-.popup3 .box{
+.popup3 .box,
+.popup4 .box,
+.popup5 .box{
   width: 5.1rem;
   margin: -0.3rem auto 0;
   padding: .6rem 0 .37rem 0;
   background: #fff;
   border-radius: .1rem;
 }
+.popup5 .box{
+  padding: 1rem 0 .77rem 0;
+}
+.popup3 .box h2,
+.popup4 .box h2,
+.popup5 .box h2{
+  color: #659aab;
+  font-size: .24rem;
+}
 
 .popup3 .box h1{
   margin: 0 0 .2rem 0;
   font-size: 1rem;
   color: #ff9000;
-}
-.popup3 .box h2{
-  color: #659aab;
-  font-size: .24rem;
 }
 
 .btn:link, .btn:active, .btn:visited, .btn:hover{
