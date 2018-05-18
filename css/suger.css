@@ -355,6 +355,13 @@
   -webkit-animation: ball5 2s linear .8s 1 normal forwards;
 }
 
+.canvas-main{
+/*   width: 3.75rem;
+   height: 3.55rem;*/
+   position: relative; 
+   pointer-events: none;
+}
+
 .money{
   position: absolute;
   top: 9rem;

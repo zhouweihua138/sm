@@ -68,7 +68,7 @@
         <i class="ball-5">50</i>
       </div> -->
       <div id="canvas"></div>
-      <canvas id="canvas_ddddddd" width="375" height="355" style="position: relative; pointer-events: none;"></canvas>
+      <canvas id="canvas-main" class="canvas-main" width="375" height="355"></canvas>
       <img src="./images/box_front.png" class="box-front" />
       <img src="./images/hole_exit.png" class="hole-exit" />
       <img src="./images/pip_front.png" class="pip-front" />
@@ -241,7 +241,7 @@
         var mockData = {
           status: 200,
           sugers: [10, 20, 30, 40, 50],  // 待收集糖果
-          bFirstVisit: true,        // 是否首次进入页面
+          bFirstVisit: false,        // 是否首次进入页面
           bCanJoin: false,        // 是否能参与本活动
           bExpire: false,         // 是否活动已过期
           bFreeLimitTaked: false,  // 是否已成功提取免息分期额度
@@ -340,12 +340,15 @@
         $('.collect-box a').on('click', function(){
           http({
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
-            url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
             data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
             success: function (data) {
               data = mockData;
               if(data.status == 200) {
-                collectBalls(5);
+                var balls = [10,20,30,50,100];
+                collectBalls(balls);
+                setTimeout(function(){
+                  alert('糖果收集成功\n获得300元免息额度');
+                }, balls.length * 500);
               }
             }
           })
@@ -365,7 +368,7 @@
                   $('.popup3 .guide-content').removeClass('active');
                   $('.popup3 .content2').addClass('active');
                   $('.mask,.popup3').addClass('show');
-                }, 3800);
+                }, 1000);
                 removeBottomWall();
               }
             }
@@ -469,6 +472,22 @@
       })
 
       !(function () {
+        // var devicePixelRatio = window.devicePixelRatio || 1;
+        // var canvas = document.getElementById('canvas-main');
+        // var ctx = canvas.getContext('2d');
+        // var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+        //   ctx.mozBackingStorePixelRatio ||
+        //   ctx.msBackingStorePixelRatio ||
+        //   ctx.oBackingStorePixelRatio ||
+        //   ctx.backingStorePixelRatio || 1;
+        // var ratio = devicePixelRatio / backingStoreRatio;
+        // var oldWidth = parseInt(window.getComputedStyle(canvas).width);
+        // var oldHeight = parseInt(window.getComputedStyle(canvas).height);
+        // canvas.width = oldWidth * ratio;
+        // canvas.height = oldHeight * ratio;
+        // canvas.style.width = oldWidth + 'px';
+        // canvas.style.height = oldHeight + 'px';
+
         //文字横向滚动
         function ScrollImgLeft () {
           var speed=50

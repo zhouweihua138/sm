@@ -5,7 +5,7 @@ var stage = [window.screenX, window.screenY, window.innerWidth, window.innerHeig
 
 var centerX = window.innerWidth / 2;
 var centerY = window.innerHeight / 2;
-console.log(centerX, centerY);
+var scale = stage[2] / 750; // 屏幕宽度和设计稿的宽度比例，比如高度700，则对应 stage[2] / 750 * 700;  * 设计稿底部挡板的位置
 var radius = 130;
 
 getBrowserDimensions();
@@ -29,6 +29,7 @@ var gravity = {
   x: 0,
   y: 1
 };
+var linearVelocity = -300;  // 小球水平速度
 var PI2 = Math.PI * 2;
 var timeOfLastTouch = 0;
 
@@ -38,7 +39,7 @@ step();
 function init() {
   // canvas = document.getElementById('canvas');
 
-  var canvasElm = document.getElementById('canvas_ddddddd');
+  var canvasElm = document.getElementById('canvas-main');
   ctx = canvasElm.getContext('2d');
   canvasWidth = parseInt(canvasElm.width);
   canvasHeight = parseInt(canvasElm.height);
@@ -77,9 +78,11 @@ function initBalls(number) {
   }
 }
 
-function collectBalls(number) {
+function collectBalls(balls) {
+  var number = balls.length;
   var interval2 = window.setInterval((function() {
-    createBall(centerX + centerX, centerY - 210, true);
+    // createBall(stage[2], centerY - 210, true);  // scale
+    createBall(stage[2], scale * 238, true);  // scale
   }), 500);
   setTimeout(function() {
     window.clearInterval(interval2);
@@ -110,7 +113,7 @@ function createBall(x, y, speed) {
 
   b2body.position.Set(x, y);
   if (speed) {
-    b2body.linearVelocity.Set(-300, 0);
+    b2body.linearVelocity.Set(linearVelocity, 0);
   }
   bodies.push(world.CreateBody(b2body));
 }
