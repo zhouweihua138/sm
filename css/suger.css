@@ -66,8 +66,8 @@
   background: url(../images/linght.png) no-repeat;
   background-position: 0 0;
   background-size: cover;
-  animation: linght .2s steps(1) infinite normal;
-  -webkit-animation: linght .2s steps(1) infinite normal;
+  animation: linght .5s steps(1) infinite normal;
+  -webkit-animation: linght .5s steps(1) infinite normal;
 }
 
 .top-right{

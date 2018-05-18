@@ -200,6 +200,14 @@
               <h2>活动时间：3.5 - 3.25</h2>
             </div>
           </div>
+
+          <div class="guide-content content3">
+            <h1 class="title">糖果收集成功</h1>
+            <div class="box">
+              <h2>获得300元免息额度</h2>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -222,7 +230,8 @@
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script src="js/protoclass.js"></script>
     <script src='js/box2d.js'></script>
-    <!--<script src='js/Main.js'></script>-->
+    <!-- <script src='js/draw.js'></script> -->
+    <!-- <script src='js/Main.js'></script> -->
     <script type="text/javascript">
       new_element=document.createElement("script");
       new_element.setAttribute("type","text/javascript");
@@ -234,6 +243,10 @@
       // Zepto(function($){
       //   FastClick.attach(document.body);
       // });
+      
+      function initBalls () {}
+      function collectBalls () {}
+      function removeBottomWall () {}
 
       $(function(){
         var ajaxStatus = true;//启用ajax请求
@@ -347,8 +360,10 @@
                 var balls = [10,20,30,50,100];
                 collectBalls(balls);
                 setTimeout(function(){
-                  alert('糖果收集成功\n获得300元免息额度');
-                }, balls.length * 500);
+                  $('.popup4 .guide-content').removeClass('active');
+                  $('.popup4 .content3').addClass('active');
+                  $('.mask,.popup4').addClass('show');
+                }, (balls.length + 1) * 500);
               }
             }
           })

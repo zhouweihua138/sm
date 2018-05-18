@@ -6,7 +6,7 @@ var stage = [window.screenX, window.screenY, window.innerWidth, window.innerHeig
 var centerX = window.innerWidth / 2;
 var centerY = window.innerHeight / 2;
 var scale = stage[2] / 750; // 屏幕宽度和设计稿的宽度比例，比如高度700，则对应 stage[2] / 750 * 700;  * 设计稿底部挡板的位置
-var radius = 130;
+var radius = scale * 130;  // 圆形容器半径
 
 getBrowserDimensions();
 
@@ -96,7 +96,7 @@ function removeBottomWall() {
   bottomWall = null;
 }
 
-function createBall(x, y, speed) {
+function createBall__(x, y, speed) {
   var size = 50;
   var b2body = new b2BodyDef();
   var circle = new b2CircleDef();
@@ -108,7 +108,29 @@ function createBall(x, y, speed) {
   // b2body.userData = {element: element};
 
   b2body.userData = {
-    // element: img
+    element: 'ball'
+  };
+
+  b2body.position.Set(x, y);
+  if (speed) {
+    b2body.linearVelocity.Set(linearVelocity, 0);
+  }
+  bodies.push(world.CreateBody(b2body));
+}
+
+function createBall(x, y, speed) {
+  var size = 50;
+  var b2body = new b2BodyDef();
+  b2body.type = b2Body.b2_dynamicBody;
+  var circle = new b2CircleDef();
+  circle.radius = size >> 1;
+  circle.density = 1;
+  circle.friction = 0.3;
+  circle.restitution = 0.3;
+  b2body.AddShape(circle);
+
+  b2body.userData = {
+    element: 'ball'
   };
 
   b2body.position.Set(x, y);
@@ -200,10 +222,12 @@ function createCountPoint(count) {
   for (n; n < count; n++) {
     var hudu = (2 * Math.PI / 360) * a * n;
     var radius;
-    if ((n<60&&n>=30)||(n<330&&n>=300))
+    if ((n<60&&n>=30)||(n<330&&n>=300)) {
       radius = 120;
-    else
+    }
+    else {
       radius = 130;
+    }
     var X = centerX + Math.sin(hudu) * radius;    
     // 球形容器中心点
     var bottomWallY = stage[2] / 750 * 600; // 屏幕宽度和设计稿的宽度比例 * 设计稿球形容器中心点的位置
@@ -260,6 +284,9 @@ function drawShape(shape, context) {
   switch (shape.m_type) {
   case b2Shape.e_circleShape:
     {
+      // console.log(shape);
+      // console.log(shape.m_userData);
+      shape.m_userData && console.log(shape.m_userData)
       var circle = shape;
       var pos = circle.m_position;
       var r = circle.m_radius;
@@ -288,6 +315,7 @@ function drawShape(shape, context) {
     break;
   case b2Shape.e_polyShape:
     {
+      // console.log('poly');
       var poly = shape;
       var tV = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[0]));
       context.moveTo(tV.x, tV.y);
@@ -299,6 +327,6 @@ function drawShape(shape, context) {
     }
     break;
   }
-  // context.stroke();
-  context.fill();
+  context.stroke();
+  // context.fill();
 }
