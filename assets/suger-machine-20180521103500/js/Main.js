@@ -8,13 +8,14 @@ var centerY = window.innerHeight / 2;
 var scale = stage[2] / 750; // 屏幕宽度和设计稿的宽度比例，比如高度700，则对应 stage[2] / 750 * 700;  * 设计稿底部挡板的位置
 var radius = scale * 130;  // 圆形容器半径
 
+var colors = ["./images/ball_blue.png", "./images/ball_green.png", "./images/ball_red.png", "./images/ball_yellow.png"];
+
 getBrowserDimensions();
 
-var colors = ["#62cef8", "#fe5251", "#3ccd40", "#ffb517"];
 var worldAABB, world;
 var walls = [];
 var bottomWall;
-var wall_thickness = 1;
+var wall_thickness = 0.1;
 var wallsSetted = false;
 var bodies, elements, text;
 var createMode = true;
@@ -120,6 +121,16 @@ function createBall__(x, y, speed) {
 
 function createBall(x, y, speed) {
   var size = 50;
+
+    var img = document.createElement('img');
+    img.src = colors[Math.random() * colors.length >> 0];
+    img.style.width = size + 'px';
+    img.style.height = size + 'px';
+    img.style.position = 'absolute';
+    img.style.left = '0px';
+    img.style.top = '0px';
+    img.style.cursor = "default";
+
   var b2body = new b2BodyDef();
   b2body.type = b2Body.b2_dynamicBody;
   var circle = new b2CircleDef();
@@ -128,9 +139,10 @@ function createBall(x, y, speed) {
   circle.friction = 0.3;
   circle.restitution = 0.3;
   b2body.AddShape(circle);
-
+    canvas.appendChild(img);
+    elements.push(img);
   b2body.userData = {
-    element: 'ball'
+    element: img
   };
 
   b2body.position.Set(x, y);
@@ -157,8 +169,19 @@ function step(cnt) {
   world.m_gravity.x = gravity.x * 350 + delta[0];
   world.m_gravity.y = gravity.y * 350 + delta[1];
 
-  drawWorld(world, ctx);
+  // drawWorld(world, ctx);
   setTimeout('step(' + (cnt || 0) + ')', 10);
+
+    for (i = 0; i < bodies.length; i++) {
+        var body = bodies[i];
+        var element = elements[i];
+        element.style.left = (body.m_position0.x - (element.width >> 1)) + 'px';
+        if ((body.m_position0.y - (element.height >> 1)) < stage[2] / 750 * 712) {
+          element.style.top = (body.m_position0.y - (element.height >> 1)) + 'px';
+        } else {
+          element.style.display = 'none';
+        }
+    }
 }
 
 
@@ -239,7 +262,7 @@ function createCountPoint(count) {
 }
 
 function createPoint(x, y) {
-  walls[walls.length + 1] = createBox(world, x, y, 1, 1);
+  walls[walls.length + 1] = createBox(world, x, y, 0.1, 0.1);
 }
 
 // BROWSER DIMENSIONS
@@ -304,10 +327,10 @@ function drawShape(shape, context) {
       }
       context.lineTo(pos.x + r, pos.y);
   
-      // // draw radius
-      // context.moveTo(pos.x, pos.y);
-      // var ax = circle.m_R.col1;
-      // var pos2 = new b2Vec2(pos.x + r * ax.x, pos.y + r * ax.y);
+      // draw radius
+      context.moveTo(pos.x, pos.y);
+      var ax = circle.m_R.col1;
+      var pos2 = new b2Vec2(pos.x + r * ax.x, pos.y + r * ax.y);
       // context.lineTo(pos2.x, pos2.y);
       // context.fillStyle = colors[Math.random() * colors.length >> 0];
       // context.fill();

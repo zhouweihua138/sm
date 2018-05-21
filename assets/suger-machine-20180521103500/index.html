@@ -209,27 +209,6 @@
             </div>
           </div>
 
-          <div class="guide-content content4">
-            <h1 class="title">暂无可收集糖果</h1>
-            <div class="box">
-              <h2>单笔消费50元或以上即可获得免息糖果</h2>
-            </div>
-          </div>
-
-          <div class="guide-content content5">
-            <h1 class="title">不足最低提取额度</h1>
-            <div class="box">
-              <h2>额度大于到500元才能提取哦</h2>
-            </div>
-          </div>
-
-          <div class="guide-content content6">
-            <h1 class="title">待收集糖果已达上限</h1>
-            <div class="box">
-              <h2>收集后消费可再获得新的糖果</h2>
-            </div>
-          </div>
-
         </div>
       </div>
     </div>
@@ -245,15 +224,6 @@
             </div>
             <a class="btn" id="linkToGuide2" href="javascript:void(0);">有什么用？</a>
           </div>
-
-          <div class="guide-content content2">
-            <h1 class="title">提示</h1>
-            <div class="box">
-              <h2>提取额度后，消费将不再获得糖果，确定现在提取？</h2>
-            </div>
-            <a class="btn" id="linkToTake" href="javascript:void(0);">确认提取</a>
-          </div>
-
         </div>
       </div>
     </div>
@@ -261,8 +231,7 @@
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script src="js/protoclass.js"></script>
     <script src='js/box2d.js'></script>
-    <!-- <script src='js/draw.js'></script> -->
-    <!-- <script src='js/Main.js'></script> -->
+    <!--<script src='js/Main.js'></script>-->
     <script type="text/javascript">
       new_element=document.createElement("script");
       new_element.setAttribute("type","text/javascript");
@@ -274,10 +243,6 @@
       // Zepto(function($){
       //   FastClick.attach(document.body);
       // });
-      
-      function initBalls () {}
-      function collectBalls () {}
-      function removeBottomWall () {}
 
       $(function(){
         var ajaxStatus = true;//启用ajax请求
@@ -335,16 +300,6 @@
               }
             }
           })
-
-          var parent = document.getElementById('app');
-          //微信禁止下拉露黑底
-          document.querySelector('body').addEventListener('touchmove', function(e) {
-            //if (!document.querySelector('.bottom').contains(e.target)) {
-            if (!parent.contains(e.target)) {
-                e.preventDefault();
-            }
-          })
-
         }
         init();
 
@@ -404,7 +359,7 @@
                   $('.popup4 .guide-content').removeClass('active');
                   $('.popup4 .content3').addClass('active');
                   $('.mask,.popup4').addClass('show');
-                }, (balls.length + 1) * 500);
+                }, (balls.length + 6) * 500);
               }
             }
           })
