@@ -250,7 +250,7 @@
         var mockData = {
           status: 200,
           sugers: [10, 20, 30, 40, 50],  // 待收集糖果
-          bFirstVisit: true,        // 是否首次进入页面
+          bFirstVisit: false,        // 是否首次进入页面
           bCanJoin: false,        // 是否能参与本活动
           bExpire: false,         // 是否活动已过期
           bFreeLimitTaked: false,  // 是否已成功提取免息分期额度
@@ -264,7 +264,7 @@
             success: function (data) {
               data = mockData;
               if(data.status == 200) {
-                initBalls(10);
+                initBalls(10,BallsFalledCallBack);
                 // 待收集糖果＞0，收集面板升起，按钮跳动
                 if (data.sugers.length > 0) {
                   // 收集按钮弹出
@@ -526,6 +526,9 @@
         ScrollImgLeft();
       })()
 
+      function BallsFalledCallBack() {
+          alert("callback");
+      }
     </script>
   </body>
 </html>

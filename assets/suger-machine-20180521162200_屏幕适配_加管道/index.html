@@ -68,7 +68,7 @@
         <i class="ball-5">50</i>
       </div> -->
       <div id="canvas"></div>
-      <canvas id="canvas-main" class="canvas-main" width="375" height="355"></canvas>
+      <!-- <canvas id="canvas-main" class="canvas-main" width="375" height="355"></canvas> -->
       <img src="./images/wall.png" class="wall" />
       <img src="./images/box_front.png" class="box-front" />
       <img src="./images/hole_exit.png" class="hole-exit" />
@@ -79,7 +79,7 @@
       </div>
 
       <div class="collect-box">
-        <h1 class="quantity">5</h1>
+        <h1 class="quantity">*</h1>
         <a href="javascript:void(0);">收集</a>
         <span>05.28-06.29</span>
       </div>
@@ -209,6 +209,27 @@
             </div>
           </div>
 
+          <div class="guide-content content4">
+            <h1 class="title">暂无可收集糖果</h1>
+            <div class="box">
+              <h2>单笔消费50元或以上即可获得免息糖果</h2>
+            </div>
+          </div>
+
+          <div class="guide-content content5">
+            <h1 class="title">不足最低提取额度</h1>
+            <div class="box">
+              <h2>额度大于到500元才能提取哦</h2>
+            </div>
+          </div>
+
+          <div class="guide-content content6">
+            <h1 class="title">待收集糖果已达上限</h1>
+            <div class="box">
+              <h2>收集后消费可再获得新的糖果</h2>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -224,6 +245,15 @@
             </div>
             <a class="btn" id="linkToGuide2" href="javascript:void(0);">有什么用？</a>
           </div>
+
+          <div class="guide-content content2">
+            <h1 class="title">提示</h1>
+            <div class="box">
+              <h2>提取额度后，消费将不再获得糖果，确定现在提取？</h2>
+            </div>
+            <a class="btn" id="linkToTake" href="javascript:void(0);">确认提取</a>
+          </div>
+
         </div>
       </div>
     </div>
@@ -231,7 +261,8 @@
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script src="js/protoclass.js"></script>
     <script src='js/box2d.js'></script>
-    <!--<script src='js/Main.js'></script>-->
+    <!-- <script src='js/draw.js'></script> -->
+    <!-- <script src='js/Main.js'></script> -->
     <script type="text/javascript">
       new_element=document.createElement("script");
       new_element.setAttribute("type","text/javascript");
@@ -243,18 +274,23 @@
       // Zepto(function($){
       //   FastClick.attach(document.body);
       // });
+      
+      function initBalls () {}
+      function collectBalls () {}
+      function removeBottomWall () {}
 
       $(function(){
         var ajaxStatus = true;//启用ajax请求
 
         var mockData = {
           status: 200,
-          sugers: [10, 20, 30, 40, 50],  // 待收集糖果
-          bFirstVisit: true,        // 是否首次进入页面
-          bCanJoin: false,        // 是否能参与本活动
-          bExpire: false,         // 是否活动已过期
-          bFreeLimitTaked: false,  // 是否已成功提取免息分期额度
-          bFreeLimitUsed: false,  // 是否已成功使用免息分期额度
+          sugers: [10, 20, 30, 40],  // 待收集糖果
+          balls: [10, 20, 30, 40, 50, 100, 200, 500, 800, 1000],  // 已有的糖果
+          bFirstVisit: false,        // 是否首次进入页面
+          bCantJoin: false,        // 是否*不能*参与本活动
+          bExpire: false,          // 是否活动已过期
+          bFreeLimitTaken: false,  // 是否已成功提取免息分期额度
+          bFreeLimitUsed: false,   // 是否已成功使用免息分期额度
         }
 
         function init () {
@@ -264,7 +300,8 @@
             success: function (data) {
               data = mockData;
               if(data.status == 200) {
-                initBalls(10);
+                initBalls(mockData.balls, BallsFalledCallBack);
+                $('.quantity').text(data.sugers.length);
                 // 待收集糖果＞0，收集面板升起，按钮跳动
                 if (data.sugers.length > 0) {
                   // 收集按钮弹出
@@ -273,33 +310,33 @@
                   },300);
                 }
                 if (data.bFirstVisit) {
-                  $('.popup5 .guide-content').removeClass('active');
-                  $('.popup5 .content1').addClass('active');
-                  $('.mask,.popup5').addClass('show');
+                  showFirstVisit();
                 }
                 if (data.bFreeLimitUsed) {
-                  $('.popup3 .guide-content').removeClass('active');
-                  $('.popup3 .content1').addClass('active');
-                  $('.mask,.popup3').addClass('show');
+                  showFreeLimitUsed();
                 }
-                if (data.bFreeLimitTaked) {
-                  $('.popup3 .guide-content').removeClass('active');
-                  $('.popup3 .content2').addClass('active');
-                  $('.mask,.popup3').addClass('show');
+                if (data.bFreeLimitTaken) {
+                  showFreeLimitTaken();
                 }
-                if (data.bCanJoin) {
-                  $('.popup4 .guide-content').removeClass('active');
-                  $('.popup4 .content1').addClass('active');
-                  $('.mask,.popup4').addClass('show');
+                if (data.bCantJoin) {
+                  showCantJoin();
                 }
                 if (data.bExpire) {
-                  $('.popup4 .guide-content').removeClass('active');
-                  $('.popup4 .content2').addClass('active');
-                  $('.mask,.popup4').addClass('show');
+                  showExpire();
                 }
               }
             }
           })
+
+          var parent = document.getElementById('app');
+          //微信禁止下拉露黑底
+          document.querySelector('body').addEventListener('touchmove', function(e) {
+            //if (!document.querySelector('.bottom').contains(e.target)) {
+            if (!parent.contains(e.target)) {
+                e.preventDefault();
+            }
+          })
+
         }
         init();
 
@@ -353,13 +390,13 @@
             success: function (data) {
               data = mockData;
               if(data.status == 200) {
-                var balls = [10,20,30,50,100];
-                collectBalls(balls);
+                collectBalls(mockData.sugers);
                 setTimeout(function(){
-                  $('.popup4 .guide-content').removeClass('active');
-                  $('.popup4 .content3').addClass('active');
-                  $('.mask,.popup4').addClass('show');
-                }, (balls.length + 6) * 500);
+                  showCollectSuccess();
+                  // $('.popup4 .guide-content').removeClass('active');
+                  // $('.popup4 .content3').addClass('active');
+                  // $('.mask,.popup4').addClass('show');
+                }, (mockData.sugers.length + 1) * 500);
               }
             }
           })
@@ -367,6 +404,11 @@
 
         // 点击提取按钮
         $('.btn-extract-balance').on('click', function(){
+          showConfirmTake();
+        })
+
+        $('#linkToTake').on('click', function(){
+          $('.mask,.popup5').removeClass('show');
           http({
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
             data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
@@ -374,19 +416,56 @@
               data = mockData;
               if(data.status == 200) {
                 $('.hole,.wall').addClass('show');
-                setTimeout(function () {
-                  $('.hole,.wall').removeClass('show');
-                  $('.popup3 .guide-content').removeClass('active');
-                  $('.popup3 .content2').addClass('active');
-                  $('.mask,.popup3').addClass('show');
-                }, 3000);
                 removeBottomWall();
+                // 球落完的回调函数 BallsFalledCallBack
               }
             }
           })
         })
 
+        function showPopup (removeActiveClassSelector, addActiveClassSelector, addShowClassSelector) {
+          $(removeActiveClassSelector).removeClass('active');
+          $(addActiveClassSelector).addClass('active');
+          $(addShowClassSelector).addClass('show');
+        }
 
+        function showFirstVisit () {
+          showPopup ('.popup5 .guide-content', '.popup5 .content1', '.mask,.popup5');
+        }
+
+        function showConfirmTake () {
+          showPopup ('.popup5 .guide-content', '.popup5 .content2', '.mask,.popup5');
+        }
+
+        function showFreeLimitUsed () {
+          showPopup ('.popup3 .guide-content', '.popup3 .content1', '.mask,.popup3');
+        }
+
+        function showFreeLimitTaken () {
+          showPopup ('.popup3 .guide-content', '.popup3 .content2', '.mask,.popup3');
+        }
+
+        // function showFreeLimitTaken () {
+        //   showPopup ('.popup3 .guide-content', '.popup3 .content2', '.mask,.popup3');
+        // }
+
+        function showCantJoin () {
+          showPopup ('.popup4 .guide-content', '.popup4 .content1', '.mask,.popup4');
+        }
+
+        function showExpire () {
+          showPopup ('.popup4 .guide-content', '.popup4 .content2', '.mask,.popup4');
+        }
+
+        function showCollectSuccess () {
+          showPopup ('.popup4 .guide-content', '.popup4 .content3', '.mask,.popup4');
+        }
+
+        // 提取小球掉落动画完成回调
+        function BallsFalledCallBack () {
+          $('.hole,.wall').removeClass('show');
+          showFreeLimitTaken();
+        }
 
         function http (options) {
           var url = options.url;//请求地址
@@ -461,25 +540,6 @@
           });
         }
 
-        // TODO: 数值和颜色是否有对照关系？
-        var balls = [
-          {
-            value: 15,
-            color: 'red'
-          },
-          {
-            value: 6,
-            color: 'green'
-          },
-          {
-            value: 30,
-            color: 'blue'
-          },
-          {
-            value: 7,
-            color: 'orange'
-          }
-        ]
       })
 
       !(function () {

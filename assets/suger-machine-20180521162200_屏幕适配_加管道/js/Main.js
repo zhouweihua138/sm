@@ -30,7 +30,7 @@ var gravity = {
   x: 0,
   y: 1
 };
-var linearVelocity = -300; // 小球水平速度
+var linearVelocity = -100; // 小球水平速度
 var PI2 = Math.PI * 2;
 var timeOfLastTouch = 0;
 var tempCallBack;
@@ -92,7 +92,7 @@ function collectBalls(balls) {
   var number = balls.length;
   var interval2 = window.setInterval((function() {
     // createBall(stage[2], centerY - 210, true);  // scale
-    createBall(stage[2], scale * 238, true); // scale
+    createBall(stage[2]-20, scale * 238, true); // scale
   }), 500);
   setTimeout(function() {
     window.clearInterval(interval2);
@@ -220,7 +220,10 @@ function setWalls() {
     var bottomWallY = stage[2] / 750 * 700; // 屏幕宽度和设计稿的宽度比例 * 设计稿底部挡板的位置
     bottomWall = createBox(world, stage[2] / 2, bottomWallY, stage[2], wall_thickness);
   }
+  walls[0] = createBox(world, stage[2], stage[3]/2, wall_thickness,stage[3]);
   createCountPoint(360);
+  createPipeline(360,195*scale*2);
+  createPipeline(360,138*scale*2);
   wallsSetted = true;
 }
 
@@ -243,6 +246,20 @@ function createCountPoint(count) {
       createPoint(X, Y);
     }
   }
+}
+
+function createPipeline(count,radius) {
+    var a = 360 / count;
+    var n = 0;
+    for (n; n < count; n++) {
+        var hudu = (2 * Math.PI / 360) * a * n;
+        var X = stage[2] + Math.sin(hudu) * radius-5;
+        var bottomWallY = stage[2] / 750 * 600;
+        var Y = bottomWallY + Math.cos(hudu) * radius - 20;
+        if (n < 230 && n > 180) {
+            createPoint(X, Y);
+        }
+    }
 }
 
 function createPoint(x, y) {

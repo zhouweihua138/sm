@@ -77,8 +77,8 @@
   background: url(../images/linght.png) no-repeat;
   background-position: 0 0;
   background-size: cover;
-  animation: linght .5s steps(1) infinite normal;
-  -webkit-animation: linght .5s steps(1) infinite normal;
+  animation: linght .2s steps(1) infinite normal;
+  -webkit-animation: linght .2s steps(1) infinite normal;
 }
 
 .top-right{
@@ -558,21 +558,17 @@ footer{
 }
 
 .popup4 .container{
-  height: 5.06rem;
   background-position: 66.66666% 0;
 }
 .popup5 .container{
-  height: 6.16rem;
   background-position: 99.99999% 0;
 }
 .popup3 .guide-content,
-.popup4 .guide-content,
-.popup5 .guide-content{
+.popup4 .guide-content{
   display: none;
 }
 .popup3 .guide-content.active,
-.popup4 .guide-content.active,
-.popup5 .guide-content.active{
+.popup4 .guide-content.active{
   display: block;
 }
 
