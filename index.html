@@ -139,15 +139,6 @@
                 <ul>
                   <li><span>日期</span><span>糖果额度</span></li>
                   <li><span>2018.3.8</span><span>500元</span></li>
-                  <li><span>2018.3.8</span><span>500元</span></li>
-                  <li><span>2018.3.8</span><span>500元</span></li>
-                  <li><span>2018.3.8</span><span>500元</span></li>
-                  <li><span>2018.3.8</span><span>500元</span></li>
-                  <li><span>2018.3.8</span><span>500元</span></li>
-                  <li><span>2018.3.8</span><span>600元</span></li>
-                  <li><span>2018.3.8</span><span>800元</span></li>
-                  <li><span>2018.3.8</span><span>800元</span></li>
-                  <li><span>2018.3.8</span><span>800元</span></li>
                 </ul>
               </div>
             </div>
@@ -167,7 +158,7 @@
               <h2>为您减免手续费 12.6元</h2>
               <h2>将在七个工作日内以刷卡金形式返还</h2>
             </div>
-            <a class="btn btn-install-record" href="http://www.gzcb.com.cn">分期记录</a>
+            <a class="btn btn-install-record" href="http://www.baidu.com">分期记录</a>
           </div>
 
           <div class="guide-content content2">
@@ -280,8 +271,8 @@
 
         var mockData = {
           status: 200,
-          sugers: [10, 20, 30, 40, 50],  // 待收集糖果
-          balls: [10, 20, 30, 40, 50, 100, 200, 500, 800, 1000],  // 已有的糖果
+          sugers: [10, 20, 30, 40],  // 待收集糖果
+          balls: [10, 20, 30, 40, 50, 100, 200, 500, 800, 1000],  // 已有的糖果  10, 20, 30, 40, 50, 100, 200, 500, 800, 1000
           bFirstVisit: false,        // 是否首次进入页面
           bCantJoin: false,        // 是否*不能*参与本活动
           bExpire: false,          // 是否活动已过期
@@ -311,7 +302,7 @@
                   },300);
                 }
                 // 待收集糖果=5，已达上限
-                if (data.sugers.length > 0) {
+                if (data.sugers.length >= 5) {
                   showLimit();
                 }
                 if (data.bFirstVisit) {

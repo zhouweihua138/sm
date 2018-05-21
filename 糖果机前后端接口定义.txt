@@ -1,0 +1,86 @@
+// 接口公共参数
+httpHeader:{
+	token: 'vxcvxcv45ds4f54sdfsdf'
+}
+data: {
+	idNum: '888888-887878-8544444',
+	activityId: '007',
+}
+
+'/candyHome'
+{
+  status: 200,  // 接口状态  500系统错误
+  sugers: [10, 20, 30, 40, 50],  // 待收集糖果
+  // balls: [],  // 已有的糖果  10, 20, 30, 40, 50, 100, 200, 500, 800, 1000
+  bFirstVisit: false,        // 是否首次进入页面
+  bCantJoin: false,        // 是否*不能*参与本活动
+  bExpire: false,          // 是否活动已过期
+  activityStartDate: '2018-05-21',  // 活动开始时间
+  activityEndDate: '2018-06-21',  // 活动结束时间
+  bFreeLimitTaken: true,  // 是否已成功提取免息分期额度
+  bFreeLimitUsed: false,   // 是否已成功使用免息分期额度
+  collectedAmount: 300.00,  // 已提取免息分期额度
+  collectedDesc1: '6期或以下、3000元或以上分期可使用',  // 已提取免息分期额度描述1
+  collectedDesc2: '有效期至2018.6.15',   // 已提取免息分期额度描述2
+  collectedLink: '/fenqi/',  // 已提取免息分期额度"去分期"链接
+  usedAmount: 300.00,  // 已使用免息分期额度
+  usedDesc1: '6期或以下、3000元或以上分期可使用',  // 已使用免息分期额度描述1
+  usedDesc2: '有效期至2018.6.15',   // 已使用免息分期额度描述2
+  usedLink: '/record/',  // 已使用免息分期额度"分期记录"链接
+  totalAmount: '3954'  // 免息额度，不为0则有球
+  awardUserList: [{  // 提取成功记录
+  	name: '吴XX',
+  	amount: '200'
+  },
+  {
+  	name: '吴XX',
+  	amount: '200'
+  }],
+}
+
+'/collect'
+{
+	status: 200,  // 接口状态, 500系统错误
+	amount: '300'  // 本次手机的免息额度
+}
+
+'/getAward'
+{
+	status: 200,  // 接口状态, 201：金额小于500，  500系统错误
+	collectedAmount: 300.00,  // 已提取免息分期额度
+  collectedDesc1: '6期或以下、3000元或以上分期可使用',  // 已提取免息分期额度描述1
+  collectedDesc2: '有效期至2018.6.15',   // 已提取免息分期额度描述2
+  collectedLink: '/fenqi/',  // 已提取免息分期额度"去分期"链接
+}
+
+'/getCandyRecord'
+{
+	status: 200,  // 接口状态  500系统错误
+	awardRecord: {  // 额度提取记录，只有一条
+		date: '2018.3.8',
+		amount: '300.00'
+	}
+	list: [{
+		date: '2018.3.8',
+		amount: '300.00'
+	},
+	{
+		date: '2018.3.8',
+		amount: '300.00'
+	}]
+}
+
+'/getAwardRecord'
+{
+	status: 200,  // 接口状态  500系统错误
+	list: [{
+		date: '2018.3.8',
+		amount: '300.00'
+	},
+	{
+		date: '2018.3.8',
+		amount: '300.00'
+	}]
+}
+
+

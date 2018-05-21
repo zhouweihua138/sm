@@ -30,7 +30,7 @@ var gravity = {
   x: 0,
   y: 1
 };
-var linearVelocity = -300; // 小球水平速度
+var linearVelocity = -400; // 小球水平速度
 var PI2 = Math.PI * 2;
 var timeOfLastTouch = 0;
 var tempCallBack;
@@ -58,6 +58,67 @@ function init() {
   setWalls();
   reset();
 }
+
+// function drawWorld(world, context) {
+//   for (var b = world.m_bodyList; b; b = b.m_next) {
+//     for (var s = b.GetShapeList(); s != null; s = s.GetNext()) {
+//       drawShape(s, context);
+//     }
+//   }
+// }
+
+// function drawShape(shape, context) {
+//   context.strokeStyle = '#ffffff';
+//   context.beginPath();
+//   switch (shape.m_type) {
+//     case b2Shape.e_circleShape:
+//       {
+//         // console.log(shape);
+//         // console.log(shape.m_userData);
+//         shape.m_userData && console.log(shape.m_userData)
+//         var circle = shape;
+//         var pos = circle.m_position;
+//         var r = circle.m_radius;
+//         // var segments = 16.0;
+//         var segments = 20.0;
+//         var theta = 0.0;
+//         var dtheta = 2.0 * Math.PI / segments;
+//         // draw circle
+//         context.moveTo(pos.x + r, pos.y);
+//         for (var i = 0; i < segments; i++) {
+//           var d = new b2Vec2(r * Math.cos(theta), r * Math.sin(theta));
+//           var v = b2Math.AddVV(pos, d);
+//           context.lineTo(v.x, v.y);
+//           theta += dtheta;
+//         }
+//         context.lineTo(pos.x + r, pos.y);
+
+//         // // draw radius
+//         // context.moveTo(pos.x, pos.y);
+//         // var ax = circle.m_R.col1;
+//         // var pos2 = new b2Vec2(pos.x + r * ax.x, pos.y + r * ax.y);
+//         // context.lineTo(pos2.x, pos2.y);
+//         // context.fillStyle = colors[Math.random() * colors.length >> 0];
+//         // context.fill();
+//       }
+//       break;
+//     case b2Shape.e_polyShape:
+//       {
+//         // console.log('poly');
+//         var poly = shape;
+//         var tV = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[0]));
+//         context.moveTo(tV.x, tV.y);
+//         for (var i = 0; i < poly.m_vertexCount; i++) {
+//           var v = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[i]));
+//           context.lineTo(v.x, v.y);
+//         }
+//         context.lineTo(tV.x, tV.y);
+//       }
+//       break;
+//   }
+//   // context.stroke();
+//   context.fill();
+// }
 
 function reset() {
   var i;
@@ -92,7 +153,7 @@ function collectBalls(balls) {
   var number = balls.length;
   var interval2 = window.setInterval((function() {
     // createBall(stage[2], centerY - 210, true);  // scale
-    createBall(stage[2], scale * 238, true); // scale
+    createBall(stage[2] - 20, scale * 238, true); // scale
   }), 500);
   setTimeout(function() {
     window.clearInterval(interval2);
@@ -220,7 +281,10 @@ function setWalls() {
     var bottomWallY = stage[2] / 750 * 700; // 屏幕宽度和设计稿的宽度比例 * 设计稿底部挡板的位置
     bottomWall = createBox(world, stage[2] / 2, bottomWallY, stage[2], wall_thickness);
   }
+  walls[0] = createBox(world, stage[2], stage[3] / 2, wall_thickness, stage[3]);
   createCountPoint(360);
+  createPipeline(360, 200 * scale * 2);
+  createPipeline2(360, 138 * scale * 2);
   wallsSetted = true;
 }
 
@@ -245,8 +309,36 @@ function createCountPoint(count) {
   }
 }
 
+function createPipeline(count, radius) {
+  var a = 360 / count;
+  var n = 0;
+  for (n; n < count; n++) {
+    var hudu = (2 * Math.PI / 360) * a * n;
+    var X = stage[2] + Math.sin(hudu) * radius - 18;
+    var bottomWallY = stage[2] / 750 * 600;
+    var Y = bottomWallY + Math.cos(hudu) * radius - 12;
+    if (n < 230 && n > 180) {
+      createPoint(X, Y);
+    }
+  }
+}
+
+function createPipeline2(count, radius) {
+  var a = 360 / count;
+  var n = 0;
+  for (n; n < count; n++) {
+    var hudu = (2 * Math.PI / 360) * a * n;
+    var X = stage[2] + Math.sin(hudu) * radius - scale * 12 * 2;
+    var bottomWallY = stage[2] / 750 * 600;
+    var Y = bottomWallY + Math.cos(hudu) * radius - scale * 16 * 2;
+    if (n < 223 && n > 180) {
+      createPoint(X, Y);
+    }
+  }
+}
+
 function createPoint(x, y) {
-  walls[walls.length + 1] = createBox(world, x, y, 0.1, 0.1);
+  walls[walls.length + 1] = createBox(world, x, y, 1, 1);
 }
 
 // BROWSER DIMENSIONS
@@ -276,64 +368,3 @@ function getBrowserDimensions() {
 
   return changed;
 }
-
-// function drawWorld(world, context) {
-//   for (var b = world.m_bodyList; b; b = b.m_next) {
-//     for (var s = b.GetShapeList(); s != null; s = s.GetNext()) {
-//       drawShape(s, context);
-//     }
-//   }
-// }
-
-// function drawShape(shape, context) {
-//   context.strokeStyle = '#ffffff';
-//   context.beginPath();
-//   switch (shape.m_type) {
-//     case b2Shape.e_circleShape:
-//       {
-//         // console.log(shape);
-//         // console.log(shape.m_userData);
-//         shape.m_userData && console.log(shape.m_userData)
-//         var circle = shape;
-//         var pos = circle.m_position;
-//         var r = circle.m_radius;
-//         // var segments = 16.0;
-//         var segments = 20.0;
-//         var theta = 0.0;
-//         var dtheta = 2.0 * Math.PI / segments;
-//         // draw circle
-//         context.moveTo(pos.x + r, pos.y);
-//         for (var i = 0; i < segments; i++) {
-//           var d = new b2Vec2(r * Math.cos(theta), r * Math.sin(theta));
-//           var v = b2Math.AddVV(pos, d);
-//           context.lineTo(v.x, v.y);
-//           theta += dtheta;
-//         }
-//         context.lineTo(pos.x + r, pos.y);
-
-//         // // draw radius
-//         // context.moveTo(pos.x, pos.y);
-//         // var ax = circle.m_R.col1;
-//         // var pos2 = new b2Vec2(pos.x + r * ax.x, pos.y + r * ax.y);
-//         // context.lineTo(pos2.x, pos2.y);
-//         // context.fillStyle = colors[Math.random() * colors.length >> 0];
-//         // context.fill();
-//       }
-//       break;
-//     case b2Shape.e_polyShape:
-//       {
-//         // console.log('poly');
-//         var poly = shape;
-//         var tV = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[0]));
-//         context.moveTo(tV.x, tV.y);
-//         for (var i = 0; i < poly.m_vertexCount; i++) {
-//           var v = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[i]));
-//           context.lineTo(v.x, v.y);
-//         }
-//         context.lineTo(tV.x, tV.y);
-//       }
-//       break;
-//   }
-//   context.stroke();
-//   // context.fill();
-// }
