@@ -60,19 +60,12 @@
       <img src="./images/box_end.png" class="box-end" />
       <img src="./images/pip_end.png" class="pip-end" />
       <img src="./images/hole.png" class="hole" />
-      <!-- <div class="ball-box">
-        <i class="ball-1">15</i>
-        <i class="ball-2">30</i>
-        <i class="ball-3">7</i>
-        <i class="ball-4">5</i>
-        <i class="ball-5">50</i>
-      </div> -->
       <div id="canvas"></div>
-      <!-- <canvas id="canvas-main" class="canvas-main" width="375" height="355"></canvas> -->
       <img src="./images/wall.png" class="wall" />
       <img src="./images/box_front.png" class="box-front" />
       <img src="./images/hole_exit.png" class="hole-exit" />
       <img src="./images/pip_front.png" class="pip-front" />
+      <div id="canvas1"></div>
       <div class="top-right">
         <a id="linkToGuide" href="javascript:void(0)">使用教程</a>
         <a id="linkToHistory" href="javascript:void(0)">历史记录</a>
@@ -265,13 +258,13 @@
       // Zepto(function($){
       //   FastClick.attach(document.body);
       // });
-      
+
       $(function(){
         var ajaxStatus = true;//启用ajax请求
 
         var mockData = {
           status: 200,
-          sugers: [10, 20, 30, 40],  // 待收集糖果
+          sugers: [10, 20, 30, 40],  // 待收集糖果 10, 20, 30, 40
           balls: [10, 20, 30, 40, 50, 100, 200, 500, 800, 1000],  // 已有的糖果  10, 20, 30, 40, 50, 100, 200, 500, 800, 1000
           bFirstVisit: false,        // 是否首次进入页面
           bCantJoin: false,        // 是否*不能*参与本活动
@@ -383,6 +376,9 @@
           if (!state.canCollect) {
             return;
           }
+          if (mockData.sugers.length <= 0) {
+            showNotSuger();
+          }
           state.canCollect = false;
           http({
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
@@ -394,9 +390,6 @@
                 collectBalls(mockData.sugers);
                 setTimeout(function(){
                   showCollectSuccess();
-                  // $('.popup4 .guide-content').removeClass('active');
-                  // $('.popup4 .content3').addClass('active');
-                  // $('.mask,.popup4').addClass('show');
                 }, (mockData.sugers.length + 1) * 500);
               }
             }
@@ -455,10 +448,6 @@
           showPopup ('.popup3 .guide-content', '.popup3 .content2', '.mask,.popup3');
         }
 
-        // function showFreeLimitTaken () {
-        //   showPopup ('.popup3 .guide-content', '.popup3 .content2', '.mask,.popup3');
-        // }
-
         function showCantJoin () {
           showPopup ('.popup4 .guide-content', '.popup4 .content1', '.mask,.popup4');
         }
@@ -469,6 +458,10 @@
 
         function showCollectSuccess () {
           showPopup ('.popup4 .guide-content', '.popup4 .content3', '.mask,.popup4');
+        }
+
+        function showNotSuger () {
+          showPopup ('.popup4 .guide-content', '.popup4 .content4', '.mask,.popup4');
         }
 
         // 提取小球掉落动画完成回调

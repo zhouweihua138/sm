@@ -1,4 +1,4 @@
-// var canvas;
+
 var ctx;
 var delta = [0, 0];
 var stage = [window.screenX, window.screenY, window.innerWidth, window.innerHeight];
@@ -9,15 +9,18 @@ var scale = stage[2] / 750; // 屏幕宽度和设计稿的宽度比例，比如�
 var radius = scale * 130; // 圆形容器半径
 
 var colors = ["./images/ball_blue.png", "./images/ball_green.png", "./images/ball_red.png", "./images/ball_yellow.png"];
+var ownerColors = [];  // 记录已有球的颜色
 
 getBrowserDimensions();
 
 var worldAABB, world;
+var worldAABB1, world1; //喷球物理世界
 var walls = [];
 var bottomWall;
 var wall_thickness = 0.1;
 var wallsSetted = false;
 var bodies, elements, text;
+var bodies1, elements1; //存储喷球
 var createMode = true;
 var destroyMode = false;
 var isMouseDown = false;
@@ -30,102 +33,40 @@ var gravity = {
   x: 0,
   y: 1
 };
-var linearVelocity = -400; // 小球水平速度
+var gravity1 = {
+  x: 0,
+  y: 1
+};
+var linearVelocity = -300; // 小球水平速度
 var PI2 = Math.PI * 2;
 var timeOfLastTouch = 0;
 var tempCallBack;
 var canFall = false;
+var animateCount = 0; // 动画完成次数，判断回调的参数
 
 init();
 step();
 
 function init() {
-  // canvas = document.getElementById('canvas');
-
-  // var canvasElm = document.getElementById('canvas-main');
-  // ctx = canvasElm.getContext('2d');
-  // canvasWidth = parseInt(canvasElm.width);
-  // canvasHeight = parseInt(canvasElm.height);
-  // canvasTop = parseInt(canvasElm.style.top);
-  // canvasLeft = parseInt(canvasElm.style.left);
-
   worldAABB = new b2AABB();
   worldAABB.minVertex.Set(-200, -200);
   worldAABB.maxVertex.Set(window.innerWidth + 200, window.innerHeight + 200);
-
   world = new b2World(worldAABB, new b2Vec2(0, 0), true);
+
+  worldAABB1 = new b2AABB();
+  worldAABB1.minVertex.Set(-200, -200);
+  worldAABB1.maxVertex.Set(window.innerWidth + 200, window.innerHeight + 200);
+  world1 = new b2World(worldAABB1, new b2Vec2(0, 0), true);
 
   setWalls();
   reset();
 }
 
-// function drawWorld(world, context) {
-//   for (var b = world.m_bodyList; b; b = b.m_next) {
-//     for (var s = b.GetShapeList(); s != null; s = s.GetNext()) {
-//       drawShape(s, context);
-//     }
-//   }
-// }
-
-// function drawShape(shape, context) {
-//   context.strokeStyle = '#ffffff';
-//   context.beginPath();
-//   switch (shape.m_type) {
-//     case b2Shape.e_circleShape:
-//       {
-//         // console.log(shape);
-//         // console.log(shape.m_userData);
-//         shape.m_userData && console.log(shape.m_userData)
-//         var circle = shape;
-//         var pos = circle.m_position;
-//         var r = circle.m_radius;
-//         // var segments = 16.0;
-//         var segments = 20.0;
-//         var theta = 0.0;
-//         var dtheta = 2.0 * Math.PI / segments;
-//         // draw circle
-//         context.moveTo(pos.x + r, pos.y);
-//         for (var i = 0; i < segments; i++) {
-//           var d = new b2Vec2(r * Math.cos(theta), r * Math.sin(theta));
-//           var v = b2Math.AddVV(pos, d);
-//           context.lineTo(v.x, v.y);
-//           theta += dtheta;
-//         }
-//         context.lineTo(pos.x + r, pos.y);
-
-//         // // draw radius
-//         // context.moveTo(pos.x, pos.y);
-//         // var ax = circle.m_R.col1;
-//         // var pos2 = new b2Vec2(pos.x + r * ax.x, pos.y + r * ax.y);
-//         // context.lineTo(pos2.x, pos2.y);
-//         // context.fillStyle = colors[Math.random() * colors.length >> 0];
-//         // context.fill();
-//       }
-//       break;
-//     case b2Shape.e_polyShape:
-//       {
-//         // console.log('poly');
-//         var poly = shape;
-//         var tV = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[0]));
-//         context.moveTo(tV.x, tV.y);
-//         for (var i = 0; i < poly.m_vertexCount; i++) {
-//           var v = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[i]));
-//           context.lineTo(v.x, v.y);
-//         }
-//         context.lineTo(tV.x, tV.y);
-//       }
-//       break;
-//   }
-//   // context.stroke();
-//   context.fill();
-// }
-
 function reset() {
   var i;
   if (bodies) {
     for (i = 0; i < bodies.length; i++) {
-      var body = bodies[i]
-      // canvas.removeChild(body.GetUserData().element);
+      var body = bodies[i];
       world.DestroyBody(body);
       body = null;
     }
@@ -133,18 +74,25 @@ function reset() {
 
   bodies = [];
   elements = [];
+
+  if (bodies1) {
+    for (i = 0; i < bodies1.length; i++) {
+      var body = bodies1[i];
+      world1.DestroyBody(body);
+      body = null;
+    }
+  }
+
+  bodies1 = [];
+  elements1 = [];
 }
 
 function initBalls(balls, callBack) {
   var i;
   var number = balls.length;
   for (i = 0; i < number; i++) {
-    // createBall(centerX - scale * 100, centerY - scale *100, false);
-    // createBall(centerX - scale * 100, scale * (564 - 20 * i), false);
-    // createBall(scale * (170 + 30 * i), scale * (564 - 100), false);
     createBall(scale * (375 - 100), scale * (510 - 100), false);
   }
-  // console.log(centerY)
   canFall = true;
   tempCallBack = callBack;
 }
@@ -152,7 +100,6 @@ function initBalls(balls, callBack) {
 function collectBalls(balls) {
   var number = balls.length;
   var interval2 = window.setInterval((function() {
-    // createBall(stage[2], centerY - 210, true);  // scale
     createBall(stage[2] - 20, scale * 238, true); // scale
   }), 500);
   setTimeout(function() {
@@ -165,18 +112,56 @@ function removeBottomWall() {
   // 需要先判断是否还有 bottomWall
   world.DestroyBody(bottomWall);
   bottomWall = null;
+  // gravity.y = 1;  // 让小球下落的快一点
+  flyball(tempCallBack)
 }
 
-function createBall(x, y, speed) {
+function flyball(cb) {
+  var ctn = 0;
+  var number = bodies.length;
+  var inter = 150;
+  var interval2 = window.setInterval((function() {
+    var random = Math.random() * 14;
+    var speedx = 7 - random * 70 * (ctn % 2 == 0 ? 1 : -1);
+    var speedy = -300;
+    if (random < 5) {  // 靠中间的球设置向上的速度大一点
+      speedy = -900;
+    }
+    createBall(centerX + parseInt(Math.random() * 10), scale * 824, speedx, speedy, 1, ctn); // scale
+    ctn += 1
+  }), inter);
+  setTimeout(function() {
+    window.clearInterval(interval2);
+    animateCount++
+    if(animateCount == 2) { // 执行了2次动画，也就是掉落和喷出都完成
+      cb && typeof(cb) == 'function' && cb();
+    }
+  }, number * inter);
+}
+
+/**
+ * @param  {[int]} x      [description]
+ * @param  {[int]} y      [description]
+ * @param  {[int/bool]} speed  [当不是喷出时是bool表示有没速度，喷出时为 x轴方向的速度]
+ * @param  {[int]} speedy [y轴方向速度]
+ * @param  {[int]} which  [为1时表示是喷出的球]
+ * @param  {[int]} sort   [喷出时的球用已有球的颜色]
+ */
+function createBall(x, y, speed, speedy, which, sort) {
   var size = scale * 50 * 2;
 
   var img = document.createElement('img');
-  img.src = colors[Math.random() * colors.length >> 0];
+  if (which != 1) {
+    ownerColors.push(Math.random() * colors.length >> 0);
+    img.src = colors[Math.random() * colors.length >> 0];
+  } else {
+    img.src = colors[ownerColors[sort]];
+  }
   img.style.width = size + 'px';
   img.style.height = size + 'px';
   img.style.position = 'absolute';
-  img.style.left = '0px';
-  img.style.top = '0px';
+  img.style.left = x + 'px';
+  img.style.top = y + 'px';
   img.style.cursor = "default";
 
   var b2body = new b2BodyDef();
@@ -187,17 +172,27 @@ function createBall(x, y, speed) {
   circle.friction = 0.3;
   circle.restitution = 0.3;
   b2body.AddShape(circle);
-  canvas.appendChild(img);
-  elements.push(img);
+  if (which == 1) {
+    canvas1.appendChild(img);
+    elements1.push(img);
+  } else {
+    canvas.appendChild(img);
+    elements.push(img);
+  }
   b2body.userData = {
     element: img
   };
 
   b2body.position.Set(x, y);
-  if (speed) {
-    b2body.linearVelocity.Set(linearVelocity, 0);
+  if (which == 1) {
+    b2body.linearVelocity.Set(speed, speedy);
+    bodies1.push(world1.CreateBody(b2body));
+  } else {
+    if (speed) {
+      b2body.linearVelocity.Set(linearVelocity, 0);
+    }
+    bodies.push(world.CreateBody(b2body));
   }
-  bodies.push(world.CreateBody(b2body));
 }
 
 function step(cnt) {
@@ -205,7 +200,7 @@ function step(cnt) {
   var timeStep = 1.0 / 60;
   var iteration = 1;
   world.Step(timeStep, iteration);
-  // ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+  world1.Step(timeStep, iteration);
 
   if (getBrowserDimensions()) {
     setWalls();
@@ -213,11 +208,14 @@ function step(cnt) {
 
   delta[0] += (0 - delta[0]) * .5;
   delta[1] += (0 - delta[1]) * .5;
+  // console.log(delta)
 
   world.m_gravity.x = gravity.x * 350 + delta[0];
   world.m_gravity.y = gravity.y * 350 + delta[1];
 
-  // drawWorld(world, ctx);
+  world1.m_gravity.x = gravity1.x * 350 + delta[0];
+  world1.m_gravity.y = gravity1.y * 350 + delta[1];
+
   setTimeout('step(' + (cnt || 0) + ')', 10);
 
   for (i = 0; i < bodies.length; i++) {
@@ -230,6 +228,13 @@ function step(cnt) {
       element.style.display = 'none';
     }
   }
+
+  for (i = 0; i < bodies1.length; i++) {
+    var body = bodies1[i];
+    var element = elements1[i];
+    element.style.left = (body.m_position0.x - (element.width >> 1)) + 'px';
+    element.style.top = (body.m_position0.y - (element.height >> 1)) + 'px';
+  }
   if (elements.length > 0 && canFall) {
     var hasCallBack = true;
     for (var j = 0; j < elements.length; j++) {
@@ -240,11 +245,13 @@ function step(cnt) {
     }
     if (hasCallBack) {
       canFall = false;
-      typeof(tempCallBack) == 'function' && tempCallBack();
+      animateCount++
+      if(animateCount == 2) { // 执行了2次动画，也就是掉落和喷出都完成
+        typeof(tempCallBack) == 'function' && tempCallBack();
+      }
     }
   }
 }
-
 
 // .. BOX2D UTILS
 function createBox(world, x, y, width, height, fixed) {
@@ -266,7 +273,6 @@ function createBox(world, x, y, width, height, fixed) {
 }
 
 function setWalls() {
-
   if (wallsSetted) {
     world.DestroyBody(bottomWall);
     bottomWall = null;
