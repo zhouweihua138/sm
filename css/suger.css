@@ -143,30 +143,6 @@
   font-size: .24rem;
 }
 
-/*@keyframes myfirst
-{
-  0% {background: #e7a900;}
-  100% {background: #e7a900;}
-}
-@-webkit-keyframes myfirst
-{
-  0% {background: #e7a900;}
-  100% {background: #e7a900;}
-}*/
-
-/*.collect-box .btn:before{*/
-  /*animation: name duration timing-function delay iteration-count direction;*/
-  /*@keyframes 动画的名称
-  动画完成一个周期所花费的秒或毫秒
-  动画的速度曲线。默认是 "ease"
-  动画何时开始。默认是 0
-  动画被播放的次数。默认是 1, infinite 规定动画应该无限次播放
-  动画是否在下一周期逆向地播放。默认是 "normal", alternate 动画应该轮流反向播放。
-  animation-fill-mode 设定动画完成后的状态，默认是none 设为forwards 就可以在动画完成后定格在动画最后一帧*/
-/*  animation: myfirst 5s linear 1s infinite normal;
-  -webkit-animation: myfirst 5s linear 1s infinite normal;
-}*/
-
 .ball-box{
   position: absolute;
   top: 1.6rem;
@@ -189,186 +165,8 @@
   font-size:.34rem;
   font-weight: 700;
 }
-@keyframes ball1
-{
-  0% {right: 0;top: 5%;}
-  10% {right: 10%; top: 7%;}
-  20% {right: 20%; top: 12%;}
-  30% {right: 30%; top: 23%;}
-  40% {right: 40%; top: 40%;}
-  50% {right: 43%; top: 60%;}
-  60% {right: 43%; top: 76%;}
-  70% {right: 43%; top: 82%;}
-  80% {right: 43%; top: 58%;}
-  85% {right: 43%; top: 81%;}
-  90% {right: 43%; top: 72%;}
-  100% {right: 43%; top: 82%; transform: rotate(360deg);}
-}
-@-webkit-keyframes ball1
-{
-  0% {right: 0;top: 5%;}
-  10% {right: 10%; top: 7%;}
-  20% {right: 20%; top: 12%;}
-  30% {right: 30%; top: 23%;}
-  40% {right: 40%; top: 40%;}
-  50% {right: 43%; top: 60%;}
-  60% {right: 43%; top: 76%;}
-  70% {right: 43%; top: 82%;}
-  80% {right: 43%; top: 58%;}
-  85% {right: 43%; top: 81%;}
-  90% {right: 43%; top: 72%;}
-  100% {right: 43%; top: 82%; transform: rotate(360deg);}
-}
-
-@keyframes ball2
-{
-  0% {right: 0;top: 5%;}
-  10% {right: 10%; top: 7%;}
-  20% {right: 20%; top: 12%;}
-  30% {right: 30%; top: 23%;}
-  40% {right: 40%; top: 40%;}
-  50% {right: 57%; top: 60%;}
-  60% {right: 57%; top: 76%;}
-  70% {right: 57%; top: 82%;}
-  80% {right: 57%; top: 58%;}
-  85% {right: 57%; top: 81%;}
-  90% {right: 57%; top: 72%;}
-  100% {right: 57%; top: 81%; transform: rotate(720deg);}
-}
-@-webkit-keyframes ball2
-{
-  0% {right: 0;top: 5%;}
-  10% {right: 10%; top: 7%;}
-  20% {right: 20%; top: 12%;}
-  30% {right: 30%; top: 23%;}
-  40% {right: 40%; top: 40%;}
-  50% {right: 57%; top: 60%;}
-  60% {right: 57%; top: 76%;}
-  70% {right: 57%; top: 82%;}
-  80% {right: 57%; top: 58%;}
-  85% {right: 57%; top: 81%;}
-  90% {right: 57%; top: 72%;}
-  100% {right: 57%; top: 81%; transform: rotate(720deg);}
-}
-
-@keyframes ball3
-{
-  0% {right: 0;top: 5%;}
-  10% {right: 10%; top: 7%;}
-  20% {right: 20%; top: 12%;}
-  30% {right: 30%; top: 23%;}
-  40% {right: 40%; top: 40%;}
-  50% {right: 30%; top: 60%;}
-  60% {right: 30%; top: 76%;}
-  70% {right: 30%; top: 82%;}
-  80% {right: 30%; top: 58%;}
-  85% {right: 30%; top: 81%;}
-  90% {right: 30%; top: 72%;}
-  100% {right: 30%; top: 81%; transform: rotate(760deg);}
-}
-@-webkit-keyframes ball3
-{
-  0% {right: 0;top: 5%;}
-  10% {right: 10%; top: 7%;}
-  20% {right: 20%; top: 12%;}
-  30% {right: 30%; top: 23%;}
-  40% {right: 40%; top: 40%;}
-  50% {right: 30%; top: 60%;}
-  60% {right: 30%; top: 76%;}
-  70% {right: 30%; top: 82%;}
-  80% {right: 30%; top: 58%;}
-  85% {right: 30%; top: 81%;}
-  90% {right: 30%; top: 72%;}
-  100% {right: 30%; top: 81%; transform: rotate(760deg);}
-}
-
-
-@keyframes ball4
-{
-  0% {right: 0;top: 5%;}
-  10% {right: 10%; top: 7%;}
-  20% {right: 20%; top: 12%;}
-  30% {right: 30%; top: 23%;}
-  40% {right: 40%; top: 40%;}
-  50% {right: 49%; top: 60%;}
-  60% {right: 49%; top: 76%;}
-  70% {right: 49%; top: 82%;}
-  80% {right: 49%; top: 58%;}
-  85% {right: 49%; top: 81%;}
-  90% {right: 49%; top: 72%;}
-  100% {right: 49%; top: 66%; transform: rotate(700deg);}
-}
-@-webkit-keyframes ball4
-{
-  0% {right: 0;top: 5%;}
-  10% {right: 10%; top: 7%;}
-  20% {right: 20%; top: 12%;}
-  30% {right: 30%; top: 23%;}
-  40% {right: 40%; top: 40%;}
-  50% {right: 49%; top: 60%;}
-  60% {right: 49%; top: 76%;}
-  70% {right: 49%; top: 82%;}
-  80% {right: 49%; top: 58%;}
-  85% {right: 49%; top: 81%;}
-  90% {right: 49%; top: 72%;}
-  100% {right: 49%; top: 66%; transform: rotate(700deg);}
-}
-
-@keyframes ball5
-{
-  0% {right: 0;top: 5%;}
-  10% {right: 10%; top: 7%;}
-  20% {right: 20%; top: 12%;}
-  30% {right: 30%; top: 23%;}
-  40% {right: 36%; top: 40%;}
-  50% {right: 36%; top: 60%;}
-  60% {right: 36%; top: 76%;}
-  70% {right: 36%; top: 82%;}
-  80% {right: 36%; top: 58%;}
-  85% {right: 36%; top: 81%;}
-  90% {right: 36%; top: 71%;}
-  100% {right: 36%; top: 65%; transform: rotate(360deg);}
-}
-@-webkit-keyframes ball5
-{
-  0% {right: 0;top: 5%;}
-  10% {right: 10%; top: 7%;}
-  20% {right: 20%; top: 12%;}
-  30% {right: 30%; top: 23%;}
-  40% {right: 36%; top: 40%;}
-  50% {right: 36%; top: 60%;}
-  60% {right: 36%; top: 76%;}
-  70% {right: 36%; top: 82%;}
-  80% {right: 36%; top: 58%;}
-  85% {right: 36%; top: 81%;}
-  90% {right: 36%; top: 71%;}
-  100% {right: 36%; top: 65%; transform: rotate(360deg);}
-}
-
-.ball-box .ball-1.dropdown{
-  animation: ball1 2s linear 0s 1 normal forwards;
-  -webkit-animation: ball1 2s linear 0s 1 normal forwards;
-}
-.ball-box .ball-2.dropdown{
-  animation: ball2 2s linear .2s 1 normal forwards;
-  -webkit-animation: ball2 2s linear .2s 1 normal forwards;
-}
-.ball-box .ball-3.dropdown{
-  animation: ball3 2s linear .4s 1 normal forwards;
-  -webkit-animation: ball3 2s linear .4s 1 normal forwards;
-}
-.ball-box .ball-4.dropdown{
-  animation: ball4 2s linear .6s 1 normal forwards;
-  -webkit-animation: ball4 2s linear .6s 1 normal forwards;
-}
-.ball-box .ball-5.dropdown{
-  animation: ball5 2s linear .8s 1 normal forwards;
-  -webkit-animation: ball5 2s linear .8s 1 normal forwards;
-}
 
 .canvas-main{
-/*   width: 3.75rem;
-   height: 3.55rem;*/
    position: relative; 
    pointer-events: none;
 }
@@ -467,7 +265,7 @@ footer{
   height: 8.76rem;
   margin: .93rem auto 0 .96rem;
   padding: 1.64rem .28rem .30rem 0;
-  background: url(../images/popup_bg_.png) no-repeat;
+  background: url(../images/popup_bg.png) no-repeat;
   background-position: 0 0;
   /*background-size: cover;*/
   background-size: 400%;
