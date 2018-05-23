@@ -59,6 +59,7 @@
   </head>
   <body>
     <div id="app">
+      <div id="test-info" style="position: absolute;left:0;top:0;z-index: 999999;"></div>
       <div class="linght"></div>
       <img src="./images/box_end.png" class="box-end" />
       <img src="./images/pip_end.png" class="pip-end" />
@@ -451,6 +452,7 @@
               if(data.status == 200) {
                 state.canCollect = true;
                 collectBalls(initData.sugers);
+                // $('#test-info').text(initData.sugers);
                 setTimeout(function(){
                   showCollectSuccess();
                 }, (initData.sugers.length + 1) * 500);
