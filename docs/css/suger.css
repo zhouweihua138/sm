@@ -1,0 +1,439 @@
+.box-end,
+.box-front{
+  position: absolute;
+  top: 3.05rem;
+  left: 1.15rem;
+  width: 5.21rem;
+}
+.wall{
+  display: none;
+  position: absolute;
+  left: 1.10rem;
+  top:6.76rem;
+  width: 5.32rem;
+  height: 1.46rem;
+}
+.wall.show{
+  display: block;
+}
+.pip-end{
+  position: absolute;
+  right: .37rem;
+  top: 1.7rem;
+  width: 3.2rem;
+}
+.pip-front{
+  position: absolute;
+  right: 0;
+  top: 1.54rem;
+  width: 3.69rem;
+}
+.hole{
+  display: none;
+  position: absolute;
+  left: 2.14rem;
+  top: 6.43rem;
+  width: 3.23rem;
+  height: .66rem;
+}
+.hole.show{
+  display: block;
+}
+.hole-exit{
+  position: absolute;
+  left: 3.10rem;
+  top: 7.51rem;
+  width: 1.31rem;
+  height: 1.20rem;
+}
+@keyframes linght
+{
+  0% {background-position: 0 0;}
+  50% {background-position: 100% 0;}
+}
+@-webkit-keyframes linght
+{
+  0% {background-position: 0 0;}
+  50% {background-position: 100% 0;}
+}
+@keyframes collect
+{
+  0%, 10%, 20%, 30%, 40% {background-position: 0 0;}
+  5%, 15%, 25%, 35% {background-position: 100% 0;}
+  100% {background-position: 0 0;}
+}
+@-webkit-keyframes collect
+{
+  0%, 10%, 20%, 30%, 40% {background-position: 0 0;}
+  5%, 15%, 25%, 35% {background-position: 100% 0;}
+  100% {background-position: 0 0;}
+}
+.linght{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3.84rem;
+  height: 4.25rem;
+  background: url(../images/linght.png) no-repeat;
+  background-position: 0 0;
+  background-size: cover;
+  animation: linght .5s steps(1) infinite normal;
+  -webkit-animation: linght .5s steps(1) infinite normal;
+}
+
+.top-right{
+  position: absolute;
+  right: 0;
+  top:0;
+  padding: 0 0 .02rem .04rem;
+  background: #75c4c9;
+  font-size: 0.27rem;
+  border-bottom-left-radius: .1rem;
+}
+.top-right a{
+  display: inline-block;
+  margin: 0 .19rem .16rem .19rem;
+  padding: .21rem 0 .05rem 0;
+  color: #fff;
+  border-bottom: 1px solid #ffed7d;
+}
+.collect-box,
+.collect-box .quantity,
+.collect-box a,
+.collect-box span{
+  position: absolute;
+}
+.collect-box{
+  right:0;
+  top:5.89rem;
+  width:2.05rem;
+  height: 2.93rem;
+  background: url(../images/btn_collect.png) no-repeat;
+  background-size: cover;
+  color:#fff;
+  text-align: center;
+  /*transition: top .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);*/
+  transition: top .5s linear;
+}
+.collect-box.active{
+  top:3.63rem;
+  animation: collect 2.5s steps(1) infinite normal;
+  -webkit-animation: collect 2.5s steps(1) infinite normal;
+}
+.collect-box .quantity{
+  right: 1.14rem;
+  top: .65rem;
+  margin: 0;
+  font-size:0.6rem;
+}
+.collect-box a{
+  left: .3rem;
+  top: 1.36rem;
+  display: block;
+  width: 1.2rem;
+  height: .7rem;
+  text-indent: -999em;
+}
+.collect-box span{
+  left: .25rem;
+  /*bottom: .2rem;*/
+  bottom: .12rem;
+  color: #95c5dc;
+  font-weight: bold;
+  font-size: .24rem;
+}
+
+.ball-box{
+  position: absolute;
+  top: 1.6rem;
+  width: 100%;
+  height: 5.45rem;
+  pointer-events: none;
+}
+.ball-box i{
+  position: absolute;
+  right: -.97rem;
+  top: 14%;
+  display: block;
+  width: .97rem;
+  height: .97rem;
+  background: url(../images/ball_red.png) no-repeat;
+  background-size: contain;
+  text-align: center;
+  line-height: .97rem;
+  color:#fff;
+  font-size:.34rem;
+  font-weight: 700;
+}
+
+.canvas-main{
+   position: relative; 
+   pointer-events: none;
+}
+
+.money{
+  position: absolute;
+  top: 9rem;
+  right: 3.07rem;
+  margin: 0;
+  color:#fff;
+  font-size: .7rem;
+  line-height: 1;
+}
+.btn-extract-balance{
+  position: absolute;
+  top: 8.45rem;
+  right: .72rem;
+  display: block;
+  width: 1.64rem;
+  height: 1rem;
+  border-radius: .25rem;
+  transform: skew(0,-21deg);
+  -webkit-transform: skew(0,-21deg);
+}
+
+footer{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  /*bottom: calc(0rem + constant(safe-area-inset-bottom));
+  bottom: calc(0rem + .34rem);*/
+  right: 0;
+  height: .68rem;
+  line-height: .68rem;
+  background: #cceceb;
+  color: #5aa0a8;
+  font-size: .24rem;
+}
+/*只有设置了viewport-fit=cover才能使用constant函数*/
+@supports(bottom:constant(safe-area-inset-bottom)) {
+  footer{
+    bottom: calc(0rem + constant(safe-area-inset-bottom)); /*为iphoneX底下圆弧的高度 34px*/
+    bottom: calc(0rem + .34rem);
+  }
+}
+#scroll-box{
+  overflow: hidden;
+  white-space: nowrap;
+}
+#scroll-begin,#scroll-end,
+#scroll-begin>li,#scroll-end>li{
+  display: inline;
+}
+#scroll-begin>li,#scroll-end>li{
+  padding: 0 .1rem;
+}
+#scroll-end>li{
+  /*color: #f60;*/
+}
+
+.desc{
+  padding: .17rem .58rem .92rem;
+  font-size: .24rem;
+  color: #50919b;
+  line-height: .4rem;
+}
+.desc_banner{
+  width: 6.58rem;
+  margin: 0 auto;
+}
+.desc h4{
+  margin: .28rem 0 0;
+  font-size: .24rem;
+  font-weight: normal;
+}
+.desc p{
+  margin: 0;
+  padding-left: .38rem;
+  text-indent: -.38rem;
+}
+
+/*弹出层*/
+.mask,.popup{
+  position: fixed;
+  top:0;
+  left: 0;
+}
+.mask{
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease-in-out;
+}
+.mask.show{
+  background: #000;
+  opacity: .5;
+  pointer-events: auto;
+  z-index: 9999;
+  filter: blur(5px)
+}
+.popup{
+  bottom: 0;
+  width: 100%;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+  /*transform: translate(-100%);*/
+  /*transition: transform .2s ease-in-out;*/
+}
+.popup.show{
+  opacity: 1;
+  pointer-events: auto;
+  /*transform: translate(0);*/
+}
+.popup .container{
+  position: relative;
+  width: 5.96rem;
+  height: 8.76rem;
+  margin: .93rem auto 0 .96rem;
+  padding: 1.64rem .28rem .30rem 0;
+  background: url(../images/popup_bg.png) no-repeat;
+  background-position: 0 0;
+  /*background-size: cover;*/
+  background-size: 400%;
+  text-align: center;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.btn-close{
+  position: absolute;
+  right: .1rem;
+  top: .14rem;
+  display: block;
+  width: .84rem;
+  height: .84rem;
+  border-radius: 50%;
+}
+.popup .content .title{
+  display: inline-block;
+  margin:0;
+  padding: .14rem .3rem;
+  background: #6eb2cb;
+  color: #fff;
+  font-size: .38rem;
+  font-weight: bold;
+  border-radius: 10rem;
+}
+.guide-content img{
+  width: 5.22rem;
+  margin: .2rem auto .3rem;
+}
+.guide-content h2{
+  margin: .1rem 0;
+  color: #fff;
+  font-size: .3rem;
+  font-weight: bold;
+}
+.history-content .tab-nav{
+  display: inline-block;
+  padding: .14rem 0;
+  background: #6eb2cb;
+  border-radius: 10rem;
+}
+.history-content .tab-nav a{
+  padding: 0 .3rem;
+  font-size: .3rem;
+  color:#b0ddee;
+}
+.history-content .tab-nav a:first-of-type{
+  border-right: .02rem solid #b8e1f0;
+}
+.history-content .tab-nav a.active{
+  color:#fff;
+}
+.tab-content .tab{
+  display: none;
+  width: 5.14rem;
+  height: 5.74rem;
+  padding: .12rem;
+  background: #fff;
+  color: #2c6d82;
+  border-radius: .1rem;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.tab-content .tab.active{
+  display: block;
+  margin: .12rem auto 0;
+}
+.tab>ul>li>span{
+  display: inline-block;
+  width:50%;
+  padding: .22rem;
+  font-size: .24rem;
+  border-bottom: .02rem solid #b8e1f0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.tab>ul>li>span:first-of-type{
+  border-right: .02rem solid #b8e1f0;
+}
+
+.popup3 .container{
+  height: 6.86rem;
+  background-position: 33.33333% 0;
+}
+
+.popup4 .container{
+  height: 5.06rem;
+  background-position: 66.66666% 0;
+}
+.popup5 .container{
+  height: 6.16rem;
+  background-position: 99.99999% 0;
+}
+.popup3 .guide-content,
+.popup4 .guide-content,
+.popup5 .guide-content{
+  display: none;
+}
+.popup3 .guide-content.active,
+.popup4 .guide-content.active,
+.popup5 .guide-content.active{
+  display: block;
+}
+
+.popup3 .content .title,
+.popup4 .content .title{
+  font-size: .3rem;
+}
+.popup3 .box,
+.popup4 .box,
+.popup5 .box{
+  width: 5.1rem;
+  margin: -0.3rem auto 0;
+  padding: .6rem 0 .37rem 0;
+  background: #fff;
+  border-radius: .1rem;
+}
+.popup5 .box{
+  padding: 1rem 0 .77rem 0;
+}
+.popup3 .box h2,
+.popup4 .box h2,
+.popup5 .box h2{
+  color: #659aab;
+  font-size: .24rem;
+}
+
+.popup3 .box h1{
+  margin: 0 0 .2rem 0;
+  font-size: 1rem;
+  color: #ff9000;
+}
+
+.btn:link, .btn:active, .btn:visited, .btn:hover{
+  display: block;
+  width:2.57rem;
+  height: .9rem;
+  margin: .3rem auto 0;
+  background: url(../images/popup_btn.png) no-repeat;
+  background-size: cover;
+  line-height: .76rem;
+  font-size: .36rem;
+  color: #f07918;
+}
