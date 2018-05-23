@@ -55,11 +55,17 @@
         background-size: 100% auto;
         overflow: hidden;
       }
+      .desc{
+        position: relative;
+        max-width: 640px;
+        max-width: 8.18rem;
+        margin:0 auto;
+      }
     </style>
   </head>
   <body>
     <div id="app">
-      <div id="test-info" style="position: absolute;left:0;top:0;z-index: 999999;"></div>
+      <!-- <div id="test-info" style="position: absolute;left:0;top:0;z-index: 999999;"></div> -->
       <div class="linght"></div>
       <img src="./images/box_end.png" class="box-end" />
       <img src="./images/pip_end.png" class="pip-end" />
@@ -85,8 +91,7 @@
 
       <footer id="scroll-box">
         <ul id="scroll-begin">
-          <li>1-1恭喜 吴XX 成功提取价值 XXX元 糖果</li>
-          <li>1-2恭喜 吴XX 成功提取价值 XXX元 糖果</li>
+
         </ul>
         <ul id="scroll-end"></ul>
       </footer>
@@ -344,12 +349,13 @@
                     }
                   });
                 });
-                // 待收集糖果＞0，收集面板升起，按钮跳动
-                if (data.sugers.length > 0) {
-                  // 收集按钮弹出
-                  setTimeout(function(){
-                    $('.collect-box').addClass('active');
-                  },300);
+                // 收集面板升起，按钮跳动
+                setTimeout(function(){
+                  $('.collect-box').addClass('active');
+                },300);
+                // 待收集糖果=0，收集按钮升起后，按钮不跳动且置灰
+                if (data.sugers.length == 0) {
+                  $('.collect-box').addClass('disabled')
                 }
                 // 待收集糖果=5，已达上限
                 if (data.sugers.length >= 5) {
@@ -373,6 +379,13 @@
                 if (data.bExpire) {
                   showExpire();
                 }
+                var sal = '';
+                var al = initData.awardUserList;
+                for (var i=0; i< al.length; i++) {
+                  sal += '<li>恭喜 ' + al[i].name + ' 成功提取价值 ' + al[i].amount + '元 糖果</li>'
+                }
+                $('#scroll-begin').html(sal);
+                ScrollImgLeft();
               }
             }
           })
@@ -443,6 +456,9 @@
           state.canCollect = false;
           http({
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
+            data: {
+              ids: [1, 2, 3, 4]
+            },
             data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
             success: function (data) {
               data = {
@@ -450,12 +466,15 @@
                 amount: '200'  // 本次收集的免息额度
               };
               if(data.status == 200) {
+                var sugersCount = initData.sugers.length;
+                $('.collect-box').addClass('disabled')
                 state.canCollect = true;
                 collectBalls(initData.sugers);
-                // $('#test-info').text(initData.sugers);
+                initData.sugers = []; // 糖果数置0
+                $('.quantity').text('0');
                 setTimeout(function(){
                   showCollectSuccess();
-                }, (initData.sugers.length + 1) * 500);
+                }, (sugersCount + 1) * 500);
               }
             }
           })
@@ -614,7 +633,7 @@
 
       })
 
-      !(function () {
+      !(function (w) {
         //文字横向滚动
         function ScrollImgLeft () {
           var speed=50
@@ -632,15 +651,15 @@
             }
           }
           int = setInterval(Marquee,speed);
-          scroll_box.onmouseover = function () {
-            clearInterval(int);
-          }
-          scroll_box.onmouseout = function () {
-            int = setInterval(Marquee,speed); 　　　　
-          }
+          // scroll_box.onmouseover = function () {
+          //   clearInterval(int);
+          // }
+          // scroll_box.onmouseout = function () {
+          //   int = setInterval(Marquee,speed); 　　　　
+          // }
         }
-        ScrollImgLeft();
-      })()
+        w.ScrollImgLeft = ScrollImgLeft;
+      })(window)
 
     </script>
   </body>

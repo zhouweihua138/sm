@@ -100,7 +100,7 @@ function initBalls(balls, callBack) {
 function collectBalls(balls) {
   var number = balls.length;
   var interval2 = window.setInterval((function() {
-    $('#test-info').text($('#test-info').text() + ',' + number);
+    // $('#test-info').text($('#test-info').text() + ',' + number);
     createBall(stage[2] - 20, scale * 238, true); // scale
     var totalAmount = $('.money').text() * 1;
     $('.money').text(totalAmount + balls[ballIndex].value);
