@@ -193,7 +193,7 @@
 }
 
 footer{
-  position: fixed;
+  position: absolute;
   left: 0;
   bottom: 0;
   /*bottom: calc(0rem + constant(safe-area-inset-bottom));
@@ -252,12 +252,14 @@ footer{
   width: 100%;
   z-index: 10000;
   pointer-events: none;
-  transform: translate(-100%);
-  transition: transform .2s ease-in-out;
+  opacity: 0;
+  /*transform: translate(-100%);*/
+  /*transition: transform .2s ease-in-out;*/
 }
 .popup.show{
+  opacity: 1;
   pointer-events: auto;
-  transform: translate(0);
+  /*transform: translate(0);*/
 }
 .popup .container{
   position: relative;

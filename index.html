@@ -22,11 +22,14 @@
     <link rel="stylesheet" type="text/css" href="./css/common.css">
     <link rel="stylesheet" type="text/css" href="./css/suger.css">
     <style type="text/css">
-      html,body,#app{
+      html,body{
         height: 100%;
       }
+      #app{
+        height: 11.20rem;
+      }
       body{
-        background: #FFF;
+        background: #fff;
         font-size: 0.24rem;
         font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
         /*padding-top: .88rem;*/
@@ -47,9 +50,9 @@
         max-width: 640px;
         max-width: 8.18rem;
         margin:0 auto;
-        background: #c0e3dd url('images/bg.png') no-repeat;
+        background: #c0e3dd url('images/bg.jpg') no-repeat;
         background-position: center 0;
-        background-size: cover;
+        background-size: 100% auto;
         overflow: hidden;
       }
     </style>
@@ -231,11 +234,19 @@
           </div>
 
           <div class="guide-content content2">
-            <h1 class="title">提示</h1>
+            <h1 class="title">提取确认</h1>
             <div class="box">
-              <h2>提取额度后，消费将不再获得糖果，确定现在提取？</h2>
+              <h2>提取额度后，消费将不再获得糖果</h2>
             </div>
-            <a class="btn" id="linkToTake" href="javascript:void(0);">确认提取</a>
+            <a class="btn linkToTake" href="javascript:void(0);">确认提取</a>
+          </div>
+
+          <div class="guide-content content3">
+            <h1 class="title">额度已达上限</h1>
+            <div class="box">
+              <h2>您已把糖果机掏空了，快点击提取吧</h2>
+            </div>
+            <a class="btn linkToTake" href="javascript:void(0);">确认提取</a>
           </div>
 
         </div>
@@ -269,6 +280,7 @@
           bExpire: false,          // 是否活动已过期
           bFreeLimitTaken: false,  // 是否已成功提取免息分期额度
           bFreeLimitUsed: false,   // 是否已成功使用免息分期额度
+          bMaxAward: true,         // 额度已达上限
         }
 
         var state = {
@@ -295,6 +307,9 @@
                 // 待收集糖果=5，已达上限
                 if (data.sugers.length >= 5) {
                   showLimit();
+                }
+                if (data.bMaxAward) {
+                  showMaxAward();
                 }
                 if (data.bFirstVisit) {
                   showFirstVisit();
@@ -399,11 +414,11 @@
           if (!state.canTake) {
             return;
           }
-          state.canTake = false;
           showConfirmTake();
         })
 
-        $('#linkToTake').on('click', function(){
+        $('.linkToTake').on('click', function(){
+          state.canTake = false;
           $('.mask,.popup5').removeClass('show');
           http({
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
@@ -436,6 +451,10 @@
 
         function showConfirmTake () {
           showPopup ('.popup5 .guide-content', '.popup5 .content2', '.mask,.popup5');
+        }
+
+        function showMaxAward () {
+          showPopup ('.popup5 .guide-content', '.popup5 .content3', '.mask,.popup5');
         }
 
         function showFreeLimitUsed () {
