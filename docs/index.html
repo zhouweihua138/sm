@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href="./css/suger.css">
     <style type="text/css">
       html,body{
-        height: 100%;
+        /*height: 100%;*/
       }
       #app{
         height: 11.20rem;
@@ -389,16 +389,6 @@
               }
             }
           })
-
-          var parent = document.getElementById('app');
-          //微信禁止下拉露黑底
-          document.querySelector('body').addEventListener('touchmove', function(e) {
-            //if (!document.querySelector('.bottom').contains(e.target)) {
-            if (!parent.contains(e.target)) {
-                e.preventDefault();
-            }
-          })
-
         }
         init();
 
