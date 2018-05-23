@@ -43,6 +43,7 @@ var timeOfLastTouch = 0;
 var tempCallBack;
 var canFall = false;
 var animateCount = 0; // 动画完成次数，判断回调的参数
+var ballIndex = 0;    // 点击收集，当前掉落小球索引
 
 init();
 step();
@@ -89,8 +90,7 @@ function reset() {
 
 function initBalls(balls, callBack) {
   var i;
-  var number = balls.length;
-  for (i = 0; i < number; i++) {
+  for (i = 0; i < balls; i++) {
     createBall(scale * (375 - 100), scale * (510 - 100), false);
   }
   canFall = true;
@@ -101,9 +101,25 @@ function collectBalls(balls) {
   var number = balls.length;
   var interval2 = window.setInterval((function() {
     createBall(stage[2] - 20, scale * 238, true); // scale
+    var totalAmount = $('.money').text() * 1;
+    $('.money').text(totalAmount + balls[ballIndex].value);
+    ballIndex++
+    $('.money').each(function(){
+      $('.money').prop('Counter', totalAmount).animate({
+        Counter: $('.money').text()
+      },{
+        duration: 400,
+        easing: 'swing',
+        step: function (now){
+          $('.money').text(Math.ceil(now));
+        }
+      });
+    });
+    
   }), 500);
   setTimeout(function() {
     window.clearInterval(interval2);
+    ballIndex = 0;
   }, number * 500);
 }
 

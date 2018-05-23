@@ -227,6 +227,27 @@ footer{
   /*color: #f60;*/
 }
 
+.desc{
+  padding: .17rem .58rem .92rem;
+  font-size: .24rem;
+  color: #50919b;
+  line-height: .4rem;
+}
+.desc_banner{
+  width: 6.58rem;
+  margin: 0 auto;
+}
+.desc h4{
+  margin: .28rem 0 0;
+  font-size: .24rem;
+  font-weight: normal;
+}
+.desc p{
+  margin: 0;
+  padding-left: .38rem;
+  text-indent: -.38rem;
+}
+
 /*弹出层*/
 .mask,.popup{
   position: fixed;

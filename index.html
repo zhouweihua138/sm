@@ -29,7 +29,7 @@
         height: 11.20rem;
       }
       body{
-        background: #fff;
+        background: #c0e3dd;
         font-size: 0.24rem;
         font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
         /*padding-top: .88rem;*/
@@ -79,7 +79,7 @@
         <a href="javascript:void(0);">收集</a>
         <span>05.28-06.29</span>
       </div>
-      <h1 class="money">3954</h1>
+      <h1 class="money">0</h1>
       <a class="btn-extract-balance" href="javascript:void(0);"></a>
 
       <footer id="scroll-box">
@@ -89,6 +89,17 @@
         </ul>
         <ul id="scroll-end"></ul>
       </footer>
+    </div>
+
+    <div class="desc">
+      <img class="desc_banner" src="./images/desc_banner.png">
+      <h4>规则说明：</h4>
+      <p>1、本活动仅允许名下有广州银行信用卡积分的用户参与；</p>
+      <p>2、每次投票消耗积分（参照上方游戏说明），投票间隔3钟，投注次数不设上限，请适度参与；</p>
+      <p>3、活动时间为12:00~21:00；</p>
+      <p>4、活动时间结束，票数少的一方获胜，若票数一致，则系退回用户当天所投所有积分，不瓜分奖池；</p>
+      <p>5、用户所获得积分、退回积分，将在活动结束后1小时内账，请耐心等候；</p>
+      <p>6、用户瓜分奖池所获得积分，不足1积分不计，如用户获得1.99积分与1.01积分，均记为1积分；</p>
     </div>
 
     <div class="mask"></div>
@@ -253,7 +264,8 @@
       </div>
     </div>
 
-    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <!-- <script type="text/javascript" src="js/zepto.min.js"></script> -->
     <script src="js/protoclass.js"></script>
     <script src='js/box2d.js'></script>
     <script type="text/javascript">
@@ -268,20 +280,39 @@
       //   FastClick.attach(document.body);
       // });
 
+      var initData = {
+        status: 200,  // 接口状态  500系统错误
+        sugers: [{id: 1,value: 50}, {id: 2,value: 50}, {id: 3,value: 50}, {id: 4,value: 50}],  // 待收集糖果
+        amount: '200',  // 本次收集的免息额度
+        bFirstVisit: false,        // 是否首次进入页面
+        bCantJoin: false,        // 是否*不能*参与本活动
+        bExpire: false,          // 是否活动已过期
+        activityStartDate: '2018-05-21',  // 活动开始时间
+        activityEndDate: '2018-06-21',  // 活动结束时间
+        bFreeLimitTaken: false,  // 是否已成功提取免息分期额度
+        bFreeLimitUsed: false,   // 是否已成功使用免息分期额度
+        bMaxAward: false,         // 额度已达上限
+        collectedAmount: 300.00,  // 已提取免息分期额度
+        collectedDesc1: '6期或以下、3000元或以上分期可使用',  // 已提取免息分期额度描述1
+        collectedDesc2: '有效期至2018.6.15',   // 已提取免息分期额度描述2
+        collectedLink: '/fenqi/',  // 已提取免息分期额度"去分期"链接
+        usedAmount: 300.00,  // 已使用免息分期额度
+        usedDesc1: '6期或以下、3000元或以上分期可使用',  // 已使用免息分期额度描述1
+        usedDesc2: '有效期至2018.6.15',   // 已使用免息分期额度描述2
+        usedLink: '/record/',  // 已使用免息分期额度"分期记录"链接
+        totalAmount: '500',  // 免息额度，不为0则有球
+        awardUserList: [{  // 提取成功记录
+          name: '吴XX',
+          amount: '200'
+        },
+        {
+          name: '吴XX',
+          amount: '200'
+        }],
+      }
+
       $(function(){
         var ajaxStatus = true;//启用ajax请求
-
-        var mockData = {
-          status: 200,
-          sugers: [10, 20, 30, 40],  // 待收集糖果 10, 20, 30, 40
-          balls: [10, 20, 30, 40, 50, 100, 200, 500, 800, 1000],  // 已有的糖果  10, 20, 30, 40, 50, 100, 200, 500, 800, 1000
-          bFirstVisit: false,        // 是否首次进入页面
-          bCantJoin: false,        // 是否*不能*参与本活动
-          bExpire: false,          // 是否活动已过期
-          bFreeLimitTaken: false,  // 是否已成功提取免息分期额度
-          bFreeLimitUsed: false,   // 是否已成功使用免息分期额度
-          bMaxAward: true,         // 额度已达上限
-        }
 
         var state = {
           canCollect: true,  // 收集按钮是否可点击，防止多次点击
@@ -293,10 +324,25 @@
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
             data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
             success: function (data) {
-              data = mockData;
+              data = initData;  // 本地测试数据，调试删
+              initData = data;
               if(data.status == 200) {
-                initBalls(mockData.balls, BallsFalledCallBack);
+                var balls = data.totalAmount == 0 ? 0 : 10;
+                initBalls(balls, BallsFalledCallBack);
                 $('.quantity').text(data.sugers.length);
+                $('.money').text(data.totalAmount);
+                // 免息额度滚动
+                $('.money').each(function(){
+                  $('.money').prop('Counter',0).animate({
+                    Counter: $('.money').text()
+                  },{
+                    duration: 1500,
+                    easing: 'swing',
+                    step: function (now){
+                      $('.money').text(Math.ceil(now));
+                    }
+                  });
+                });
                 // 待收集糖果＞0，收集面板升起，按钮跳动
                 if (data.sugers.length > 0) {
                   // 收集按钮弹出
@@ -389,21 +435,25 @@
           if (!state.canCollect) {
             return;
           }
-          if (mockData.sugers.length <= 0) {
+          if (initData.sugers.length <= 0) {
             showNotSuger();
+            return;
           }
           state.canCollect = false;
           http({
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
             data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
             success: function (data) {
-              data = mockData;
+              data = {
+                status: 200,  // 接口状态, 500系统错误
+                amount: '200'  // 本次收集的免息额度
+              };
               if(data.status == 200) {
                 state.canCollect = true;
-                collectBalls(mockData.sugers);
+                collectBalls(initData.sugers);
                 setTimeout(function(){
                   showCollectSuccess();
-                }, (mockData.sugers.length + 1) * 500);
+                }, (initData.sugers.length + 1) * 500);
               }
             }
           })
@@ -424,7 +474,7 @@
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
             data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
             success: function (data) {
-              data = mockData;
+              data = initData;
               if(data.status == 200) {
                 state.canTake = true;
                 $('.hole,.wall').addClass('show');
