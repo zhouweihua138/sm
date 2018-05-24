@@ -21,14 +21,15 @@ data: {
   bFreeLimitUsed: false,   // 是否已成功使用免息分期额度
   bMaxAward: true,         // 额度已达上限
   collectedAmount: 300.00,  // 已提取免息分期额度
-  collectedDesc1: '6期或以下、3000元或以上分期可使用',  // 已提取免息分期额度描述1
-  collectedDesc2: '有效期至2018.6.15',   // 已提取免息分期额度描述2
+  collectedDesc1: '分期返还上述额度的3期手续费',  // 已提取免息分期额度描述1
+  collectedDesc2: '任意期数500元以上分期自动使用',   // 已提取免息分期额度描述2
+  collectedDesc3: '有效期至2018.6.15',   // 已提取免息分期额度描述3
   collectedLink: '/fenqi/',  // 已提取免息分期额度"去分期"链接
   usedAmount: 300.00,  // 已使用免息分期额度
-  usedDesc1: '6期或以下、3000元或以上分期可使用',  // 已使用免息分期额度描述1
-  usedDesc2: '有效期至2018.6.15',   // 已使用免息分期额度描述2
+  usedDesc1: '为您返还上述额度的3期手续费 12.6元',  // 已使用免息分期额度描述1
+  usedDesc2: ' 将在2018.6.22前以刷卡金形式到账',   // 已使用免息分期额度描述2
   usedLink: '/record/',  // 已使用免息分期额度"分期记录"链接
-  totalAmount: '3954'  // 免息额度，不为0则有球
+  totalAmount: '300'  // 免息额度，不为0则有球
   awardUserList: [{  // 提取成功记录
   	name: '吴XX',
   	amount: '200'

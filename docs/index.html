@@ -168,8 +168,8 @@
             <h1 class="title">您已成功使用免息分期额度</h1>
             <div class="box">
               <h1>300元</h1>
-              <h2>为您减免手续费 12.6元</h2>
-              <h2>将在七个工作日内以刷卡金形式返还</h2>
+              <h2>为您返还上述额度的3期手续费 12.6元</h2>
+              <h2>将在2018.6.22前以刷卡金形式到账</h2>
             </div>
             <a class="btn btn-install-record" href="http://www.baidu.com">分期记录</a>
           </div>
@@ -178,7 +178,8 @@
             <h1 class="title">您已成功提取免息分期额度</h1>
             <div class="box">
               <h1>300元</h1>
-              <h2>6期或以下、3000元或以上分期可使用</h2>
+              <h2>分期返还上述额度的3期手续费</h2>
+              <h2>任意期数500元以上分期自动使用</h2>
               <h2>有效期至2018.6.15</h2>
             </div>
             <a class="btn btn-install-record" href="http://www.baidu.com">去分期</a>
@@ -209,7 +210,7 @@
           <div class="guide-content content3">
             <h1 class="title">糖果收集成功</h1>
             <div class="box">
-              <h2>获得300元免息额度</h2>
+              <h2 id="collect-success-value">获得300元免息额度</h2>
             </div>
           </div>
 
@@ -299,21 +300,38 @@
         bFreeLimitUsed: false,   // 是否已成功使用免息分期额度
         bMaxAward: false,         // 额度已达上限
         collectedAmount: 300.00,  // 已提取免息分期额度
-        collectedDesc1: '6期或以下、3000元或以上分期可使用',  // 已提取免息分期额度描述1
-        collectedDesc2: '有效期至2018.6.15',   // 已提取免息分期额度描述2
+        collectedDesc1: '分期返还上述额度的3期手续费',  // 已提取免息分期额度描述1
+        collectedDesc2: '任意期数500元以上分期自动使用',   // 已提取免息分期额度描述2
+        collectedDesc3: '有效期至2018.6.15',   // 已提取免息分期额度描述3
         collectedLink: '/fenqi/',  // 已提取免息分期额度"去分期"链接
         usedAmount: 300.00,  // 已使用免息分期额度
-        usedDesc1: '6期或以下、3000元或以上分期可使用',  // 已使用免息分期额度描述1
-        usedDesc2: '有效期至2018.6.15',   // 已使用免息分期额度描述2
+        usedDesc1: '为您返还上述额度的3期手续费 12.6元',  // 已使用免息分期额度描述1
+        usedDesc2: ' 将在2018.6.22前以刷卡金形式到账',   // 已使用免息分期额度描述2
         usedLink: '/record/',  // 已使用免息分期额度"分期记录"链接
-        totalAmount: '500',  // 免息额度，不为0则有球
+        totalAmount: '300',  // 免息额度，不为0则有球
         awardUserList: [{  // 提取成功记录
-          name: '吴XX',
-          amount: '200'
+          name: '陈奕迅',
+          amount: '3000'
         },
         {
-          name: '吴XX',
-          amount: '200'
+          name: '谢安琪',
+          amount: '2000'
+        },
+        {
+          name: '杨千嬅',
+          amount: '2000'
+        },
+        {
+          name: '古巨基',
+          amount: '2000'
+        },
+        {
+          name: '陈小春',
+          amount: '2000'
+        },
+        {
+          name: '刘德华',
+          amount: '2000'
         }],
       }
 
@@ -367,11 +385,11 @@
                 if (data.bFirstVisit) {
                   showFirstVisit();
                 }
-                if (data.bFreeLimitUsed) {
-                  showFreeLimitUsed();
-                }
                 if (data.bFreeLimitTaken) {
                   showFreeLimitTaken();
+                }
+                if (data.bFreeLimitUsed) {
+                  showFreeLimitUsed();
                 }
                 if (data.bCantJoin) {
                   showCantJoin();
@@ -463,6 +481,7 @@
                 initData.sugers = []; // 糖果数置0
                 $('.quantity').text('0');
                 setTimeout(function(){
+                  $('#collect-success-value').text('获得' + data.amount + '元免息额度');
                   showCollectSuccess();
                 }, (sugersCount + 1) * 500);
               }
@@ -473,6 +492,18 @@
         // 点击提取按钮
         $('.btn-extract-balance').on('click', function(){
           if (!state.canTake) {
+            return;
+          }
+          if (initData.bFreeLimitTaken) {
+            showFreeLimitTaken();
+            return;
+          }
+          if (initData.bFreeLimitUsed) {
+            showFreeLimitUsed();
+            return;
+          }
+          if (initData.totalAmount < 500) {
+            showNotEnoughAward();
             return;
           }
           showConfirmTake();
@@ -540,6 +571,10 @@
 
         function showNotSuger () {
           showPopup ('.popup4 .guide-content', '.popup4 .content4', '.mask,.popup4');
+        }
+
+        function showNotEnoughAward () {
+          showPopup ('.popup4 .guide-content', '.popup4 .content5', '.mask,.popup4');
         }
 
         // 提取小球掉落动画完成回调

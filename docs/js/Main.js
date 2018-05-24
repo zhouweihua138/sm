@@ -100,10 +100,12 @@ function initBalls(balls, callBack) {
 function collectBalls(balls) {
   var number = balls.length;
   var interval2 = window.setInterval((function() {
-    // $('#test-info').text($('#test-info').text() + ',' + number);
     createBall(stage[2] - 20, scale * 238, true); // scale
-    var totalAmount = $('.money').text() * 1;
-    $('.money').text(totalAmount + balls[ballIndex].value);
+    // var totalAmount = $('.money').text() * 1;
+    // $('.money').text(totalAmount + balls[ballIndex].value);
+    var totalAmount = initData.totalAmount * 1;
+    initData.totalAmount = totalAmount + balls[ballIndex].value;
+    $('.money').text(initData.totalAmount);
     ballIndex++
     $('.money').each(function(){
       $('.money').prop('Counter', totalAmount).animate({
@@ -119,10 +121,9 @@ function collectBalls(balls) {
     
   }), 500);
   setTimeout(function() {
-    $('#test-info').text($('#test-info').text() + ', clear');
     window.clearInterval(interval2);
     ballIndex = 0;
-  }, number * 500 + 100);
+  }, number * 500 + 100);  // +100是因为苹果上的interval和setTimeout同时执行了，导致比电脑端少一个球掉落
 }
 
 function removeBottomWall() {

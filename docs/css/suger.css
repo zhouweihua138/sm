@@ -421,6 +421,9 @@ footer{
   background: #fff;
   border-radius: .1rem;
 }
+.popup3 .content2 .box{
+  padding-bottom: .1rem;
+}
 .popup5 .box{
   padding: 1rem 0 .77rem 0;
 }
