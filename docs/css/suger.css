@@ -112,6 +112,7 @@
   background-size: cover;
   color:#fff;
   text-align: center;
+  z-index: 99;
   /*transition: top .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);*/
   transition: top .5s linear;
 }
@@ -190,14 +191,27 @@
 }
 .btn-extract-balance{
   position: absolute;
-  top: 8.45rem;
-  right: .72rem;
+  /*top: 8.45rem;
+  right: .72rem;*/
+  top: 8.2rem;
+  left: 5.1rem;
   display: block;
-  width: 1.64rem;
-  height: 1rem;
-  border-radius: .25rem;
+  /*width: 1.64rem;
+  height: 1rem;*/
+  width: 1.65rem;
+  height: 1.5rem;
+  background: url(../images/btn_take.png) no-repeat;
+  background-size: 300% 100%;
+  background-position: 0 0;
+  /*border-radius: .25rem;
   transform: skew(0,-21deg);
-  -webkit-transform: skew(0,-21deg);
+  -webkit-transform: skew(0,-21deg);*/
+}
+.btn-extract-balance.taken{
+  background-position: 50% 0;
+}
+.btn-extract-balance.used{
+  background-position: 100% 0;
 }
 
 footer{

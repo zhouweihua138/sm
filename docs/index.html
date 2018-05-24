@@ -134,22 +134,12 @@
             </div>
             <div class="tab-content">
               <div class="tab active">
-                <ul>
+                <ul id="candy-record">
                   <li><span>日期</span><span>糖果额度</span></li>
-                  <li><span>2018.3.8</span><span>100元</span></li>
-                  <li><span>2018.3.8</span><span>100元</span></li>
-                  <li><span>2018.3.8</span><span>100元</span></li>
-                  <li><span>2018.3.8</span><span>100元</span></li>
-                  <li><span>2018.3.8</span><span>100元</span></li>
-                  <li><span>2018.3.8</span><span>100元</span></li>
-                  <li><span>2018.3.8</span><span>100元</span></li>
-                  <li><span>2018.3.8</span><span>100元</span></li>
-                  <li><span>2018.3.8</span><span>100元</span></li>
-                  <li><span>2018.3.8</span><span>100元</span></li>
                 </ul>
               </div>
               <div class="tab">
-                <ul>
+                <ul id="award-record">
                   <li><span>日期</span><span>糖果额度</span></li>
                   <li><span>2018.3.8</span><span>500元</span></li>
                 </ul>
@@ -167,22 +157,22 @@
           <div class="guide-content content1">
             <h1 class="title">您已成功使用免息分期额度</h1>
             <div class="box">
-              <h1>300元</h1>
-              <h2>为您返还上述额度的3期手续费 12.6元</h2>
-              <h2>将在2018.6.22前以刷卡金形式到账</h2>
+              <h1 id="usedAmount">300元</h1>
+              <h2 id="usedDesc1">为您返还上述额度的3期手续费 12.6元</h2>
+              <h2 id="usedDesc2">将在2018.6.22前以刷卡金形式到账</h2>
             </div>
-            <a class="btn btn-install-record" href="http://www.baidu.com">分期记录</a>
+            <a id="usedLink" class="btn btn-install-record" href="http://www.baidu.com">分期记录</a>
           </div>
 
           <div class="guide-content content2">
             <h1 class="title">您已成功提取免息分期额度</h1>
             <div class="box">
-              <h1>300元</h1>
-              <h2>分期返还上述额度的3期手续费</h2>
-              <h2>任意期数500元以上分期自动使用</h2>
-              <h2>有效期至2018.6.15</h2>
+              <h1 id="collectedAmount">300元</h1>
+              <h2 id="collectedDesc1">分期返还上述额度的3期手续费</h2>
+              <h2 id="collectedDesc2">任意期数500元以上分期自动使用</h2>
+              <h2 id="collectedDesc3">有效期至2018.6.15</h2>
             </div>
-            <a class="btn btn-install-record" href="http://www.baidu.com">去分期</a>
+            <a id="collectedLink" class="btn btn-install-record" href="javascript:void(0);">去分期</a>
           </div>
         </div>
       </div>
@@ -299,12 +289,12 @@
         bFreeLimitTaken: false,  // 是否已成功提取免息分期额度
         bFreeLimitUsed: false,   // 是否已成功使用免息分期额度
         bMaxAward: false,         // 额度已达上限
-        collectedAmount: 300.00,  // 已提取免息分期额度
+        collectedAmount: 500.00,  // 已提取免息分期额度
         collectedDesc1: '分期返还上述额度的3期手续费',  // 已提取免息分期额度描述1
         collectedDesc2: '任意期数500元以上分期自动使用',   // 已提取免息分期额度描述2
         collectedDesc3: '有效期至2018.6.15',   // 已提取免息分期额度描述3
         collectedLink: '/fenqi/',  // 已提取免息分期额度"去分期"链接
-        usedAmount: 300.00,  // 已使用免息分期额度
+        usedAmount: 500.00,  // 已使用免息分期额度
         usedDesc1: '为您返还上述额度的3期手续费 12.6元',  // 已使用免息分期额度描述1
         usedDesc2: ' 将在2018.6.22前以刷卡金形式到账',   // 已使用免息分期额度描述2
         usedLink: '/record/',  // 已使用免息分期额度"分期记录"链接
@@ -343,71 +333,6 @@
           canTake: true      // 提取按钮是否可点击
         }
 
-        function init () {
-          http({
-            url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
-            data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
-            success: function (data) {
-              data = initData;  // 本地测试数据，调试删
-              initData = data;
-              if(data.status == 200) {
-                var balls = data.totalAmount == 0 ? 0 : 10;
-                initBalls(balls, BallsFalledCallBack);
-                $('.quantity').text(data.sugers.length);
-                $('.money').text(data.totalAmount);
-                // 免息额度滚动
-                $('.money').each(function(){
-                  $('.money').prop('Counter',0).animate({
-                    Counter: $('.money').text()
-                  },{
-                    duration: 1500,
-                    easing: 'swing',
-                    step: function (now){
-                      $('.money').text(Math.ceil(now));
-                    }
-                  });
-                });
-                // 收集面板升起，按钮跳动
-                setTimeout(function(){
-                  $('.collect-box').addClass('active');
-                },300);
-                // 待收集糖果=0，收集按钮升起后，按钮不跳动且置灰
-                if (data.sugers.length == 0) {
-                  $('.collect-box').addClass('disabled')
-                }
-                // 待收集糖果=5，已达上限
-                if (data.sugers.length >= 5) {
-                  showLimit();
-                }
-                if (data.bMaxAward) {
-                  showMaxAward();
-                }
-                if (data.bFirstVisit) {
-                  showFirstVisit();
-                }
-                if (data.bFreeLimitTaken) {
-                  showFreeLimitTaken();
-                }
-                if (data.bFreeLimitUsed) {
-                  showFreeLimitUsed();
-                }
-                if (data.bCantJoin) {
-                  showCantJoin();
-                }
-                if (data.bExpire) {
-                  showExpire();
-                }
-                var sal = '';
-                var al = initData.awardUserList;
-                for (var i=0; i< al.length; i++) {
-                  sal += '<li>恭喜 ' + al[i].name + ' 成功提取价值 ' + al[i].amount + '元 糖果</li>'
-                }
-                $('#scroll-begin').html(sal);
-                ScrollImgLeft();
-              }
-            }
-          })
-        }
         init();
 
         // 点击有什么用？ 弹出使用教程
@@ -424,6 +349,34 @@
         // 弹出历史记录
         $('#linkToHistory').on('click', function(){
           $('.mask,.popup2').addClass('show');
+          http({
+            url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
+            data: {
+              ids: [1, 2, 3, 4]
+            },
+            data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
+            success: function (data) {
+              data = {
+                status: 200,  // 接口状态  500系统错误
+                list: [{
+                  date: '2018.3.8',
+                  amount: '300.00'
+                },
+                {
+                  date: '2018.3.8',
+                  amount: '300.00'
+                }]
+              };
+              if(data.status == 200) {
+                var s = '<li><span>日期</span><span>糖果额度</span></li>';
+                for (var i=0; i< data.list.length; i++) {
+                  s += '<li><span>' + data.list[i].date + '</span><span>' + data.list[i].amount + '元</span></li>';
+                }
+                $('#candy-record').html(s);
+                // $('.mask,.popup2').addClass('show');
+              }
+            }
+          })
         })
 
         // 关闭弹窗
@@ -446,6 +399,15 @@
           if ($(this).hasClass('active')) {
             return;
           }
+
+          // TODO:
+          data = {
+            status: 200,  // 接口状态  500系统错误
+            date: '2018.3.8',
+            amount: '300.00'
+          }
+
+
           $('.tab-nav a').removeClass('active');
           $(this).addClass('active');
           var index = $(this).index();
@@ -516,16 +478,169 @@
             url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
             data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
             success: function (data) {
-              data = initData;
+              data = {
+                status: 200,  // 接口状态, 201：金额小于500，  500系统错误
+                collectedAmount: 500.00,  // 已提取免息分期额度
+                collectedDesc1: '分期返还上述额度的3期手续费',  // 已提取免息分期额度描述1
+                collectedDesc2: '任意期数500元以上分期自动使用',   // 已提取免息分期额度描述2
+                collectedDesc3: '有效期至2018.6.15',   // 已提取免息分期额度描述3
+                collectedLink: '/fenqi/',  // 已提取免息分期额度"去分期"链接
+              }
               if(data.status == 200) {
                 state.canTake = true;
                 $('.hole,.wall').addClass('show');
+                $('#collectedAmount').text(data.collectedAmount + '元');
+                $('#collectedDesc1').text(data.collectedDesc1);
+                $('#collectedDesc2').text(data.collectedDesc2);
+                $('#collectedDesc3').text(data.collectedDesc3);
+                $('#collectedLink').attr('href', data.collectedLink);
                 removeBottomWall();
                 // 球落完的回调函数 BallsFalledCallBack
               }
             }
           })
         })
+
+        function getQueryString (name) {
+         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+         // /path?param1=123&param2=456 或 /path#hash?param1=123&param2=456
+         var s = window.location.search || window.location.hash;
+         s = s.substr(s.indexOf('?'));
+         var r = s.substr(1).match(reg);
+         if (r!=null) {
+          return unescape(r[2]);
+          }
+          return null;
+        }
+
+        function getToken () {
+          var s = window.location.search || window.location.hash;
+          if (s !== '') {
+            var bankCode = getQueryString('bankCode');
+            var data = getQueryString('data');
+            var sign = getQueryString('sign');
+            var amount = getQueryString('amount');
+
+            console.log('bankCode', bankCode);
+            console.log('data', data);
+            console.log('sign', sign);
+            console.log('amount', amount);
+
+            http({
+              url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
+              data: {
+                bankCode: bankCode,
+                data: data,
+                sign: sign,
+                amount: amount
+              },
+              data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
+              success: function (data) {
+                data = {
+                  status: 200,  // 接口状态  500系统错误
+                  token: 'fsdfsdfsdrewrdffdgfdgVJJHJHJGGjJGHFGfsd56f5d4=='
+                };
+                if(data.status == 200) {
+                  sessionStorage['act_token'] = data.token;
+                  
+                  replaceUrl();
+                }
+              }
+            })
+          }
+        }
+
+        function replaceUrl () {
+          var indexOfSharp = window.location.href.indexOf('#');
+          if (indexOfSharp > -1) {
+            var replaceUrl = window.location.href.substr(0, indexOfSharp);
+            console.log(replaceUrl);
+            window.location.replace(replaceUrl);
+          }
+        }
+
+        function init () {
+          if (!sessionStorage['act_token']) {
+            getToken();
+          } else {
+            replaceUrl();  // 有token，刷新为无参数页面
+          }
+
+          http({
+            url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
+            data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
+            success: function (data) {
+              data = initData;  // 本地测试数据，调试删
+              initData = data;
+              if(data.status == 200) {
+                var balls = data.totalAmount == 0 ? 0 : 10;
+                initBalls(balls, BallsFalledCallBack);
+                $('.quantity').text(data.sugers.length);
+                $('.money').text(data.totalAmount);
+                // 免息额度滚动
+                $('.money').each(function(){
+                  $('.money').prop('Counter',0).animate({
+                    Counter: $('.money').text()
+                  },{
+                    duration: 1500,
+                    easing: 'swing',
+                    step: function (now){
+                      $('.money').text(Math.ceil(now));
+                    }
+                  });
+                });
+                // 收集面板升起，按钮跳动
+                setTimeout(function(){
+                  $('.collect-box').addClass('active');
+                },300);
+                // 待收集糖果=0，收集按钮升起后，按钮不跳动且置灰
+                if (data.sugers.length == 0) {
+                  $('.collect-box').addClass('disabled')
+                }
+                // 待收集糖果=5，已达上限
+                if (data.sugers.length >= 5) {
+                  showLimit();
+                }
+                if (data.bMaxAward) {
+                  showMaxAward();
+                }
+                if (data.bFirstVisit) {
+                  showFirstVisit();
+                }
+                if (data.bFreeLimitTaken) {
+                  $('.btn-extract-balance').addClass('taken');
+                  $('#collectedAmount').text(data.collectedAmount + '元');
+                  $('#collectedDesc1').text(data.collectedDesc1);
+                  $('#collectedDesc2').text(data.collectedDesc2);
+                  $('#collectedDesc3').text(data.collectedDesc3);
+                  $('#collectedLink').attr('href', data.collectedLink);
+                  showFreeLimitTaken();
+                }
+                if (data.bFreeLimitUsed) {
+                  $('.btn-extract-balance').addClass('used');
+                  $('#usedAmount').text(data.usedAmount + '元');
+                  $('#usedDesc1').text(data.usedDesc1);
+                  $('#usedDesc2').text(data.usedDesc2);
+                  $('#usedLink').attr('href', data.usedLink);
+                  showFreeLimitUsed();
+                }
+                if (data.bCantJoin) {
+                  showCantJoin();
+                }
+                if (data.bExpire) {
+                  showExpire();
+                }
+                var sal = '';
+                var al = initData.awardUserList;
+                for (var i=0; i< al.length; i++) {
+                  sal += '<li>恭喜 ' + al[i].name + ' 成功提取价值 ' + al[i].amount + '元 糖果</li>'
+                }
+                $('#scroll-begin').html(sal);
+                ScrollImgLeft();
+              }
+            }
+          })
+        }
 
         function showPopup (removeActiveClassSelector, addActiveClassSelector, addShowClassSelector) {
           $(removeActiveClassSelector).removeClass('active');
@@ -579,6 +694,8 @@
 
         // 提取小球掉落动画完成回调
         function BallsFalledCallBack () {
+          initData.bFreeLimitTaken = true;
+          $('.btn-extract-balance').addClass('taken');
           $('.hole,.wall').removeClass('show');
           showFreeLimitTaken();
         }
@@ -676,12 +793,6 @@
             }
           }
           int = setInterval(Marquee,speed);
-          // scroll_box.onmouseover = function () {
-          //   clearInterval(int);
-          // }
-          // scroll_box.onmouseout = function () {
-          //   int = setInterval(Marquee,speed); 　　　　
-          // }
         }
         w.ScrollImgLeft = ScrollImgLeft;
       })(window)
