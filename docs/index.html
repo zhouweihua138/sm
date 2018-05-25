@@ -84,7 +84,7 @@
       <div class="collect-box">
         <h1 class="quantity">*</h1>
         <a href="javascript:void(0);">收集</a>
-        <span>05.28-06.29</span>
+        <span id="activity-date">05.28-06.29</span>
       </div>
       <h1 class="money">0</h1>
       <a class="btn-extract-balance" href="javascript:void(0);"></a>
@@ -130,7 +130,7 @@
           <div class="history-content">
             <div class="tab-nav">
               <a class="active" href="javascript:void(0);">糖果获得记录</a>
-              <a href="javascript:void(0);">额度提取记录</a>
+              <a data-cate="award" href="javascript:void(0);">额度提取记录</a>
             </div>
             <div class="tab-content">
               <div class="tab active">
@@ -141,8 +141,8 @@
               <div class="tab">
                 <ul id="award-record">
                   <li><span>日期</span><span>糖果额度</span></li>
-                  <li><span>2018.3.8</span><span>500元</span></li>
                 </ul>
+                <a class="btn showFreeLimitTaken" href="javascript:void(0);">查看详情</a>
               </div>
             </div>
           </div>
@@ -330,7 +330,8 @@
 
         var state = {
           canCollect: true,  // 收集按钮是否可点击，防止多次点击
-          canTake: true      // 提取按钮是否可点击
+          canTake: true,      // 提取按钮是否可点击
+          gotAwardRecord: false,  // 是否已访问提取记录接口
         }
 
         init();
@@ -399,14 +400,29 @@
           if ($(this).hasClass('active')) {
             return;
           }
+          if (!state.gotAwardRecord && $(this).data('cate') === 'award') {
+            http({
+              url: 'https://api3.biyabi.com/api/Page/App/HomePageShowV3',
+              data: JSON.stringify({"pageIndex":1,"apiVersion":1,"app":{"appName":"比呀比H5","appId":26,"appVersion":"2.0.0","appVersionCode":1},"user":{"userId":"0","appPwd":""}}),
+              success: function (data) {
+                data = {
+                  status: 200,  // 接口状态  500系统错误
+                  data: {
+                    date: '2018.3.8',
+                    amount: '300.00'
+                  }
+                }
+                if(data.status == 200) {
+                  state.gotAwardRecord = true;
+                  data = data.data
+                  var s = '<li><span>日期</span><span>糖果额度</span></li>';
+                  s += '<li><span>' + data.date + '</span><span>' + data.amount + '元</span></li>';
+                  $('#award-record').html(s);
+                }
+              }
+            })
 
-          // TODO:
-          data = {
-            status: 200,  // 接口状态  500系统错误
-            date: '2018.3.8',
-            amount: '300.00'
           }
-
 
           $('.tab-nav a').removeClass('active');
           $(this).addClass('active');
@@ -471,6 +487,7 @@
           showConfirmTake();
         })
 
+        // 确认提取按钮
         $('.linkToTake').on('click', function(){
           state.canTake = false;
           $('.mask,.popup5').removeClass('show');
@@ -480,25 +497,23 @@
             success: function (data) {
               data = {
                 status: 200,  // 接口状态, 201：金额小于500，  500系统错误
-                collectedAmount: 500.00,  // 已提取免息分期额度
-                collectedDesc1: '分期返还上述额度的3期手续费',  // 已提取免息分期额度描述1
-                collectedDesc2: '任意期数500元以上分期自动使用',   // 已提取免息分期额度描述2
-                collectedDesc3: '有效期至2018.6.15',   // 已提取免息分期额度描述3
-                collectedLink: '/fenqi/',  // 已提取免息分期额度"去分期"链接
+                data: {
+                  amount: 500.00,  // 已提取免息分期额度
+                  desc1: '分期返还上述额度的3期手续费',  // 已提取免息分期额度描述1
+                  desc2: '任意期数500元以上分期自动使用',   // 已提取免息分期额度描述2
+                  desc3: '有效期至2018.6.15',   // 已提取免息分期额度描述3
+                  installmentLink: '/fenqi/',  // 已提取免息分期额度"去分期"链接
+                }
               }
-              if(data.status == 200) {
-                state.canTake = true;
-                $('.hole,.wall').addClass('show');
-                $('#collectedAmount').text(data.collectedAmount + '元');
-                $('#collectedDesc1').text(data.collectedDesc1);
-                $('#collectedDesc2').text(data.collectedDesc2);
-                $('#collectedDesc3').text(data.collectedDesc3);
-                $('#collectedLink').attr('href', data.collectedLink);
-                removeBottomWall();
-                // 球落完的回调函数 BallsFalledCallBack
-              }
+              resolveGetAward(data);
             }
           })
+        })
+
+        // 历史记录查看详情按钮
+        $('.showFreeLimitTaken').on('click', function(){
+          $('.mask,.popup2').removeClass('show');
+          showFreeLimitTaken();
         })
 
         function getQueryString (name) {
@@ -572,74 +587,101 @@
             success: function (data) {
               data = initData;  // 本地测试数据，调试删
               initData = data;
-              if(data.status == 200) {
-                var balls = data.totalAmount == 0 ? 0 : 10;
-                initBalls(balls, BallsFalledCallBack);
-                $('.quantity').text(data.sugers.length);
-                $('.money').text(data.totalAmount);
-                // 免息额度滚动
-                $('.money').each(function(){
-                  $('.money').prop('Counter',0).animate({
-                    Counter: $('.money').text()
-                  },{
-                    duration: 1500,
-                    easing: 'swing',
-                    step: function (now){
-                      $('.money').text(Math.ceil(now));
-                    }
-                  });
-                });
-                // 收集面板升起，按钮跳动
-                setTimeout(function(){
-                  $('.collect-box').addClass('active');
-                },300);
-                // 待收集糖果=0，收集按钮升起后，按钮不跳动且置灰
-                if (data.sugers.length == 0) {
-                  $('.collect-box').addClass('disabled')
-                }
-                // 待收集糖果=5，已达上限
-                if (data.sugers.length >= 5) {
-                  showLimit();
-                }
-                if (data.bMaxAward) {
-                  showMaxAward();
-                }
-                if (data.bFirstVisit) {
-                  showFirstVisit();
-                }
-                if (data.bFreeLimitTaken) {
-                  $('.btn-extract-balance').addClass('taken');
-                  $('#collectedAmount').text(data.collectedAmount + '元');
-                  $('#collectedDesc1').text(data.collectedDesc1);
-                  $('#collectedDesc2').text(data.collectedDesc2);
-                  $('#collectedDesc3').text(data.collectedDesc3);
-                  $('#collectedLink').attr('href', data.collectedLink);
-                  showFreeLimitTaken();
-                }
-                if (data.bFreeLimitUsed) {
-                  $('.btn-extract-balance').addClass('used');
-                  $('#usedAmount').text(data.usedAmount + '元');
-                  $('#usedDesc1').text(data.usedDesc1);
-                  $('#usedDesc2').text(data.usedDesc2);
-                  $('#usedLink').attr('href', data.usedLink);
-                  showFreeLimitUsed();
-                }
-                if (data.bCantJoin) {
-                  showCantJoin();
-                }
-                if (data.bExpire) {
-                  showExpire();
-                }
-                var sal = '';
-                var al = initData.awardUserList;
-                for (var i=0; i< al.length; i++) {
-                  sal += '<li>恭喜 ' + al[i].name + ' 成功提取价值 ' + al[i].amount + '元 糖果</li>'
-                }
-                $('#scroll-begin').html(sal);
-                ScrollImgLeft();
-              }
+              resolveCandyInitParam(data);
             }
           })
+        }
+
+        function resolveCandyInitParam (data) {
+          if(data.status == 200) {
+            var balls = data.totalAmount == 0 ? 0 : 10;
+            initBalls(balls, BallsFalledCallBack);
+            $('.quantity').text(data.sugers.length);
+            $('.money').text(data.totalAmount);
+
+            var startDate = data.activityStartDate.split('-');  // '2018-05-21',  // 活动开始时间
+            startDate.shift();
+            startDate = startDate.join('.');
+            var endDate = data.activityEndDate.split('-');  // '2018-06-21',  // 活动结束时间
+            endDate.shift();
+            endDate = endDate.join('.');
+            $('#activity-date').text(startDate + '-' + endDate);
+            // 免息额度滚动
+            $('.money').each(function(){
+              $('.money').prop('Counter',0).animate({
+                Counter: $('.money').text()
+              },{
+                duration: 1500,
+                easing: 'swing',
+                step: function (now){
+                  $('.money').text(Math.ceil(now));
+                }
+              });
+            });
+            // 收集面板升起，按钮跳动
+            setTimeout(function(){
+              $('.collect-box').addClass('active');
+            },300);
+            // 待收集糖果=0，收集按钮升起后，按钮不跳动且置灰
+            if (data.sugers.length == 0) {
+              $('.collect-box').addClass('disabled')
+            }
+            // 待收集糖果=5，已达上限
+            if (data.sugers.length >= 5) {
+              showLimit();
+            }
+            if (data.bMaxAward) {
+              showMaxAward();
+            }
+            if (data.bFirstVisit) {
+              showFirstVisit();
+            }
+            if (data.bFreeLimitTaken) {
+              $('.btn-extract-balance').addClass('taken');
+              $('#collectedAmount').text(data.collectedAmount + '元');
+              $('#collectedDesc1').text(data.collectedDesc1);
+              $('#collectedDesc2').text(data.collectedDesc2);
+              $('#collectedDesc3').text(data.collectedDesc3);
+              $('#collectedLink').attr('href', data.collectedLink);
+              showFreeLimitTaken();
+            }
+            if (data.bFreeLimitUsed) {
+              $('.btn-extract-balance').addClass('used');
+              $('#usedAmount').text(data.usedAmount + '元');
+              $('#usedDesc1').text(data.usedDesc1);
+              $('#usedDesc2').text(data.usedDesc2);
+              $('#usedLink').attr('href', data.usedLink);
+              showFreeLimitUsed();
+            }
+            if (data.bCantJoin) {
+              showCantJoin();
+            }
+            if (data.bExpire) {
+              showExpire();
+            }
+            var sal = '';
+            var al = initData.awardUserList;
+            for (var i=0; i< al.length; i++) {
+              sal += '<li>恭喜 ' + al[i].name + ' 成功提取价值 ' + al[i].amount + '元 糖果</li>'
+            }
+            $('#scroll-begin').html(sal);
+            ScrollImgLeft();
+          }
+        }
+
+        function resolveGetAward (data) {
+          if(data.status == 200) {
+            data = data.data;
+            state.canTake = true;
+            $('.hole,.wall').addClass('show');
+            $('#collectedAmount').text(data.amount + '元');
+            $('#collectedDesc1').text(data.desc1);
+            $('#collectedDesc2').text(data.desc2);
+            $('#collectedDesc3').text(data.desc3);
+            $('#collectedLink').attr('href', data.installmentLink);
+            removeBottomWall();
+            // 球落完的回调函数 BallsFalledCallBack
+          }
         }
 
         function showPopup (removeActiveClassSelector, addActiveClassSelector, addShowClassSelector) {
