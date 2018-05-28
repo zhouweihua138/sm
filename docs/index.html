@@ -325,6 +325,33 @@
         }],
       }
 
+      function checkDebugger(){  
+        const d=new Date();  
+        debugger;  
+        const dur=Date.now()-d;  
+        if(dur<5){  
+            return false;  
+        }else{  
+            return true;  
+        }  
+      }  
+      function breakDebugger(){  
+          if(checkDebugger()){  
+              breakDebugger();  
+          }  
+      }
+      // breakDebugger();  // 阻止别人调试js
+      
+      // 禁用代码中的所有 console.log 语句
+      var DEBUG = false;
+      if(!DEBUG){
+       if(!window.console) window.console = {};
+       var methods = ["log","debug","warn","info"];
+       for(var i=0;i<methods.length;i++){
+       console[methods[i]] = function(){};
+       }
+      }      
+
       $(function(){
         var ajaxStatus = true;//启用ajax请求
 
